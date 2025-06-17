@@ -20,10 +20,11 @@
               ref="hoverContainer"
             >
               <nuxt-link
-                :to="`/${item.slug}`"
-                :class="allowHover ? 'is-hover-allowed' : ''"
+                  v-bind:to="`services/${item.slug}`"
+                  v-bind:class="allowHover ? 'is-hover-allowed' : ''"
+                  ref="title"
               >
-                <span ref="title">{{ item.title }}</span>
+                {{ item.title }}
               </nuxt-link>
             </div>
           </li>
