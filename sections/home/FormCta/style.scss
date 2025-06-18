@@ -1,4 +1,8 @@
 .section-form-cta {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
     .row-title {
       display: flex;
       justify-content: center; // form to the right

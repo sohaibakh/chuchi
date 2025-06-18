@@ -68,23 +68,50 @@ export default {
       if (this.$refs.heading?.show) {
         tl.add(this.$refs.heading.show(), 0);
       }
+      if (this.$refs.slides) {
+        tl.to(
+          this.$refs.slides,
+          {
+            y: 0,
+            opacity: 1,
+            // stagger: 0.5,
+            duration: 1.2,
+            ease: 'power2.out',
+         
+          },
+          0.5 // Start just after heading
+        );
+      }
+
       return tl;
     },
 
     backgroundHide(done) {
       const tl = gsap.timeline({ onComplete: done });
+    
+      // Hide heading via its method
       if (this.$refs.heading?.hide) {
         tl.add(this.$refs.heading.hide(), 0);
       }
+    
+      // Immediately hide all slides
+      if (this.$refs.slides) {
+        gsap.set(this.$refs.slides, {
+          opacity: 0,
+          y: 50
+        });
+      }
+    
       return tl;
-    },
+    }
+    ,
 
     _initCenteredSlider() {
       const wrapper = this.$el.querySelector('.swiper-wrapper');
       const container = this.$el.querySelector('.swiper-container');
       const slides = this.$el.querySelectorAll('.swiper-slide');
 
-      const slideWidth = slides[0].offsetWidth + 20; // assuming margin-right: 20px
+      const slideWidth = slides[0].offsetWidth + 20; 
 
       Object.assign(this.state, {
         wrapper,
@@ -163,23 +190,40 @@ export default {
       });
     },
 
-    _centerSlide(index) {
-      const containerCenter = this.state.container.offsetWidth / 2;
-      const groupWidth = this.state.slideWidth * 2;
-      const offset = index * this.state.slideWidth;
-      this.state.target = offset - containerCenter + groupWidth / 2;
+    // _centerSlide(index) {
+    //   const containerCenter = this.state.container.offsetWidth / 2;
+    //   const groupWidth = this.state.slideWidth * 2;
+    //   const offset = index * this.state.slideWidth;
+    //   this.state.target = offset - containerCenter + groupWidth / 2;
 
+    //   const slides = this.state.wrapper.querySelectorAll('.swiper-slide');
+    //   slides.forEach((el, i) => {
+    //     el.classList.toggle('active', i === index || i === index + 1);
+    //   });
+    // },
+
+    _centerSlide(index) {
+      const offset = index * this.state.slideWidth;
+      this.state.target = offset;
+    
       const slides = this.state.wrapper.querySelectorAll('.swiper-slide');
       slides.forEach((el, i) => {
-        el.classList.toggle('active', i === index || i === index + 1);
+        el.classList.toggle('active', i === index || index + 1);
       });
     },
 
     _centerNearestSlide() {
-      const containerCenter = this.state.container.offsetWidth / 2;
-      const estimatedIndex = Math.round((this.state.current + containerCenter - this.state.slideWidth) / this.state.slideWidth);
-      this.state.currentIndex = Math.max(0, Math.min(this.slides.length - 2, estimatedIndex));
+      const estimatedIndex = Math.round(this.state.current / this.state.slideWidth);
+      this.state.currentIndex = Math.max(0, Math.min(this.slides.length - 1, estimatedIndex));
       this._centerSlide(this.state.currentIndex);
     }
+    
+
+    // _centerNearestSlide() {
+    //   const containerCenter = this.state.container.offsetWidth / 2;
+    //   const estimatedIndex = Math.round((this.state.current + containerCenter - this.state.slideWidth) / this.state.slideWidth);
+    //   this.state.currentIndex = Math.max(0, Math.min(this.slides.length - 2, estimatedIndex));
+    //   this._centerSlide(this.state.currentIndex);
+    // }
   }
 };

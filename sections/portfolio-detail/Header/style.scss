@@ -32,6 +32,14 @@
     }
 }
 
+.body--portfolio {
+    text-align: center;
+
+    .lines{
+        text-align: center!important;
+    }
+}
+
 
 .row-title {
     position: relative;
@@ -39,7 +47,7 @@
     width: 100%;
 
     .column {
-        width: 80%;
+        width: 60%;
 
         margin: 0 auto;
 
@@ -99,14 +107,15 @@
         padding: 0 $padding-mobile;
 
         @include respond-to('large') {
-            width: 30%;
+            width: 60%;
 
-            margin-left: 54%;
+            margin-left: auto;
+            margin-right: auto;
             padding: 0;
 
-            .ar & {
-                margin-left: 16%;
-            }
+            // .ar & {
+            //     margin-left: 16%;
+            // }
         }
     }
 }
@@ -115,7 +124,9 @@
     margin-top: rem(100px);
 
     @include respond-to('large') {
-        margin-top: rem-l(-50px);
+        margin-top: rem-l(100px);
+        // margin-top: rem-l(100px);
+        margin-bottom: rem-l(200px);
     }
 }
 

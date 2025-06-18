@@ -101,7 +101,7 @@ export default {
       const delay = routInfo.previous === null ? 0 : 0;
 
       const timeline = new gsap.timeline({ onComplete: done, delay });
-      console.log('ele:', this.$el)
+      // console.log('ele:', this.$el)
       if (this.$root.webglApp) {
         timeline.add(this.$root.webglApp.showScene('home'), 0);
       // timeline.add(this.$root.webglApp.hideScene('portfolio'), 0);

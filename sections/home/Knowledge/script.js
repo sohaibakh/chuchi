@@ -45,27 +45,63 @@ export default {
         /**
          * Public
          */
-        backgroundShow(done, direction) {
+         backgroundShow(done, direction) {
             if (this.timelineHide) this.timelineHide.kill();
-
+          
             const delay = direction > 0 ? 0.6 : 0.8;
-            this.timelineShow = new gsap.timeline({ delay, onComplete: done });
+            this.timelineShow = gsap.timeline({ delay, onComplete: done });
+          
+            // Make sure section is visible
             this.timelineShow.set(this.$el, { alpha: 1 }, 0);
-            this.timelineShow.add(this.$refs.heading.show(), 0);
-            this.timelineShow.add(this.$refs.body.showBlock(0), 0.6);
-            // this.timelineShow.add(this.$refs.cta.show(), 1.4);
+          
+            // Animate heading
+            if (this.$refs.heading?.show) {
+              this.timelineShow.add(this.$refs.heading.show(), 0); // Start at 0
+            }
+          
+            // Animate body in parallel
+            if (this.$refs.body?.$el) {
+              this.timelineShow.fromTo(
+                this.$refs.body.$el,
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+                0.5 // Start at 0 (together with heading)
+              );
+            }
+          
             return this.timelineShow;
-        },
+          }
+          
+          
+          
+          ,
 
-        backgroundHide(done, direction) {
+          backgroundHide(done, direction) {
             if (this.timelineShow) this.timelineShow.kill();
-
+          
             const delay = direction > 0 ? 0 : 0;
-            this.timelineHide = new gsap.timeline({ delay, onComplete: done });
-            this.timelineHide.to(this.$el, 0.5, { alpha: 0 }, 0.4);
-            this.$refs.heading.hide();
+            this.timelineHide = gsap.timeline({ delay, onComplete: done });
+          
+            // Fade out entire section (optional)
+            this.timelineHide.to(this.$el, { alpha: 0, duration: 0.5 }, 0.4);
+          
+            // Hide heading via its method
+            if (this.$refs.heading?.hide) {
+              this.$refs.heading.hide();
+            }
+          
+            // Instantly hide body to prevent re-flash
+            if (this.$refs.body?.$el) {
+              gsap.set(this.$refs.body.$el, {
+                opacity: 0,
+                y: 40
+              });
+            }
+          
             return this.timelineHide;
-        },
+          }
+          
+          ,
         setupEventListeners() {
             // this.$refs.cta.$el.addEventListener('click', this.ctaClickHandler);
             // this.$refs.cta.$el.addEventListener('mouseenter', this.ctaMouseenterHandler);

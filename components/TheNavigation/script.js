@@ -77,23 +77,50 @@ export default {
         /**
          * Private
          */
-        scrollShow() {
-            if (this.isVisible) return;
-            this.isVisible = true;
+        // scrollShow() {
+        //     if (this.isVisible) return;
+        //     this.isVisible = true;
 
-            if (this.timelineScrollHide) this.timelineScrollHide.kill();
-            this.timelineScrollShow = new gsap.timeline();
-            this.timelineScrollShow.to(this.$el, 0.9, { alpha: 1, ease: 'power2.out' }, 0);
-        },
+        //     if (this.timelineScrollHide) this.timelineScrollHide.kill();
+        //     this.timelineScrollShow = new gsap.timeline();
+        //     this.timelineScrollShow.to(this.$el, 0.9, { alpha: 1, ease: 'power2.out' }, 0);
+        // },
+
+        // scrollHide() {
+        //     if (!this.isVisible) return;
+        //     this.isVisible = false;
+
+        //     if (this.timelineScrollShow) this.timelineScrollShow.kill();
+        //     this.timelineScrollHide = new gsap.timeline();
+        //     this.timelineScrollHide.to(this.$el, 0.9, { alpha: 0, ease: 'sine.inOut' }, 0);
+        // },
 
         scrollHide() {
             if (!this.isVisible) return;
             this.isVisible = false;
-
-            if (this.timelineScrollShow) this.timelineScrollShow.kill();
-            this.timelineScrollHide = new gsap.timeline();
-            this.timelineScrollHide.to(this.$el, 0.9, { alpha: 0, ease: 'sine.inOut' }, 0);
-        },
+          
+            gsap.to(this.$el, {
+              y: -100,
+              opacity: 0,
+              duration: 0.6,
+              ease: 'power2.out',
+              overwrite: true,
+            });
+          },
+          
+          scrollShow() {
+            if (this.isVisible) return;
+            this.isVisible = true;
+          
+            gsap.to(this.$el, {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: 'power2.out',
+              overwrite: true,
+            });
+          },
+          
 
         /**
          * Event Listeners
@@ -114,20 +141,60 @@ export default {
         /**
          * Handlers
          */
-        scrollHandler(position) {
-            if (position.y > TOP_OFFSET) {
-                const delta = position.y - this.previousScrollPosition;
-                if (delta > 0) {
-                    this.scrollHide();
-                } else {
-                    this.scrollShow();
-                }
-            } else {
-                this.scrollShow();
-            }
+        // scrollHandler(position) {
+        //     if (position.y > TOP_OFFSET) {
+        //         const delta = position.y - this.previousScrollPosition;
+        //         if (delta > 0) {
+        //             this.scrollHide();
+        //         } else {
+        //             this.scrollShow();
+        //         }
+        //     } else {
+        //         this.scrollShow();
+        //     }
 
-            this.previousScrollPosition = position.y;
-        },
+        //     this.previousScrollPosition = position.y;
+        // },
+        scrollHandler(position) {
+            if (this._lastScrollY == null) {
+              this._lastScrollY = position.y;
+              this._navOffsetY = 0; // ✅ initialize properly
+              return;
+            }
+          
+            const delta = position.y - this._lastScrollY;
+          
+            // Create nav offset if it doesn't exist
+            if (typeof this._navOffsetY !== 'number') {
+              this._navOffsetY = 0;
+            }
+          
+            // Scroll down → move nav up
+            if (delta > 0) {
+              this._navOffsetY -= delta; // subtract scroll delta
+            }
+          
+            // Scroll up → move nav back down
+            else if (delta < 0) {
+              this._navOffsetY -= delta * 1.5; // scroll up = reduce negative offset (slide in faster)
+            }
+          
+            // Clamp between 0 and -120px
+            this._navOffsetY = Math.min(0, Math.max(this._navOffsetY, -120));
+          
+            // Animate to position
+            gsap.to(this.$el, {
+              y: this._navOffsetY,
+              duration: 0.2,
+              ease: 'power1.out',
+              overwrite: true,
+            });
+          
+            this._lastScrollY = position.y;
+          }
+          
+          ,
+          
 
         stepScrollHandler(e) {
             if (e.delta > 0) {

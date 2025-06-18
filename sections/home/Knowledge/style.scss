@@ -4,11 +4,13 @@
 
     display: flex;
 
-    align-items: flex-end;
+    align-items: center;
 
     width: 100%;
 
-    padding-bottom: 15vh;
+    min-height: 100vh;
+
+    // padding-bottom: 15vh;
 
     @include respond-to('large') {
         padding-bottom: 19vh;

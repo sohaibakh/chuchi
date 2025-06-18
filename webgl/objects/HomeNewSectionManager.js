@@ -9,15 +9,13 @@ export default {
     if (from === to) return;
 
     const step = direction > 0 ? 1 : -1;
-    const stepsSkipped = Math.abs(to - from);
-    const speedMultiplier = 1 / stepsSkipped;
 
     const tl = gsap.timeline();
 
     for (let i = from + step; direction > 0 ? i <= to : i >= to; i += step) {
       const fn = this[`_showSection${i}`];
       if (typeof fn === 'function') {
-        const result = fn.call(this, step, speedMultiplier);
+        const result = fn.call(this, step);
         if (result && typeof result.add === 'function') {
           tl.add(result, '+=0.01');
         } else {
@@ -29,12 +27,12 @@ export default {
     this._currentSectionIndex = to;
   },
 
-  _showSection0(dir = 1, speed = 1) {
+  _showSection0() {
     const tl = gsap.timeline();
     tl.to(this._camera.position, {
-      duration: 1 * speed,
+      duration: 2,
       x: 0,
-      y: 10,
+      y: 8,
       z: 3,
       ease: 'power2.inOut',
       onUpdate: () => this._camera.lookAt(0, 0, 0),
@@ -42,13 +40,13 @@ export default {
     return tl;
   },
 
-  _showSection1(dir = 1, speed = 1) {
+  _showSection1(dir = 1) {
     const tl = gsap.timeline();
     const targetY = 1;
     const targetZ = 8;
 
     tl.to(this._camera.position, {
-      duration: 1 * speed,
+      duration: 1.5,
       x: 0,
       y: targetY,
       z: targetZ,
@@ -61,7 +59,7 @@ export default {
         x: 0,
         y: -0.95,
         z: 0,
-        duration: 1 * speed,
+        duration: 1.5,
         ease: 'power3.inOut',
       }, 0);
     }
@@ -69,7 +67,7 @@ export default {
     return tl;
   },
 
-  _showSection2(dir = 1, speed = 1) {
+  _showSection2(dir = 1) {
     const tl = gsap.timeline();
     const cam = this._camera;
     const spinner = this._components?.spinner;
@@ -80,7 +78,7 @@ export default {
         x: -10,
         y: -1,
         z: 10,
-        duration: 2.2 * speed,
+        duration: 3,
         ease: 'power3.inOut',
       }, 0);
     }
@@ -91,7 +89,7 @@ export default {
 
       tl.to(services.userData, {
         opacity: 0,
-        duration: 1.5 * speed,
+        duration: 3,
         ease: 'power2.out',
         onUpdate: () => {
           services.children.forEach((child) => {
@@ -112,7 +110,7 @@ export default {
 
       tl.to(cam.position, {
         ...targetPos,
-        duration: 1.2 * speed,
+        duration: 2,
         ease: 'power2.inOut',
         onUpdate: () => {
           cam.lookAt(targetLook.x, targetLook.y, targetLook.z);
@@ -123,14 +121,13 @@ export default {
     return tl;
   },
 
-  _showSection3(dir = 1, speed = 1) {
-    // SectionSlider (Carousel): no camera movement, step scroll only
+  _showSection3() {
     const tl = gsap.timeline();
     tl.to({}, { duration: 0.1 });
     return tl;
   },
 
-  _showSection4(dir = 1, speed = 1) {
+  _showSection4() {
     const tl = gsap.timeline();
     const cam = this._camera;
     const target = this._cameraB;
@@ -145,7 +142,7 @@ export default {
       x: targetPos.x,
       y: targetPos.y,
       z: targetPos.z,
-      duration: 1.5 * speed,
+      duration: 2,
       ease: 'power2.inOut',
     }, 0);
 
@@ -154,7 +151,7 @@ export default {
       y: targetQuat.y,
       z: targetQuat.z,
       w: targetQuat.w,
-      duration: 1.5 * speed,
+      duration: 2,
       ease: 'power2.inOut',
     }, 0);
 
@@ -164,7 +161,7 @@ export default {
 
       tl.to(services.userData, {
         opacity: 1,
-        duration: 1.2 * speed,
+        duration: 2,
         ease: 'power2.out',
         onUpdate: () => {
           services.children.forEach((child) => {
@@ -180,7 +177,7 @@ export default {
     return tl;
   },
 
-  _showSection5(dir = 1, speed = 1) {
+  _showSection5() {
     const tl = gsap.timeline();
     const cam = this._camera;
     const target = this._cameraC;
@@ -190,7 +187,7 @@ export default {
       services.visible = true;
       tl.to(services.userData, {
         opacity: 0,
-        duration: 0.8 * speed,
+        duration: 1.2,
         ease: 'power2.inOut',
         onUpdate: () => {
           services.children.forEach((child) => {
@@ -213,24 +210,24 @@ export default {
         x: targetPos.x,
         y: targetPos.y,
         z: targetPos.z,
-        duration: 1.2 * speed,
+        duration: 2,
         ease: 'power2.inOut'
-      }, '-=0.6');
+      }, '-=1.2');
 
       tl.to(cam.quaternion, {
         x: targetQuat.x,
         y: targetQuat.y,
         z: targetQuat.z,
         w: targetQuat.w,
-        duration: 1.2 * speed,
+        duration: 2,
         ease: 'power2.inOut'
-      }, '-=1.2');
+      }, '-=2.4');
     }
 
     return tl;
   },
 
-  _showSection6(dir = 1, speed = 1) {
+  _showSection6() {
     const tl = gsap.timeline();
     const servicesGroup = this._groupServices;
     const newsGroup = this._groupNews;
@@ -239,37 +236,35 @@ export default {
 
     tl.to(servicesGroup.position, {
       y: -10,
-      duration: 1.5 * speed,
+      duration: 2,
       ease: 'power2.inOut'
     }, 0);
 
     tl.to(newsGroup.position, {
       y: 0,
-      duration: 1.5 * speed,
+      duration: 2,
       ease: 'power2.inOut'
     }, 0);
 
     return tl;
   },
 
-  _showSection7(dir = 1, speed = 1) {
+  _showSection7() {
     const tl = gsap.timeline();
     const spinner = this._components?.spinner;
-  
+
     if (!spinner) return tl;
-  
-    // Move spinner 3 units left from its current position
+
     const currentPos = spinner.position.clone();
-  
+
     tl.to(spinner.position, {
-      x: currentPos.x ,
+      x: currentPos.x,
       y: currentPos.y,
       z: currentPos.z + 4,
-      duration: 1.2 * speed,
+      duration: 2,
       ease: 'power2.inOut'
     });
-  
+
     return tl;
   }
-  
 };

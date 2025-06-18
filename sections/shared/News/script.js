@@ -10,7 +10,9 @@ export default {
         GridNews,
     },
 
-    mounted() {},
+    mounted() {
+        console.log('[SectionNews] data:', this.data); // Should be an array
+    },
 
     methods: {
         show() {

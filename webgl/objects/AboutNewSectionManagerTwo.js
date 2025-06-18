@@ -18,37 +18,54 @@ export default {
   _scrollHandler({ y }) {
     const sections = this._nuxtRoot?.sectionsInfo;
     if (!sections) return;
-
+  
     const triggerY = window.innerHeight * 0.5;
-
+  
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
       const el = section?.component?.$el;
       if (!el) continue;
-
+  
       const rect = el.getBoundingClientRect();
-
+  
       if (rect.top <= triggerY && rect.bottom >= triggerY) {
         if (this._lastDOMSectionIndex !== i) {
           const direction = i > (this._lastDOMSectionIndex || 0) ? 1 : -1;
           this._lastDOMSectionIndex = i;
-
+  
           const name = section.component?.$options?.name || `Unknown_${i}`;
           console.log(`[📍 DOM] Active Section: ${name}`);
-
+  
           const fn = `_show${name}`;
           if (typeof this[fn] === 'function') {
-            this[fn](direction);
-          }
-
-          if (typeof section.component?.backgroundShow === 'function') {
-            section.component.backgroundShow(() => {}, direction);
+            const tl = this[fn](direction);
+  
+            // ✅ Only call backgroundShow after spinner section animation starts
+            if (tl && typeof tl.then === 'undefined' && typeof tl.eventCallback === 'function') {
+              // Use GSAP's `onStart` or `call()` to run it at timeline start
+              tl.call(() => {
+                if (typeof section.component?.backgroundShow === 'function') {
+                  section.component.backgroundShow(() => {}, direction);
+                }
+              }, null, 0.01); // delay slightly after timeline begins
+            } else {
+              // fallback if not a timeline
+              if (typeof section.component?.backgroundShow === 'function') {
+                section.component.backgroundShow(() => {}, direction);
+              }
+            }
+          } else {
+            // No section animation; still call backgroundShow
+            if (typeof section.component?.backgroundShow === 'function') {
+              section.component.backgroundShow(() => {}, direction);
+            }
           }
         }
         break;
       }
     }
-  },
+  }
+  ,
 
   _showAboutHeader() {
     if (this._lastSection === 'AboutHeader') return;
@@ -145,44 +162,103 @@ export default {
         onUpdate: () => this._camera.lookAt(this._cameraTarget)
       }, 0);
 
+      const mat = this._components?.spinner?._material;
+    if (mat) {
+      tl.to(mat.color, {
+        r: 1.0,
+        g: 0.84,
+        b: 0.0,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      }, 0);
+    }
+
       // wave.setOpacity(0.25)
 
   },
 
   _showProTwo() {
-    this._lastSection = 'ProTwo'
-
+    this._lastSection = 'ProTwo';
     const tl = gsap.timeline();
+  
+    tl.to(this.position, {
+      x: this._locale === 'en' ? 1.38 : 5.6,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    });
+  
+    const mat = this._components?.spinner?._material;
+    if (mat) {
+      tl.to(mat.color, {
+        r: 0.8,
+        g: 0.5,
+        b: 0.4,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      }, 0);
+    }
+  
+    return tl;
+  }
+  ,
 
-    tl.to(this.position, 
-      { x: this._locale === 'en' ? 1.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
+  _showProThree() {
+    this._lastSection = 'ProThree';
+    const tl = gsap.timeline();
+  
+    tl.to(this.position, {
+      x: this._locale === 'en' ? -1.38 : 4.5,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    });
+  
+    tl.to(this._camera.position, {
+      z: 9.34,
+      y: 1.24,
+      duration: 1.5,
+      ease: 'power2.inOut',
+      onUpdate: () => this._camera.lookAt(this._cameraTarget)
+    }, 0);
+  
+    const mat = this._components?.spinner?._material;
+    if (mat) {
+      tl.to(mat.color, {
+        r: 0.65,
+        g: 0.3,
+        b: 0.6,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      }, 0);
+    }
+  
+    return tl;
+  }
+  ,
 
-},
-
-_showProThree() {
-  this._lastSection = 'ProThree'
-
-  const tl = gsap.timeline();
-
-  tl.to(this.position, 
-    { x: this._locale === 'en' ? -1.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
-
-  tl.to(this._camera.position, {
-    z: 9.34, y: 1.24,
-    duration: 1.5, ease: 'power2.inOut',
-    onUpdate: () => this._camera.lookAt(this._cameraTarget)
-  }, 0);
-
-},
-
-_showProFour() {
-  this._lastSection = 'ProFour'
-
-  const tl = gsap.timeline();
-
-  tl.to(this.position, 
-    { x: this._locale === 'en' ? 1.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
-},
+  _showProFour() {
+    this._lastSection = 'ProFour';
+    const tl = gsap.timeline();
+  
+    tl.to(this.position, {
+      x: this._locale === 'en' ? 1.38 : 5.6,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    });
+  
+    const mat = this._components?.spinner?._material;
+    if (mat) {
+      tl.to(mat.color, {
+        r: 0.5,
+        g: 0.0,
+        b: 0.5,
+        duration: 1.5,
+        ease: 'power2.inOut'
+      }, 0);
+    }
+  
+    return tl;
+  }
+  ,
 
   
 _showSectionAboutPartners() {

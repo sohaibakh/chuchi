@@ -26,6 +26,7 @@ import SectionProcessPart1 from '@/sections/about/ProcessPart1';
 import SectionProcessPart2 from '@/sections/about/ProcessPart2';
 import SectionContact from '@/sections/about/Contact';
 import SectionFooter from '@/sections/shared/Footer';
+import SectionProcessHead from '@/sections/about/ProcessHead';
 // import ProcessNew from '@/sections/about/ProcessNew';
 // import SectionProcessStep1 from '@/sections/about/ProcessStep1';
 // import SectionProcessStep2 from '@/sections/about/ProcessStep2';
@@ -49,6 +50,7 @@ export default {
         SectionIntro,
         SectionVideo,
         SectionInfo,
+        SectionProcessHead,
         ProOne,
         ProTwo,
         ProThree,

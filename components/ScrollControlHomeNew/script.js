@@ -1,6 +1,7 @@
 // Vendor
 import gsap from 'gsap';
 import normalizeWheel from 'normalize-wheel';
+import { EventBus } from '@/plugins/event-bus';
 
 // Utils
 import math from '@/utils/math';
@@ -111,6 +112,8 @@ export default {
       this._scrollY = math.lerp(this._scrollY, this._scrollYTarget, 0.05);
       this.updatePosition(this._scrollY);
       this.checkSectionTrigger();
+
+      EventBus.$emit('scroll', { y: this._scrollY });
     },
 
     updatePosition(y) {

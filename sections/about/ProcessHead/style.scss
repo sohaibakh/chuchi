@@ -3,9 +3,7 @@
     display: flex;
 
     align-items: center;
-    margin: 15vh 0;
-
-
+    height: 50vh!important;
     .ar & {
         direction: rtl;
     }
@@ -17,27 +15,6 @@
     }
 }
 
-.row-body {
-    .column {
-        width: 100%;
-
-        padding-right: $padding-mobile;
-        padding-left: $padding-mobile;
-
-        @include respond-to('large') {
-            width: 26%;
-
-            margin-left: 52%;
-
-            padding: 0;
-
-            .ar & {
-                margin-right: 52%;
-            }
-        }
-    }
-}
-
 .row-title {
     .column {
         width: 100%;
@@ -45,6 +22,9 @@
         padding-right: $padding-mobile;
         padding-left: $padding-mobile;
 
+        .gsap-lines {
+            text-align: center!important;
+        }
         @include respond-to('medium') {
             width: 65%;
         }
@@ -52,15 +32,16 @@
         @include respond-to('large') {
             width: 45%;
 
-            margin-left: 52%;
+            margin-left: auto;
+            margin-right: auto;
             padding-right: 0;
             padding-left: 0;
 
             font-weight: normal;
 
-            .ar & {
-                margin-right: 52%;
-            }
+            // .ar & {
+            //     margin-right: 52%;
+            // }
         }
     }
 }
