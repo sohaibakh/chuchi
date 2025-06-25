@@ -17,6 +17,7 @@ export default {
         backgroundShow(done, direction) {
             this._timelineBackgroundShow = new gsap.timeline({ onComplete: done });
             this._timelineBackgroundShow.add(this.$refs.heading.show(), 0.7);
+            this._timelineBackgroundShow.add(this.$refs.body.show(), 0.7);
             return this._timelineBackgroundShow;
         },
     },

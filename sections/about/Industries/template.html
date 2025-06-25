@@ -1,0 +1,47 @@
+<!-- Section -->
+<section class="section">
+
+    <!-- Section content -->
+    <div class="section__content">
+
+        <!-- Row title -->
+        <div class="row row-title">
+
+            <!-- Column -->
+            <div class="column">
+
+                <!-- Heading -->
+                <!-- <Heading tag="h1" ref="heading" isCustomTriggered="false" class="heading" :data="data.title" /> -->
+                <Heading tag="h1" ref="heading" isCustomTriggered="true" class="heading" data="Industries We Serve" />
+                
+                <!-- Industries grid -->
+                <!-- inside your .column, replace the grid part with this -->
+                <div class="industries-container">
+                    <div class="industries-grid">
+                    <div
+                        v-for="(industry, i) in industries"
+                        :key="i"
+                        class="industry-box"
+                        @mouseenter="hoveredIndex = i"
+                        @mouseleave="hoveredIndex = null"
+                    >
+                        <!-- absolutely‐positioned background image -->
+                        <img
+                            :src="industry.image"
+                            alt=""
+                            class="industry-bg"
+                        />
+                
+                        <!-- the text stays on top -->
+                        <span class="industry-name">{{ industry.name }}</span>
+                    </div>
+                    </div>
+                </div>
+  
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

@@ -133,20 +133,20 @@
 .intro__title {
     opacity: 0;
 
-    margin-bottom: rem(30px);
+    margin-bottom: rem(15px);
 
     font-family: $font-tertiary;
     font-weight: bold;
     font-size: rem(25px);
     line-height: 1.2em;
     color: $color-white;
-
+    text-align: center;
     .ar & {
         direction: rtl;
     }
 
     @include respond-to('large') {
-        margin-bottom: rem-l(115px);
+        margin-bottom: rem-l(10px);
 
         font-size: rem-l(40px);
     }

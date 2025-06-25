@@ -22,10 +22,10 @@
 }
 
 .row-title {
-    margin-bottom: rem(27px);
+    margin-bottom: rem(0px);
 
     @include respond-to('large') {
-        margin-bottom: rem-l(81px);
+        margin-bottom: rem-l(0px);
     }
 
     .column {

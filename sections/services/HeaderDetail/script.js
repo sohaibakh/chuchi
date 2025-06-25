@@ -10,6 +10,9 @@ import Heading from '@/components/Heading';
 // Utils
 import WindowResizeObserver from '@/utils/WindowResizeObserver';
 
+import ScrollArrow from '@/assets/images/icons/scroll-arrow.svg?inline';
+
+
 export default {
     name: 'SectionHeaderDetail',
     extends: Section,
@@ -20,6 +23,7 @@ export default {
         ResponsiveImage,
         Body,
         Heading,
+        ScrollArrow
     },
 
     mounted() {

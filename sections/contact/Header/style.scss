@@ -155,7 +155,7 @@ a {
     letter-spacing: 0.05em;
 
     @include respond-to('large') {
-        font-size: rem-l(140px);
+        font-size: rem-l(100px);
         letter-spacing: 0.07em;
     }
 }

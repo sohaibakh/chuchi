@@ -48,6 +48,12 @@
     }
 }
 
+.scroll-arrow {
+    position: absolute;
+    left: 50%;
+    
+}
+
 .heading {
     font-size: rem(65px);
 
@@ -62,21 +68,3 @@
     }
 }
 
-.scroll-arrow {
-    opacity: 0;
-
-    position: absolute;
-
-    right: rem(50px);
-    bottom: rem(50px);
-
-    .ar & {
-        right: auto;
-        left: rem(50px);
-    }
-
-    @include respond-to('large') {
-        right: rem-l(130px);
-        bottom: rem-l(120px);
-    }
-}

@@ -32,6 +32,7 @@ import SectionProcessHead from '@/sections/about/ProcessHead';
 // import SectionProcessStep2 from '@/sections/about/ProcessStep2';
 // import SectionProcessStep3 from '@/sections/about/ProcessStep3';
 // import SectionProcessStep4 from '@/sections/about/ProcessStep4';
+import SectionIndustries from '@/sections/about/Industries'
 import ProOne from '@/sections/about/ProOne';
 import ProTwo from '@/sections/about/ProTwo';
 import ProThree from '@/sections/about/ProThree';
@@ -51,6 +52,7 @@ export default {
         SectionVideo,
         SectionInfo,
         SectionProcessHead,
+        SectionIndustries,
         ProOne,
         ProTwo,
         ProThree,

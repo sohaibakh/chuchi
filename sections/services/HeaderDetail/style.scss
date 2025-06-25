@@ -121,13 +121,19 @@
 }
 
 .intro {
-    margin-top: rem(100px);
+    margin-top: rem(50px);
 
     @include respond-to('large') {
         margin-top: rem-l(100px);
-        margin-bottom: rem-l(200px);
+        margin-bottom: rem-l(100px);
     }
     
+}
+
+.scroll-arrow {
+    right: 5%;
+    bottom: 5%;
+    position: absolute;
 }
 
 .intro__title {
@@ -148,7 +154,7 @@
     }
 
     @include respond-to('large') {
-        margin-bottom: rem-l(100px);
+        margin-bottom: rem-l(30px);
 
         font-size: rem-l(40px);
     }
