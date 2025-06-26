@@ -9,8 +9,17 @@
     align-items: flex-start;
     width: 100%;
     max-width: 100vw;
-    overflow: hidden;
+    overflow: auto;
     padding: 0 5vw;
+    position:relative;
+
+    .scroll-arrow{
+      position: absolute;
+      left: 90%;
+      top: 80%;
+      transform: translateX(-50%);
+      z-index: 50;
+    }
 
     .services-detail {
       display: flex;
@@ -19,6 +28,7 @@
       justify-content: space-between;
       width: 100%;
       position: relative;
+      gap: 20px;
 
       // Left content scroll area
       .content {
@@ -42,6 +52,7 @@
           }
 
           .heading {
+            font-size: rem(20px);
             > span {
               display: block;
             }
@@ -79,7 +90,7 @@
         left: 0;
         height: 100vh;
         width: 100%;
-        overflow: hidden;
+        overflow: auto;
         img {
           position: absolute;
           top: 0;

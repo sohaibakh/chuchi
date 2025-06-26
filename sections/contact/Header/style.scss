@@ -2,7 +2,7 @@
 .section {
     display: flex;
 
-    align-items: center;
+    align-items: start;
 
     width: 100%;
     height: 100vh;
@@ -42,10 +42,10 @@ a {
 }
 
 .row-title {
-    margin-bottom: rem(42px);
+    margin-bottom: rem(20px);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     flex-direction: row;
 
     .contact-form {
@@ -150,12 +150,12 @@ a {
 }
 
 .heading {
-    font-size: rem(60px);
+    font-size: rem(50px);
     line-height: 1.04em;
     letter-spacing: 0.05em;
 
     @include respond-to('large') {
-        font-size: rem-l(100px);
+        font-size: rem-l(90px);
         letter-spacing: 0.07em;
     }
 }

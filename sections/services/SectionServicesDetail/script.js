@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import Heading from '@/components/Heading';
 import Body from '@/components/Body';
 import ButtonUnderlined from '@/components/ButtonUnderlined';
-
+import ScrollArrow from '@/assets/images/icons/scroll-arrow.svg?inline';
 
 export default {
   name: 'SectionServicesDetail',
@@ -19,6 +19,7 @@ export default {
     Heading,
     Body,
     ButtonUnderlined,
+    ScrollArrow
   },
 
   data() {

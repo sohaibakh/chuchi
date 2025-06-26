@@ -6,14 +6,14 @@ import SectionServices from '@/components/SectionServices';
 import Heading from '@/components/Heading';
 
 // Assets
-import ScrollArrow from '@/assets/images/icons/scroll-arrow.svg?inline';
+// import ScrollArrow from '@/assets/images/icons/scroll-arrow.svg?inline';
 
 export default {
     extends: SectionServices,
 
     components: {
         Heading,
-        ScrollArrow,
+        // ScrollArrow,
     },
 
     methods: {
