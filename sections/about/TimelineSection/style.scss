@@ -1,0 +1,70 @@
+.timeline-container {
+  width: 100%;
+  max-width: 1000px;
+  height: 50vh;
+  // display: flex;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom: rem-l(75px);
+  .step-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 40px;
+
+    .step-label {
+      flex: 0 0 auto;
+      width: fit-content; // aligns with dot
+      text-align: center;
+      font-size: 26px;
+      color: #fff;
+      font-family: "Akkurat Pro", sans-serif;
+      text-transform: capitalize;
+      position: relative;
+      div {
+        position: absolute;
+        transform: translateX(-50%); // center align with dot
+      }
+    }
+  }
+
+  .timeline-track-wrapper {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+  }
+
+  .timeline-track {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+  }
+
+  .timeline-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #f69f33;
+    border-radius: 4px;
+    z-index: 1;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    // border: 3px solid #c0c0c0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    transition: all 0.3s;
+  }
+}

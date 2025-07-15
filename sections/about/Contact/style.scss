@@ -13,7 +13,8 @@
     padding-bottom: rem(50px);
 
     @include respond-to('large') {
-        margin-top: rem-l(75px);
+        // margin-top: rem-l(75px);
+        margin-top: rem-l(120px);
         padding-bottom: 0;
     }
 }
@@ -81,7 +82,7 @@
     @include respond-to('large') {
         margin-bottom: rem-l(30px);
 
-        font-size: rem-l(140px);
+        font-size: rem-l(110px);
         line-height: 1.05em;
         letter-spacing: 0.07em;
     }

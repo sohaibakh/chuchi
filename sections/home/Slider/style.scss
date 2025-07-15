@@ -33,8 +33,8 @@
     z-index: 10;
     width: 80px;
     height: 80px;
-    background: rgba(200, 200, 200, 0.2);
-    color: rgb(156, 156, 156);
+    background: rgba(200, 200, 200, 0);
+    color: rgba(246, 159, 51, 0.4);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -44,7 +44,9 @@
     transition: background 0.3s ease;
 
     &:hover {
-      background: rgba(180, 180, 180, 0.6);
+      color: rgba(246, 159, 51, 0.9);
+
+      // background: rgba(180, 180, 180, 0.6);
     }
   }
 

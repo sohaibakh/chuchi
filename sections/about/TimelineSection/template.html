@@ -1,0 +1,31 @@
+
+<section class="section">
+  <div class="section__content">
+    
+    <div class="timeline-container">
+      <!-- Labels -->
+      <div class="step-labels">
+        <div class="step-label" v-for="(step, index) in steps" :key="index">
+          <div>
+            {{ step }}
+          </div>
+        </div>
+      </div>
+    
+      <!-- Timeline (bar + dots) -->
+      <div class="timeline-track-wrapper">
+        <div class="timeline-track">
+          <div class="timeline-fill" ref="progressBar"></div>
+          <div class="timeline-dot"
+               v-for="(step, index) in steps"
+               :key="'dot-' + index"
+               :ref="el => dotRefs[index] = el"
+          ></div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div>
+</section>
+

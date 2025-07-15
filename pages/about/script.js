@@ -1,8 +1,6 @@
 // Vendor
 import gsap from 'gsap';
 
-// Utils
-import AudioManager from '@/utils/AudioManager';
 
 // Components
 import Page from '@/components/Page';
@@ -27,6 +25,7 @@ import SectionProcessPart2 from '@/sections/about/ProcessPart2';
 import SectionContact from '@/sections/about/Contact';
 import SectionFooter from '@/sections/shared/Footer';
 import SectionProcessHead from '@/sections/about/ProcessHead';
+import TimelineSection from '@/sections/about/TimelineSection';
 // import ProcessNew from '@/sections/about/ProcessNew';
 // import SectionProcessStep1 from '@/sections/about/ProcessStep1';
 // import SectionProcessStep2 from '@/sections/about/ProcessStep2';
@@ -60,6 +59,7 @@ export default {
         SectionInfo2,
         SectionCarousel,
         SectionValues,
+        TimelineSection,
         SectionServices,
         SectionPartners,
         SectionProcessPart1,

@@ -1,5 +1,13 @@
 import Heading from '@/components/Heading';
 
+import one from '@/assets/images/clients/aramco-logo.png'
+import two from '@/assets/images/clients/masar.png'
+import three from '@/assets/images/clients/machinestalk.png'
+import four from '@/assets/images/clients/MDLbeast-1.png'
+import five from '@/assets/images/clients/misk_logo.png'
+import six from '@/assets/images/clients/Noor_Riyadh_Logo.png'
+// import seven from '@/assets/images/clients/saudia_logo.png'
+// import eight from '@/assets/images/clients/aramco-logo.png'
 let gsap = null;
 
 export default {
@@ -20,6 +28,22 @@ export default {
     if (process.client) {
       this._setupIntersectionObserver();
     }
+  },
+
+  data() {
+    return {
+      logos: [
+        { logo: one, link: 'https://example.com' },
+        { logo: two, link: '' },
+        { logo: three, link: 'https://another.com' },
+        { logo: four, link: 'https://another.com' },
+        { logo: five, link: 'https://another.com' },
+        { logo: six, link: 'https://another.com' },
+        // { logo: seven, link: 'https://another.com' },
+
+        // Add more logos as needed
+      ],
+    };
   },
 
   methods: {

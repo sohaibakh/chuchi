@@ -30,8 +30,16 @@
             <div class="column">
 
                 <!-- Logos -->
-                <ul class="logos">
+                <!-- <ul class="logos">
                     <li v-for="(item, index) in data.logos" :key="index" ref="item">
+                        <a :href="item.link" target="_blank" class="button-logo" v-if="item.link">
+                            <img :src="item.logo" class="logo">
+                        </a>
+                        <img :src="item.logo" class="logo" v-if="!item.link">
+                    </li>
+                </ul> -->
+                <ul class="logos">
+                    <li v-for="(item, index) in logos" :key="index" ref="item">
                         <a :href="item.link" target="_blank" class="button-logo" v-if="item.link">
                             <img :src="item.logo" class="logo">
                         </a>
