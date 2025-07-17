@@ -1,7 +1,32 @@
 
+// .navigation {
+//     z-index: 100;
+//     background: rgba(34, 34, 34, 1); //New 
+//     opacity: 1;
+
+//     position: fixed;
+
+//     top: rem(25px);
+//     right: rem(0px);
+//     left: 0;
+
+//     height: rem(50px);
+
+//     .ar & {
+//         direction: rtl;
+//     }
+
+//     @include respond-to('large') {
+//         top: rem-l(65px);
+//         right: rem-l(0px);
+
+//         height: rem-l(50px);
+//     }
+// }
+
 .navigation {
     z-index: 100;
-
+    background: rgba(34, 34, 34, 1); //New 
     opacity: 1;
 
     position: fixed;
@@ -17,10 +42,10 @@
     }
 
     @include respond-to('large') {
-        top: rem-l(65px);
+        top: rem-l(0px);
         right: rem-l(0px);
 
-        height: rem-l(50px);
+        height: rem-l(100px);
     }
 }
 

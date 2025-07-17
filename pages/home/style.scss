@@ -79,8 +79,11 @@
                 margin-bottom: rem-l(20px);
             }
 
+            // ::v-deep .heading {
+            //     font-size: rem-l(60px);
+            // }
             ::v-deep .heading {
-                font-size: rem-l(60px);
+                font-size: rem-l(50px);
             }
         }
 

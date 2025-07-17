@@ -6,8 +6,16 @@ import three from '@/assets/images/clients/machinestalk.png'
 import four from '@/assets/images/clients/MDLbeast-1.png'
 import five from '@/assets/images/clients/misk_logo.png'
 import six from '@/assets/images/clients/Noor_Riyadh_Logo.png'
-// import seven from '@/assets/images/clients/saudia_logo.png'
-// import eight from '@/assets/images/clients/aramco-logo.png'
+import seven from '@/assets/images/clients/king-abdullah-economic-city-large.png'
+import eight from '@/assets/images/clients/Ministry_of_Hajj_and_Umrah_Logo.png'
+import nine from '@/assets/images/clients/Ministry-of-Media.png'
+import ten from '@/assets/images/clients/RCMC logo.png'
+import eleven from '@/assets/images/clients/saudi_cable_logo.png'
+import twelve from '@/assets/images/clients/Saudi_Ministry_of_Culture_Logo.png'
+import thirteen from '@/assets/images/clients/snb logo.png'
+import fourteen from '@/assets/images/clients/stc logo.png'
+import fifteen from '@/assets/images/clients/um alqura logo.png'
+
 let gsap = null;
 
 export default {
@@ -39,6 +47,15 @@ export default {
         { logo: four, link: 'https://another.com' },
         { logo: five, link: 'https://another.com' },
         { logo: six, link: 'https://another.com' },
+        { logo: seven, link: 'https://another.com' },
+        { logo: eight, link: 'https://another.com' },
+        { logo: nine, link: 'https://another.com' },
+        { logo: ten, link: 'https://another.com' },
+        { logo: eleven, link: 'https://another.com' },
+        { logo: twelve, link: 'https://another.com' },
+        { logo: thirteen, link: 'https://another.com' },
+        { logo: fourteen, link: 'https://another.com' },
+        { logo: fifteen, link: 'https://another.com' },
         // { logo: seven, link: 'https://another.com' },
 
         // Add more logos as needed

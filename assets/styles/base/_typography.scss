@@ -36,7 +36,8 @@
     letter-spacing: 0.05em;
 
     @include respond-to('large') {
-        font-size: rem-l(100px);
+        // font-size: rem-l(100px);
+        font-size: rem-l(80px);
         line-height: 0.92em;
         letter-spacing: 0.1em;
     }

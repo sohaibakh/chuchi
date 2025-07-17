@@ -13,6 +13,7 @@
 
     @include respond-to('large') {
         padding-bottom: 19vh;
+        padding-top: 19vh;
     }
 
     .ar & {
@@ -38,7 +39,6 @@
         h2 {
             text-align: center;
             line-height: 1.1;
-            
             div {
                 text-align: center;
                 line-height: 1.1;
@@ -49,6 +49,7 @@
 }
 
 .heading {
+
     > span {
         display: block;
     }
