@@ -49,9 +49,9 @@
     letter-spacing: 0.05em;
 
     @include respond-to('large') {
-        font-weight: 250;
-        font-size: rem-l(140px);
-        line-height: 1.05em;
+        // font-weight: 250;
+        font-size: rem-l(80px);
+        line-height: 1.12em;
         letter-spacing: 0.05em;
     }
 

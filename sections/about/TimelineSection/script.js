@@ -5,21 +5,42 @@ export default {
     return {
       steps: ['Discover', 'Design', 'Develop', 'Deploy', 'Evaluate'],
       dotRefs: [],
+      timeline: null,
     };
   },
 
   mounted() {
-    this.positionDots();
-    this.animateTimeline();
+    this.$nextTick(() => {
+      // Safely get dot references after DOM has rendered
+      this.dotRefs = Array.from(this.$el.querySelectorAll('.timeline-dot'));
+
+      if (!this.dotRefs.length) {
+        console.warn('No timeline-dot elements found.');
+        return;
+      }
+
+      this.positionDots();
+      this.animateTimeline();
+    });
+  },
+
+  beforeDestroy() {
+    // Kill animation to avoid memory leaks or duplicated animation on route change
+    if (this.timeline) {
+      this.timeline.kill();
+      this.timeline = null;
+    }
   },
 
   methods: {
     positionDots() {
-      // evenly space dots
       const track = this.$el.querySelector('.timeline-track');
+      if (!track) return;
+
       const trackWidth = track.offsetWidth;
 
       this.dotRefs.forEach((dot, index) => {
+        if (!dot) return;
         const left = (index / (this.steps.length - 1)) * 100;
         dot.style.left = `${left}%`;
       });
@@ -28,44 +49,36 @@ export default {
     animateTimeline() {
       const progressBar = this.$refs.progressBar;
       const dots = this.dotRefs;
-
-      console.log('dots:', dots)
       const stepsCount = this.steps.length;
-  
+
+      if (!progressBar || !progressBar.parentElement) {
+        console.warn('Progress bar or its container not found.');
+        return;
+      }
+
       const updateDots = () => {
         const progressWidth = progressBar.offsetWidth;
         const totalWidth = progressBar.parentElement.offsetWidth;
-  
+
         dots.forEach((dot, index) => {
+          if (!dot) return;
+
           const dotPos = (index / (stepsCount - 1)) * totalWidth;
-          const isActive = progressWidth >= dotPos - 10  ; // 1px buffer
-  
+          const isActive = progressWidth >= dotPos - 10;
+
           dot.style.backgroundColor = isActive ? '#f69f33' : '#ffffff';
           dot.style.borderColor = isActive ? '#f69f33' : '#c0c0c0';
-
         });
       };
-  
-      const timeline = gsap.timeline({
+
+      this.timeline = gsap.timeline({
         repeat: -1,
         yoyo: true,
         defaults: { ease: 'none' },
         onUpdate: updateDots,
-        // onComplete: () => {
-        //   // ✅ Ensure last dot is colored when bar completes
-        //   const lastDot = dots[dots.length - 1];
-        //   lastDot.style.backgroundColor = '#006cd0';
-        //   lastDot.style.borderColor = '#006cd0';
-        // },
-        // onReverseComplete: () => {
-        //   // ✅ Ensure first dot is colored on reverse complete
-        //   const firstDot = dots[0];
-        //   firstDot.style.backgroundColor = '#006cd0';
-        //   firstDot.style.borderColor = '#006cd0';
-        // },
       });
-  
-      timeline.to(progressBar, {
+
+      this.timeline.to(progressBar, {
         width: '100%',
         duration: 8,
       });

@@ -56,10 +56,13 @@
 
 .heading {
     font-size: rem(65px);
+    margin-bottom: rem(0px);
 
     @include respond-to('large') {
-        font-size: rem-l(160px);
-        line-height: 1.05em;
+        // font-size: rem-l(160px);
+        margin-bottom: rem(1px);
+        font-size: rem-l(80px);
+        line-height: 1.12em;
         letter-spacing: 0.07em;
     }
 

@@ -59,7 +59,7 @@
     font-size: rem(65px);
 
     @include respond-to('large') {
-        font-size: rem-l(100px);
+        font-size: rem-l(80px);
         line-height: 1.05em;
         letter-spacing: 0.07em;
     }
