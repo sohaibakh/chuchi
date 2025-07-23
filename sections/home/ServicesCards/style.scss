@@ -98,7 +98,7 @@
         height: 60vh;
         // padding: 55px;
         display: flex;
-        // opacity: 0;
+        opacity: 0.5;
         overflow: hidden;
         transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
 
@@ -110,7 +110,7 @@
             // opacity: 0;
             align-items: end;
             transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
-            opacity: 0;
+            opacity: 0.7;
         }
 
         // transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;

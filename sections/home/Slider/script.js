@@ -1,5 +1,6 @@
 import Heading from '@/components/Heading';
 import gsap from 'gsap';
+import sample from '@/assets/images/portfolio-detail/sample.png'
 
 export default {
   name: 'SectionSlider',
@@ -18,6 +19,7 @@ export default {
   
   data() {
     return {
+      sample,
       state: {
         current: 0,
         target: 0,
