@@ -6,20 +6,20 @@
     min-height: 100vh;
     height: auto;
 
+    @include respond-to('small') {
+      align-items: center;
+      padding: 12vh 0;
+      height: auto;
+    }
+
     @include respond-to('large') {
         align-items: center;
+        min-height: 100vh;
+        padding: 19vh 0;
     }
 }
 
-.section__content {
-    padding-bottom: rem(100px);
 
-    @include respond-to('large') {
-      padding-bottom: 19vh;
-      padding-top: 19vh;
-
-    }
-}
 
 .row-title {
     display: flex;

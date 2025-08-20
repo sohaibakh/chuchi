@@ -3,6 +3,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  
+  @include respond-to('small') {
+    padding: 12vh 0;
+    min-height: auto;
+    height: auto;
+  }
+
+  @include respond-to('medium') {
+    min-height: 65vh;
+   }
+
+   @include respond-to('large') {
+    min-height: 100vh;
+    padding: 19vh 0;
+    
+   }
     .row-title {
       display: flex;
       justify-content: center; // form to the right

@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       activeIndex: 0,
-      isStickyPinned: false,
+      isStickyPinned: false,      // toggled by width
+      _bpLarge: 850
     };
   },
 

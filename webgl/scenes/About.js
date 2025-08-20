@@ -439,6 +439,8 @@ export default class About extends component(Scene) {
   
     // ✅ Make sure spinner is added to the container first
     this._container.add(spinner);
+
+    spinner.scale.set(0.7, 0.7, 0.7);
   
     // 🟣 Optional debug sphere (only useful in dev)
     const debugSphere = new Mesh(

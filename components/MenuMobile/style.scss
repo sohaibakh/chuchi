@@ -1,76 +1,57 @@
-
 .menu-mobile {
+    position: fixed;          /* viewport, not parent */
+    inset: 0;                 /* top/right/bottom/left = 0 */
+    z-index: 400;            /* above nav (nav is z-index:100) */
     display: flex;
-
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
     justify-content: center;
     align-items: center;
-
-    margin: auto;
-
-    pointer-events: none;
-}
-
-.background {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background-color: black;
-
+    pointer-events: none;     /* enabled on show() */
+  }
+  
+  .background {
+    position: fixed;          /* also fixed to viewport */
+    inset: 0;
+    background: #000;
     transform: scaleY(0);
-    transform-origin: left bottom;
+    transform-origin: top center; /* open from top */
     will-change: transform;
-}
-
-.list {
+  }
+  
+  /* Content list */
+  .list {
     position: relative;
-
     width: 100%;
-
-    padding-top: rem(50px);
-}
-
-.list-item {
+    padding: calc(env(safe-area-inset-top, 0px) + 50px) 24px
+             calc(env(safe-area-inset-bottom, 0px) + 30px);
+    box-sizing: border-box;
+  }
+  
+  .list-item {
     opacity: 0;
-
-    margin-bottom: rem(20px);
-
+    margin-bottom: 20px;
     text-align: center;
-
-    transform: translate3d(0, 50px, 0);
-    will-change: transform;
-}
-
-.link {
+    transform: translate3d(0, 30px, 0);
+    will-change: transform, opacity;
+  }
+  
+  .link {
     font-family: $font-primary;
     font-weight: 300;
-    font-size: rem(40px);
-    line-height: 149.5%;
+    font-size: clamp(26px, 6vw, 40px);
+    line-height: 1.45;
     letter-spacing: 0.05em;
     color: $color-white;
     text-transform: uppercase;
-    font-style: normal;
-
     text-decoration: none;
-
-    transition: color 0.3s ease-in-out;
-
-    &.nuxt-link-active {
-        color: $color-orange;
-    }
-
+    transition: color 0.25s ease-in-out;
+  
+    &.nuxt-link-active { color: $color-orange; }
+  
     @media (hover: hover) {
-        &:hover {
-            color: $color-orange;
-        }
+      &:hover { color: $color-orange; }
     }
-}
+  }
+  
+  /* RTL */
+  .ar .menu-mobile { direction: rtl; }
+  

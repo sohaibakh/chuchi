@@ -1,70 +1,164 @@
-.timeline-container {
-  width: 100%;
-  max-width: 1000px;
-  height: 50vh;
-  // display: flex;
-  margin-left:auto;
-  margin-right:auto;
-  margin-bottom: rem-l(75px);
-  .step-labels {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 8px;
-    margin-bottom: 40px;
+/* Base section spacing so nothing collides */
+.section--approach {
+  padding-block: 56px;                /* mobile top/bottom */
+  height: auto!important;
 
-    .step-label {
-      flex: 0 0 auto;
-      width: fit-content; // aligns with dot
-      text-align: center;
-      font-size: 26px;
-      color: #fff;
-      font-family: "Akkurat Pro", sans-serif;
-      text-transform: capitalize;
-      position: relative;
-      div {
-        position: absolute;
-        transform: translateX(-50%); // center align with dot
-      }
-    }
+  
+  @include respond-to('small') {
+    padding: 12vh 0;     /* a bit more room at tablet */
   }
 
-  .timeline-track-wrapper {
-    position: relative;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
+  
+  @include respond-to('large') {
+    padding: 19vh 0;     /* a bit more room at tablet */
   }
+}
 
-  .timeline-track {
-    position: relative;
-    width: 100%;
-    height: 8px;
-    background: #e0e0e0;
-    border-radius: 4px;
-  }
+/* Ensure the inner content can extend naturally */
+.section--approach .section__content {
+  min-height: auto;                   /* was 100vh; this caused constraints */
+}
 
-  .timeline-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0%;
-    background: #f69f33;
-    border-radius: 4px;
-    z-index: 1;
-  }
+/* Approach grid */
+.approach-grid {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding-inline: 6%;
+  grid-template-columns: 1fr;
+  align-items: start;
 
-  .timeline-dot {
-    position: absolute;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    background: #ffffff;
-    // border: 3px solid #c0c0c0;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    transition: all 0.3s;
+  /* Reserve extra space at the bottom to account for translateY wave offsets
+     (transforms don’t affect layout height). This spacer pushes the next
+     section down so nothing overlaps. */
+  --approach-spacer: 80px;            /* mobile */
+  padding-bottom: var(--approach-spacer);
+
+  @include respond-to('medium') {
+    grid-template-columns: repeat(3, 1fr);
+    padding-inline: 10%;
+    --approach-spacer: 120px;         /* a bit more room at tablet */
   }
+  @include respond-to('large') {
+    grid-template-columns: repeat(5, 1fr);
+    --approach-spacer: 160px;         /* covers the largest upward offsets */
+  }
+}
+
+/* Cards */
+.approach-card {
+  position: relative;
+  padding-top: 90px;                  /* orb space */
+  color: var(--text-on-dark);
+  text-align: left;
+  transition: transform .3s ease, filter .3s ease;
+  will-change: transform, filter;
+
+  &:hover { transform: translateY(calc(var(--offset, 0px) - 4px)); }
+}
+
+/* Orb */
+.orb-wrap {
+  position: relative;
+  width: 90px; height: 90px;
+  margin: 0 auto 14px;
+  display: grid; place-items: center;
+}
+.orb, .orb-ring { grid-area: 1 / 1; }
+.orb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffd2a1 0%, #f69f33 45%, #de7d00 100%);
+  box-shadow:
+    0 0 12px rgba(246,159,51,.7),
+    0 0 26px rgba(246,159,51,.5),
+    0 0 48px rgba(246,159,51,.35);
+  position: absolute;
+}
+.orb-ring {
+  width: 90px; height: 90px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.4) 0%, rgba(255,255,255,.15) 40%, rgba(255,255,255,0) 65%);
+  filter: blur(1px);
+}
+
+/* Type */
+.step-title {
+  margin: 6px 0 10px;
+  text-align: center;
+  font-family: "Akkurat Pro", sans-serif;
+  font-weight: 800;
+  letter-spacing: .02em;
+  font-size: 26px;
+  color: #fff;
+  @include respond-to('medium') { font-size: 30px; }
+  @include respond-to('large')  { font-size: 32px; }
+}
+
+.step-body {
+  background: linear-gradient(180deg, var(--card-purple-2), var(--card-purple));
+  border-radius: 8px;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 16px;
+    font-family: "Akkurat Pro", sans-serif;
+    @include respond-to('medium') { font-size: 17px; }
+  }
+}
+
+/* No vertical offsets on mobile (stacked) */
+.approach-card { transform: translateY(0); }
+
+/* Wave offsets (only from 900px+) — same look, but we reserved space via --approach-spacer */
+@include respond-to('large') {
+  .approach-card.pos-0 { --offset: -56px; transform: translateY(var(--offset)); }  /* Discover */
+  .approach-card.pos-1 { --offset:  86px; transform: translateY(var(--offset)); }  /* Design */
+  .approach-card.pos-2 { --offset: -26px; transform: translateY(var(--offset)); }  /* Develop */
+  .approach-card.pos-3 { --offset: -78px; transform: translateY(var(--offset)); }  /* Deploy */
+  .approach-card.pos-4 { --offset:  74px; transform: translateY(var(--offset)); }  /* Evaluate */
+}
+
+/* Tablet (≥900 but <1280): slightly lighter offsets */
+@media (min-width: 900px) and (max-width: 1279.98px) {
+  .approach-card.pos-0 { --offset: -46px; transform: translateY(var(--offset)); }
+  .approach-card.pos-1 { --offset:  72px; transform: translateY(var(--offset)); }
+  .approach-card.pos-2 { --offset: -18px; transform: translateY(var(--offset)); }
+  .approach-card.pos-3 { --offset: -64px; transform: translateY(var(--offset)); }
+  .approach-card.pos-4 { --offset:  58px; transform: translateY(var(--offset)); }
+}
+
+
+/* Grid must be relative so the SVG can absolutely fill it */
+.approach-grid {
+  position: relative;
+}
+
+/* The connector sits behind the cards/orbs */
+.approach-connector {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: none; /* hidden by default, shown on large via JS */
+}
+
+/* Ensure cards/orbs are above the line */
+.approach-card { position: relative; z-index: 1; }
+
+/* Stroke style */
+.connector-path {
+  fill: none;
+  stroke: url(#approachStroke); /* falls back to solid in old browsers if gradient missing */
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(246,159,51,0.45));
+}
+
+/* Optional: on very high-DPI wide screens, thicken slightly */
+@media (min-width: 1280px) {
+  .connector-path { stroke-width: 3.5; }
 }

@@ -44,7 +44,7 @@ export default {
         { logo: one, link: 'https://example.com' },
         { logo: two, link: '' },
         { logo: three, link: 'https://another.com' },
-        { logo: four, link: 'https://another.com' },
+        // { logo: four, link: 'https://another.com' },
         { logo: five, link: 'https://another.com' },
         { logo: six, link: 'https://another.com' },
         { logo: seven, link: 'https://another.com' },

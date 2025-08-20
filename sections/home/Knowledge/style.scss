@@ -8,12 +8,22 @@
 
     width: 100%;
 
-    height: 100vh;
+    // height: 100vh;
 
     // padding-bottom: 15vh;
+    
+    @include respond-to('large') {
+        // padding-bottom: 19vh;
+        height: auto;
+        padding: 12vh 0;
+    }
 
     @include respond-to('large') {
-        padding-bottom: 19vh;
+        // padding-bottom: 19vh;
+        min-height: 100vh;
+
+        height: auto;
+        padding: 19vh 0;
     }
 
     .ar & {

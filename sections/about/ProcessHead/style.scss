@@ -1,63 +1,56 @@
-
 .section {
     display: flex;
-
     align-items: center;
-    height: 50vh!important;
-    .ar & {
-        direction: rtl;
-    }
-}
-
-.section__content {
+    height: auto !important;
+  
+    .ar & { direction: rtl; }
+  }
+  
+  .section__content {
     @include respond-to('large') {
-        margin-top: rem-l(75px);
+      margin-top: rem-l(75px);
     }
-}
-
-.row-title {
+  }
+  
+  .row-title {
     .column {
-        width: 100%;
-
-        padding-right: $padding-mobile;
-        padding-left: $padding-mobile;
-
-        .gsap-lines {
-            text-align: center!important;
-        }
-        @include respond-to('medium') {
-            width: 65%;
-        }
-
-        @include respond-to('large') {
-            width: 65%;
-
-            margin-left: auto;
-            margin-right: auto;
-            padding-right: 0;
-            padding-left: 0;
-
-            font-weight: normal;
-
-            // .ar & {
-            //     margin-right: 52%;
-            // }
-        }
+      width: 100%;
+      padding-right: $padding-mobile;
+      padding-left: $padding-mobile;
+  
+      .gsap-lines { text-align: center !important; }
+  
+      @include respond-to('medium') {
+        width: 65%;
+      }
+  
+      @include respond-to('large') {
+        width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 0;
+        padding-left: 0;
+        font-weight: normal;
+        // .ar & { margin-right: 52%; }
+      }
     }
-}
-
-.heading {
+  }
+  
+  /* Base heading style used by both lines */
+  .heading {
     font-weight: 300;
-    // font-size: rem(70px);
+    font-size: rem(70px);
     line-height: 1.03em;
     letter-spacing: 0.05em;
-    text-align:center;
-    font-size: rem-l(65px);
-    
+    text-align: center;
+    * {
+      text-align: center;
+    }
+
     @include respond-to('large') {
         // font-weight: 250;
         font-size: rem-l(80px);
-        line-height: 1.05em;
+        line-height: 1.12em;
         letter-spacing: 0.05em;
     }
 
@@ -78,3 +71,51 @@
         }
     }
 }
+  
+  /* -------------------------
+     Modifiers for the 2 lines
+     ------------------------- */
+  
+  /* Top line: OUR APPROACH (orange) */
+  .heading--orange {
+    color: $color-orange;
+    // font-weight: 700; /* slightly stronger */
+    text-transform: uppercase;
+  }
+  
+  /* Second line: FROM THOUGHT TO IMPACT (white, smaller) */
+  .heading--sub {
+    font-weight: 300;
+    font-size: rem(70px);
+    line-height: 1.03em;
+    letter-spacing: 0.05em;
+    text-align: center;
+    * {
+      text-align: center;
+    }
+
+    @include respond-to('large') {
+        // font-weight: 250;
+        font-size: rem-l(80px);
+        line-height: 1.12em;
+        letter-spacing: 0.05em;
+    }
+
+    ::v-deep > .gsap-lines,
+    ::v-deep > .lines {
+        &:nth-child(3),
+        &:nth-child(4) {
+            color: $color-orange;
+        }
+    }
+
+    .ar & {
+        font-size: rem(60px);
+        letter-spacing: inherit;
+
+        @include respond-to('large') {
+            font-size: rem-l(120px);
+        }
+    }
+}
+  

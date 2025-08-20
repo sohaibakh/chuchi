@@ -1,89 +1,166 @@
 .contact-form {
-  max-width: 600px;
   width: 100%;
-  margin: 2rem auto; // left margin ensures left alignment
-  padding: 2rem;
-  background-color: transparent;
-  // border-radius: 8px;
-  // box-shadow: 0 0 10px rgba(242, 175, 113, 0.5);
+  max-width: 600px;
+  margin: 1.25rem auto;
+  padding: 1.25rem;
+  background: transparent;
 
+  @include respond-to('medium') {
+    max-width: 680px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+  }
+
+  @include respond-to('small') {
+    width: 78%;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+  }
+
+  @include respond-to('large') {
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 2rem 2rem 1.5rem;
+  }
+
+  /* Title (if you re-enable it) */
   .form-title {
     text-align: left;
-    font-size: 3.125rem;
-    letter-spacing: 0.017em;
     color: #fff;
     text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    text-align: left;
-    font-weight: 300;
-    
     font-family: "Formula Condensed", sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.017em;
+    margin: 0 0 1rem 0;
+    font-size: clamp(28px, 5vw, 50px);
+    line-height: 1.05;
+  }
+
+  /* Base form layout: stack on small/medium, grid on large */
+  form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @include respond-to('medium') {
+      gap: 18px;
+    }
+
+    @include respond-to('large') {
+      /* two columns only for the first row (name+email) */
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 22px;
+      row-gap: 18px;
+    }
   }
 
   .form-group {
-    margin-bottom: 1.2rem;
+    margin: 0; /* grid handles spacing */
 
     label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       color: #fff;
       text-align: left;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* Map items to grid columns without changing HTML */
+    @include respond-to('large') {
+      /* 1: Name, 2: Email, 3: Message */
+      &:nth-of-type(1) { grid-column: 1; }
+      &:nth-of-type(2) { grid-column: 2; }
+      &:nth-of-type(3) { grid-column: 1 / -1; } /* textarea spans both */
     }
   }
 
   input,
   textarea {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.85rem 0;
     font-family: 'Akkurat Pro', sans-serif;
-
-    // border: 1px solid #444;
-    border-top: 0px;
-    border-bottom: 1px solid #fff;
-    border-left: 0px;
-    border-right: 0px;
-    border-radius: 0px;
-    background-color: transparent;
     color: #fff;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
+    font-size: clamp(16px, 1.6vw, 18px);
+    line-height: 1.4;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.75);
+    border-radius: 0;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 
-  input:focus,
-  textarea:focus {
-    border-color: #f2af71;
-    outline: none;
+    /* Bigger hit target on mobile */
+    @include respond-to('small') {
+      min-height: 44px;
+    }
+
+    &::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom-color: #f2af71;
+      box-shadow: 0 1px 0 0 #f2af71;
+      caret-color: #f2af71;
+    }
+
+    /* error state helper (if you add .is-invalid) */
+    &.is-invalid {
+      border-bottom-color: #ff6961;
+      box-shadow: 0 1px 0 0 #ff6961;
+    }
   }
 
   textarea {
     resize: vertical;
     min-height: 150px;
+
+    @include respond-to('medium') { min-height: 180px; }
+    @include respond-to('large')  { min-height: 200px; }
   }
 
+  /* Autofill (Chrome/Safari) */
+  input:-webkit-autofill,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    transition: background-color 9999s ease-in-out 0s;
+    box-shadow: 0 0 0px 1000px transparent inset;
+  }
+
+  /* Actions */
   .form-actions {
-    margin-top: 1rem;
-    text-align: left; // left-aligned actions
+    margin-top: 0.5rem;
+    text-align: left;
+
+    @include respond-to('large') {
+      grid-column: 1 / 2; /* keep CTA aligned under Name field; change to 1 / -1 to span */
+    }
+
+    .button-cta {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;           /* full width on small */
+      max-width: none;
+
+      @include respond-to('medium') {
+        width: auto;         /* natural width on tablet/desktop */
+      }
+    }
   }
 
-  .form-actions .button-cta {
-    text-align: center;
-  }
-
-  /* We assume that the global styles for .btn and .btn-primary exist.
-     Therefore, we are not redefining them here. */
-
+  /* Messages */
   .success-message,
   .error-message {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     text-align: left;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.95rem;
+
+    @include respond-to('large') { grid-column: 1 / -1; }
   }
 
-  .success-message {
-    color: #00ff00;
-  }
-
-  .error-message {
-    color: #ff0000;
-  }
+  .success-message { color: #2cff8a; }
+  .error-message   { color: #ff6961; }
 }

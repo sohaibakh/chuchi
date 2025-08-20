@@ -1,22 +1,20 @@
 import Heading from '@/components/Heading';
 import gsap from 'gsap';
-import sample from '@/assets/images/portfolio-detail/sample.png'
+import sample from '@/assets/images/portfolio-detail/sample.png';
 
 export default {
   name: 'SectionSlider',
 
-  components: {
-    Heading,
-  },
+  components: { Heading },
 
   props: {
     slides: {
       type: Array,
       required: true,
       default: () => [],
-    }
+    },
   },
-  
+
   data() {
     return {
       sample,
@@ -30,16 +28,15 @@ export default {
         wrapper: null,
         container: null,
         animationFrame: null,
-      }
+        containerCenter: 0,
+      },
     };
   },
-  
 
   mounted() {
     this._setupIntersectionObserver();
-  
+
     this.$nextTick(() => {
-      // Use a mutation observer or polling until swiper-wrapper exists
       const checkWrapper = () => {
         const wrapper = this.$el.querySelector('.swiper-wrapper');
         if (wrapper && this.slides.length > 0) {
@@ -50,89 +47,66 @@ export default {
       };
       checkWrapper();
     });
-  }
-  ,
+  },
+
+  beforeDestroy() {
+    if (this.state?.animationFrame) cancelAnimationFrame(this.state.animationFrame);
+    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
+    if (this._io) this._io.disconnect();
+  },
 
   methods: {
     _setupIntersectionObserver() {
-      this._io = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          this._io.disconnect();
-          this.backgroundShow(() => {}, 1);
-        }
-      }, { threshold: 0.35 });
-
+      this._io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            this._io.disconnect();
+            this.backgroundShow(() => {}, 1);
+          }
+        },
+        { threshold: 0.35 }
+      );
       this._io.observe(this.$el);
     },
 
-    backgroundShow(done, direction) {
+    backgroundShow(done) {
       const tl = gsap.timeline({ onComplete: done });
-      if (this.$refs.heading?.show) {
-        tl.add(this.$refs.heading.show(), 0);
-      }
+      if (this.$refs.heading?.show) tl.add(this.$refs.heading.show(), 0);
       if (this.$refs.slides) {
         tl.to(
           this.$refs.slides,
-          {
-            y: 0,
-            opacity: 1,
-            // stagger: 0.5,
-            duration: 1.2,
-            ease: 'power2.out',
-         
-          },
-          0.5 // Start just after heading
+          { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' },
+          0.4
         );
       }
-
       return tl;
     },
 
     backgroundHide(done) {
       const tl = gsap.timeline({ onComplete: done });
-    
-      // Hide heading via its method
-      if (this.$refs.heading?.hide) {
-        tl.add(this.$refs.heading.hide(), 0);
-      }
-    
-      // Immediately hide all slides
-      if (this.$refs.slides) {
-        gsap.set(this.$refs.slides, {
-          opacity: 0,
-          y: 50
-        });
-      }
-    
+      if (this.$refs.heading?.hide) tl.add(this.$refs.heading.hide(), 0);
+      if (this.$refs.slides) gsap.set(this.$refs.slides, { opacity: 0, y: 50 });
       return tl;
-    }
-    ,
+    },
 
     _initCenteredSlider() {
       const wrapper = this.$el.querySelector('.swiper-wrapper');
       const container = this.$el.querySelector('.swiper-container');
-      const slides = this.$el.querySelectorAll('.swiper-slide');
 
-      const slideWidth = slides[0].offsetWidth + 20; 
+      Object.assign(this.state, { wrapper, container });
 
-      Object.assign(this.state, {
-        wrapper,
-        container,
-        slideWidth
-      });
-
+      this._measure();
       this._centerSlide(this.state.currentIndex);
 
-      const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
-
+      const lerp = (a, b, t) => (1 - t) * a + t * b;
       const render = () => {
-        this.state.current = lerp(this.state.current, this.state.target, 0.4);
+        this.state.current = lerp(this.state.current, this.state.target, 0.18);
         wrapper.style.transform = `translateX(${-this.state.current}px)`;
         this.state.animationFrame = requestAnimationFrame(render);
       };
       render();
 
-      // Dragging
+      // Mouse drag
       container.addEventListener('mousedown', (e) => {
         e.preventDefault();
         this.state.isDragging = true;
@@ -161,7 +135,7 @@ export default {
         this._centerNearestSlide();
       });
 
-      // Touch support
+      // Touch drag
       container.addEventListener('touchstart', (e) => {
         this.state.isDragging = true;
         this.state.startX = e.touches[0].clientX;
@@ -182,7 +156,7 @@ export default {
 
       // Arrows
       this.$el.querySelector('.swiper-button-next').addEventListener('click', () => {
-        this.state.currentIndex = Math.min(this.slides.length - 2, this.state.currentIndex + 1);
+        this.state.currentIndex = Math.min(this.slides.length - 1, this.state.currentIndex + 1);
         this._centerSlide(this.state.currentIndex);
       });
 
@@ -190,42 +164,62 @@ export default {
         this.state.currentIndex = Math.max(0, this.state.currentIndex - 1);
         this._centerSlide(this.state.currentIndex);
       });
+
+      // Recalculate on resize
+      this._resizeHandler = () => {
+        this._measure();
+        this._centerSlide(this.state.currentIndex);
+      };
+      window.addEventListener('resize', this._resizeHandler);
     },
 
-    // _centerSlide(index) {
-    //   const containerCenter = this.state.container.offsetWidth / 2;
-    //   const groupWidth = this.state.slideWidth * 2;
-    //   const offset = index * this.state.slideWidth;
-    //   this.state.target = offset - containerCenter + groupWidth / 2;
-
-    //   const slides = this.state.wrapper.querySelectorAll('.swiper-slide');
-    //   slides.forEach((el, i) => {
-    //     el.classList.toggle('active', i === index || i === index + 1);
-    //   });
-    // },
-
-    _centerSlide(index) {
-      const offset = index * this.state.slideWidth;
-      this.state.target = offset;
+    _measure() {
+      const wrapper   = this.state.wrapper || this.$el.querySelector('.swiper-wrapper');
+      const container = this.state.container || this.$el.querySelector('.swiper-container');
+      const slides    = this.$el.querySelectorAll('.swiper-slide');
+      if (!slides.length || !wrapper || !container) return;
     
-      const slides = this.state.wrapper.querySelectorAll('.swiper-slide');
-      slides.forEach((el, i) => {
-        el.classList.toggle('active', i === index || index + 1);
-      });
+      // container center for centering math
+      this.state.containerCenter = container.clientWidth / 2;
     },
-
+    
+    _setActive(index) {
+      const slides = this.state.wrapper?.querySelectorAll('.swiper-slide') || [];
+      slides.forEach((el, i) => el.classList.toggle('active', i === index));
+    },
+    
+    _centerSlide(index) {
+      const slides = this.$el.querySelectorAll('.swiper-slide');
+      const container = this.state.container;
+      if (!slides.length || !container) return;
+    
+      const slideEl = slides[index];
+      // center of selected slide relative to wrapper
+      const slideCenter = slideEl.offsetLeft + (slideEl.offsetWidth / 2);
+      // scroll so slide center aligns with container center
+      this.state.target = Math.max(0, slideCenter - this.state.containerCenter);
+    
+      this._setActive(index);
+    },
+    
     _centerNearestSlide() {
-      const estimatedIndex = Math.round(this.state.current / this.state.slideWidth);
-      this.state.currentIndex = Math.max(0, Math.min(this.slides.length - 1, estimatedIndex));
-      this._centerSlide(this.state.currentIndex);
+      const slides = this.$el.querySelectorAll('.swiper-slide');
+      if (!slides.length) return;
+    
+      // estimate index by comparing current scroll to each slide center
+      let nearest = 0;
+      let bestDist = Infinity;
+      const currentCenter = this.state.current + this.state.containerCenter;
+    
+      slides.forEach((el, i) => {
+        const center = el.offsetLeft + el.offsetWidth / 2;
+        const d = Math.abs(center - currentCenter);
+        if (d < bestDist) { bestDist = d; nearest = i; }
+      });
+    
+      this.state.currentIndex = nearest;
+      this._centerSlide(nearest);
     }
     
-
-    // _centerNearestSlide() {
-    //   const containerCenter = this.state.container.offsetWidth / 2;
-    //   const estimatedIndex = Math.round((this.state.current + containerCenter - this.state.slideWidth) / this.state.slideWidth);
-    //   this.state.currentIndex = Math.max(0, Math.min(this.slides.length - 2, estimatedIndex));
-    //   this._centerSlide(this.state.currentIndex);
-    // }
-  }
+  },
 };

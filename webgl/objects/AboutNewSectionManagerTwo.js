@@ -117,7 +117,7 @@ export default {
   
     const tl = gsap.timeline();
     tl.to(this.position, 
-      { x: this._locale === 'en' ? -1.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
+      { x: this._locale === 'en' ? -3.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
   
     tl.to(this._camera.position, {
       z: 9.34, y: 1.24,
@@ -126,159 +126,34 @@ export default {
     }, 0);
   },
 
-  _showAboutInfo2() {
-    if (this._lastSection === 'section3') return;
-    this._lastSection = 'section3';
-    // const wave = this._components?.waves;
-
-    this._hideAllStepTexts?.();
-
-    const tl = gsap.timeline();
-    tl.to(this.position, { x: this._locale === 'en' ? -3.45 : 5.6, duration: 2, ease: 'power2.inOut' });
-
-    tl.to(this._camera.position, {
-      z: 4.63, y: 20,
-      duration: 2, ease: 'power2.inOut',
-      onUpdate: () => this._camera.lookAt(this._cameraTarget)
-    }, 0);
-
-    tl.to(this._components.spinner._sparks, { alpha: 1, duration: 1.5 }, 0);
-
-    // wave.setOpacity(0)
-
-  },
-
-  _showProOne() {
-      this._lastSection = 'ProOne'
-      // const wave = this._components?.waves;
-      const tl = gsap.timeline();
-
-      tl.to(this.position, 
-        { x: this._locale === 'en' ? -1.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
-
-      tl.to(this._camera.position, {
-        z: 9.34, y: 1.24,
-        duration: 1.5, ease: 'power2.inOut',
-        onUpdate: () => this._camera.lookAt(this._cameraTarget)
-      }, 0);
-
-      const mat = this._components?.spinner?._material;
-    if (mat) {
-      tl.to(mat.color, {
-        r: 1.0,
-        g: 0.84,
-        b: 0.0,
-        duration: 1.5,
-        ease: 'power2.inOut'
-      }, 0);
-    }
-
-      // wave.setOpacity(0.25)
-
-  },
-
-  _showProTwo() {
-    this._lastSection = 'ProTwo';
-    const tl = gsap.timeline();
-  
-    tl.to(this.position, {
-      x: this._locale === 'en' ? 1.38 : 5.6,
-      duration: 1.5,
-      ease: 'power2.inOut'
-    });
-  
-    const mat = this._components?.spinner?._material;
-    if (mat) {
-      tl.to(mat.color, {
-        r: 0.8,
-        g: 0.5,
-        b: 0.4,
-        duration: 1.5,
-        ease: 'power2.inOut'
-      }, 0);
-    }
-  
-    return tl;
-  }
-  ,
-
-  _showProThree() {
-    this._lastSection = 'ProThree';
-    const tl = gsap.timeline();
-  
-    tl.to(this.position, {
-      x: this._locale === 'en' ? -1.38 : 4.5,
-      duration: 1.5,
-      ease: 'power2.inOut'
-    });
-  
-    tl.to(this._camera.position, {
-      z: 9.34,
-      y: 1.24,
-      duration: 1.5,
-      ease: 'power2.inOut',
-      onUpdate: () => this._camera.lookAt(this._cameraTarget)
-    }, 0);
-  
-    const mat = this._components?.spinner?._material;
-    if (mat) {
-      tl.to(mat.color, {
-        r: 0.65,
-        g: 0.3,
-        b: 0.6,
-        duration: 1.5,
-        ease: 'power2.inOut'
-      }, 0);
-    }
-  
-    return tl;
-  }
-  ,
-
-  _showProFour() {
-    this._lastSection = 'ProFour';
-    const tl = gsap.timeline();
-  
-    tl.to(this.position, {
-      x: this._locale === 'en' ? 1.38 : 5.6,
-      duration: 1.5,
-      ease: 'power2.inOut'
-    });
-  
-    const mat = this._components?.spinner?._material;
-    if (mat) {
-      tl.to(mat.color, {
-        r: 0.5,
-        g: 0.0,
-        b: 0.5,
-        duration: 1.5,
-        ease: 'power2.inOut'
-      }, 0);
-    }
-  
-    return tl;
-  }
-  ,
 
   
 _showSectionAboutPartners() {
-  this._lastSection = 'SectionAboutPartners';
+  this._lastSection = 'SectionProcessHead';
   const tl = gsap.timeline();
 
   tl.to(this.position, 
     { x: this._locale === 'en' ? -15.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
   
     return tl;
-}
+},
 
-,
+_showSectionIndustries() {
+  this._lastSection = 'SectionIndustries';
+  const tl = gsap.timeline();
+
+  tl.to(this.position, 
+    { x: this._locale === 'en' ? -15.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
+  
+    return tl;
+},
 
   _showAboutContact() {
     this._lastSection = 'AboutContact';
     const tl = gsap.timeline();
 
   tl.to(this.position, 
-    { x: this._locale === 'en' ? -1.5 : 5.6, duration: 1.5, ease: 'power2.inOut' });
+    { x: this._locale === 'en' ? -3.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
   
     return tl;
   }

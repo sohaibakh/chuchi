@@ -11,6 +11,11 @@
 
     padding-bottom: 15vh;
 
+    @include respond-to('small') {
+        height: auto;
+        padding-bottom: 12vh;
+        padding-top: 12vh;
+     }
     @include respond-to('large') {
         padding-bottom: 19vh;
         padding-top: 19vh;
@@ -91,14 +96,22 @@
     display: flex;
     gap: 60px;
     justify-content: space-between;
+    @include respond-to('small') {
+        flex-direction: column;
+       gap: 30px;
 
+     }
+    @include respond-to('large') {
+       flex-direction: row;
+       gap: 60px;
+
+    }
     .card {
         width: 100%;
         position: relative;
         height: 60vh;
         // padding: 55px;
         display: flex;
-        opacity: 0.5;
         overflow: hidden;
         transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
 
@@ -110,7 +123,13 @@
             // opacity: 0;
             align-items: end;
             transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
-            opacity: 0.7;
+
+            @include respond-to('small') {
+                padding: 25px;
+             }
+            // opacity: 0.7;
+
+    
         }
 
         // transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
@@ -118,8 +137,8 @@
             img {
                 transform: translate(-50%, -50%) scale(1.08);
                 transition: all 0.5s cubic-bezier(0.215, 0.610, 0.355, 1) ;
-
-            }
+                opacity: 0.85;
+            }   
         }
         p {
             position: relative;
@@ -137,6 +156,7 @@
             z-index: 0;
             object-fit: cover;
             transform: translate(-50%, -50%) scale(1);
+            opacity: 0.65;
 
             
         }

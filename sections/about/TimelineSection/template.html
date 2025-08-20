@@ -1,31 +1,35 @@
-
-<section class="section">
+<section class="section section--approach">
   <div class="section__content">
-    
-    <div class="timeline-container">
-      <!-- Labels -->
-      <div class="step-labels">
-        <div class="step-label" v-for="(step, index) in steps" :key="index">
-          <div>
-            {{ step }}
-          </div>
+    <div class="approach-grid" ref="grid">
+      <!-- Connector SVG (behind the cards) -->
+      <svg class="approach-connector" ref="connectorSvg" aria-hidden="true">
+        <defs>
+          <!-- optional: soft gradient stroke -->
+          <linearGradient id="approachStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"  stop-color="#f69f33" />
+            <stop offset="100%" stop-color="#de7d00" />
+          </linearGradient>
+        </defs>
+        <path class="connector-path" ref="connectorPath" />
+      </svg>
+
+      <!-- Your cards -->
+      <article
+        v-for="(step, i) in stepsData"
+        :key="i"
+        class="approach-card"
+        :class="['pos-' + i, { 'is-active': activeIndex === i }]"
+        ref="cards"
+      >
+        <div class="orb-wrap">
+          <span class="orb"></span>
+          <span class="orb-ring"></span>
         </div>
-      </div>
-    
-      <!-- Timeline (bar + dots) -->
-      <div class="timeline-track-wrapper">
-        <div class="timeline-track">
-          <div class="timeline-fill" ref="progressBar"></div>
-          <div class="timeline-dot"
-               v-for="(step, index) in steps"
-               :key="'dot-' + index"
-               :ref="el => dotRefs[index] = el"
-          ></div>
+        <h3 class="step-title">{{ step.title }}</h3>
+        <div class="step-body">
+          <p v-html="step.description"></p>
         </div>
-      </div>
+      </article>
     </div>
-    
-    
   </div>
 </section>
-
