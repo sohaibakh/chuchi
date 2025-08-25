@@ -6,8 +6,9 @@ export default {
     this.items = [
       this.$refs.listItem1,
       this.$refs.listItem2,
-      // this.$refs.listItem3, // commented out in markup
-      this.$refs.listItem4
+      this.$refs.listItem3, // commented out in markup
+      this.$refs.listItem4,
+      this.$refs.listItem5
     ].filter(Boolean);
 
     // Move the whole menu node to <body> so it’s not inside the transformed .navigation
