@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import SectionAbout from '@/components/SectionAbout';
+import sample from '@/assets/images/about/approach.jpeg'
 
 export default {
   name: 'TimelineSection', // required for dynamic method matching
@@ -7,6 +8,7 @@ export default {
 
   data() {
     return {
+      sample,
       activeIndex: -1,
       stepsData: [
         {

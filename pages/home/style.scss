@@ -97,6 +97,39 @@
             }
         }
 
+        .section-partners {
+            ::v-deep .row-title {
+                margin-bottom: rem-l(20px);
+            }
+
+            ::v-deep .heading {
+                font-size: rem-l(80px);
+            }
+        }
+
+        .section-slider-main {
+            ::v-deep .row-title {
+                margin-bottom: rem-l(20px);
+            }
+
+            ::v-deep .heading {
+                font-size: rem-l(80px);
+            }
+            .heading {
+                font-size: rem-l(80px);
+            }
+        }
+
+        .section-form{
+            ::v-deep .row-title {
+                margin-bottom: rem-l(20px);
+            }
+
+            ::v-deep .heading {
+                font-size: rem-l(80px);
+            }
+        }
+
         .section-immersion {
             ::v-deep .row-title {
                 margin-bottom: rem-l(20px);

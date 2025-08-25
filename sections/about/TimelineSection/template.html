@@ -1,10 +1,13 @@
 <section class="section section--approach">
   <div class="section__content">
-    <div class="approach-grid" ref="grid">
-      <!-- Connector SVG (behind the cards) -->
+    <div class="section__content-img">
+      <img :src="sample" alt="">
+    </div>
+    <!-- <div class="approach-grid" ref="grid">
+ 
       <svg class="approach-connector" ref="connectorSvg" aria-hidden="true">
         <defs>
-          <!-- optional: soft gradient stroke -->
+
           <linearGradient id="approachStroke" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%"  stop-color="#f69f33" />
             <stop offset="100%" stop-color="#de7d00" />
@@ -13,7 +16,7 @@
         <path class="connector-path" ref="connectorPath" />
       </svg>
 
-      <!-- Your cards -->
+
       <article
         v-for="(step, i) in stepsData"
         :key="i"
@@ -30,6 +33,6 @@
           <p v-html="step.description"></p>
         </div>
       </article>
-    </div>
+    </div> -->
   </div>
 </section>

@@ -73,6 +73,7 @@
       flex: 0 0 auto;
       width: 88vw;            /* 1 per view on mobile */
       opacity: 0.5;
+      // margin: 0 15px;
       transition: transform 0.35s ease, opacity 0.35s ease;
 
       &.active { opacity: 0.95; }

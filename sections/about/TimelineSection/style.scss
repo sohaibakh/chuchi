@@ -3,6 +3,12 @@
   padding-block: 56px;                /* mobile top/bottom */
   height: auto!important;
 
+  img {
+    margin: auto;
+    width: 100%;
+    opacity: 0.6;
+  }
+
   
   @include respond-to('small') {
     padding: 12vh 0;     /* a bit more room at tablet */
