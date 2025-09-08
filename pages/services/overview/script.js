@@ -34,7 +34,14 @@ export default {
     return {
       isReady: false,
       texturesReady: false,
+      lang: this.$i18n.locale
     };
+  },
+
+  watch: {
+      '$i18n.locale'(val) {
+        this.lang = val; // keep the :class binding in sync
+      }
   },
 
   async created() {

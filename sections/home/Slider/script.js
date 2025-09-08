@@ -4,7 +4,6 @@ import sample from '@/assets/images/portfolio-detail/sample.png';
 
 export default {
   name: 'SectionSlider',
-
   components: { Heading },
 
   props: {
@@ -31,6 +30,21 @@ export default {
         containerCenter: 0,
       },
     };
+  },
+
+  computed: {
+    // Detect Arabic/RTL — mirrors the previous section’s logic
+    isArabic() {
+      return (
+        (this.$i18n && this.$i18n.locale === 'ar') ||
+        (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
+        (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
+      );
+    },
+    // Heading text only
+    headingText() {
+      return this.isArabic ? 'المشاريع' : 'Projects';
+    },
   },
 
   mounted() {
@@ -73,11 +87,7 @@ export default {
       const tl = gsap.timeline({ onComplete: done });
       if (this.$refs.heading?.show) tl.add(this.$refs.heading.show(), 0);
       if (this.$refs.slides) {
-        tl.to(
-          this.$refs.slides,
-          { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' },
-          0.4
-        );
+        tl.to(this.$refs.slides, { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' }, 0.4);
       }
       return tl;
     },
@@ -178,48 +188,42 @@ export default {
       const container = this.state.container || this.$el.querySelector('.swiper-container');
       const slides    = this.$el.querySelectorAll('.swiper-slide');
       if (!slides.length || !wrapper || !container) return;
-    
-      // container center for centering math
       this.state.containerCenter = container.clientWidth / 2;
     },
-    
+
     _setActive(index) {
       const slides = this.state.wrapper?.querySelectorAll('.swiper-slide') || [];
       slides.forEach((el, i) => el.classList.toggle('active', i === index));
     },
-    
+
     _centerSlide(index) {
       const slides = this.$el.querySelectorAll('.swiper-slide');
       const container = this.state.container;
       if (!slides.length || !container) return;
-    
+
       const slideEl = slides[index];
-      // center of selected slide relative to wrapper
       const slideCenter = slideEl.offsetLeft + (slideEl.offsetWidth / 2);
-      // scroll so slide center aligns with container center
       this.state.target = Math.max(0, slideCenter - this.state.containerCenter);
-    
+
       this._setActive(index);
     },
-    
+
     _centerNearestSlide() {
       const slides = this.$el.querySelectorAll('.swiper-slide');
       if (!slides.length) return;
-    
-      // estimate index by comparing current scroll to each slide center
+
       let nearest = 0;
       let bestDist = Infinity;
       const currentCenter = this.state.current + this.state.containerCenter;
-    
+
       slides.forEach((el, i) => {
         const center = el.offsetLeft + el.offsetWidth / 2;
         const d = Math.abs(center - currentCenter);
         if (d < bestDist) { bestDist = d; nearest = i; }
       });
-    
+
       this.state.currentIndex = nearest;
       this._centerSlide(nearest);
-    }
-    
+    },
   },
 };

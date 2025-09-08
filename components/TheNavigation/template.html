@@ -3,25 +3,35 @@
     <!-- Main -->
     <ul class="main" ref="main">
         <li>
-            <nuxt-link :to="localePath('about')" class="button-main">{{ $t('global.navigation.about') }}</nuxt-link>
+          <nuxt-link :to="localePath('about')" class="button-main">
+            {{ $t('global.navigation.about') }}
+          </nuxt-link>
         </li>
-        <!-- <li>
-            <nuxt-link :to="localePath('experiences')" class="button-main">{{ $t('global.navigation.work') }}</nuxt-link>
-        </li> -->
+      
         <li>
-            <nuxt-link :to="localePath('experiences')" class="button-main">Projects</nuxt-link>
+          <nuxt-link :to="localePath('experiences')" class="button-main">
+            {{ $t('global.navigation.projects') }}   <!-- was: Projects -->
+          </nuxt-link>
+        </li>
+      
+        <li>
+          <nuxt-link :to="localePath('services')" class="button-main">
+            {{ $t('global.navigation.services') }}   <!-- was: Services -->
+          </nuxt-link>
+        </li>
+      
+        <li>
+          <nuxt-link :to="localePath('news')" class="button-main">
+            {{ $t('global.navigation.news') }}
+          </nuxt-link>
         </li>
         <li>
-            <nuxt-link :to="localePath('services')" class="button-main">Services</nuxt-link>
+          <nuxt-link :to="localePath('contact')" class="button-main">
+            {{ $t('global.navigation.contact') }}
+          </nuxt-link>
         </li>
-        <li>
-            <nuxt-link :to="localePath('news')" class="button-main">{{ $t('global.navigation.news') }}</nuxt-link>
-        </li>
-        <li>
-            <nuxt-link :to="localePath('contact')" class="button-main">{{ $t('global.navigation.contact') }}</nuxt-link>
-        </li>
-    </ul>
-
+      </ul>
+      
     <!-- Menu Mobile -->
     <MenuMobile class="menu-mobile" ref="menuMobile" />
 
@@ -31,7 +41,11 @@
     </nuxt-link>
 
     <!-- Language switcher -->
-    <LanguageSwitcher class="button-language-switcher" ref="langSwitcher" />
+    <!-- <LanguageSwitcher class="button-language-switcher" ref="langSwitcher" /> -->
+    <LanguageSwitcher
+      class="button-language-switcher"
+      @switch-language="switchLanguageChangeHandler"
+    />
 
     <!-- Button hambuger (mobile) -->
     <ButtonHamburger class="button-hamburger" ref="buttonHamburger" />

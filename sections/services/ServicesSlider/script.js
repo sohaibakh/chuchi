@@ -45,7 +45,9 @@ export default {
         this.activeIndex = null;
         this.touchStartMousePosition = { x: 0, y: 0 };
         this.allowDrag = true;
-        this.direction = this.$i18n.locale === 'en' ? 1 : -1;
+        // this.direction = this.$i18n.locale === 'en' ? 1 : -1;
+        const isRTL = this.$i18n?.locale === 'ar' || document?.dir === 'rtl';
+        this.direction = isRTL ? -1 : 1;
         
         // if (this.$root.webglApp) {
         //     this.scene = this.$root.webglApp.getScene('portfolio');
@@ -78,10 +80,15 @@ export default {
         this.$nextTick(() => {
           requestAnimationFrame(waitForSceneAndDOM);
         });
-      }
-      
-      
-      ,
+      },
+
+      watch: {
+          '$i18n.locale'(val) {
+            const isRTL = val === 'ar' || document?.dir === 'rtl';
+            this.direction = isRTL ? -1 : 1;
+            this.updateItems(); // rebuild slides with correct direction
+          }
+        },
       
 
     beforeDestroy() {
@@ -303,6 +310,7 @@ export default {
 
             this.setActiveItem(0);
             this.scene.resetCarouselPosition(0);
+            // this.scene.resetCarouselPosition(0 * this.direction);
         },
 
         updateTargetPosition() {
@@ -337,6 +345,7 @@ export default {
             if (!this.scene) return;
 
             this.scene.updateCarouselPosition(x);
+            // this.scene.updateCarouselPosition(x * this.direction);
         },
 
         transform(elements, x) {
@@ -373,62 +382,74 @@ export default {
             if (index === null || index === undefined || isNaN(index)) return;
             if (this.activeIndex === index) return;
           
-            // 🔒 Defensive check for titles array
-            if (!this.titles || !this.titles[index]) {
-              console.warn(`⛔ this.titles[${index}] is missing`);
-              return;
+            // --- make the CSS "filled" state work immediately ---
+            for (let i = 0; i < this.$refs.item.length; i++) {
+              this.$refs.item[i].classList.remove('is-active');
+            }
+            if (this.$refs.item?.[index]) {
+              this.$refs.item[index].classList.add('is-active');
             }
           
-            // Deactivate previous item
+            // deactivate previous (if any)
             if (this.activeIndex !== null) {
               if (this._setInactiveItemTimeline) this._setInactiveItemTimeline.kill();
               this._setInactiveItemTimeline = gsap.timeline();
           
-              const oldTitle = this.$refs.title[this.activeIndex];
-              if (oldTitle) {
-                this._setInactiveItemTimeline.to(oldTitle, 0.3, { alpha: 0.3, ease: 'sine.inOut' }, 0);
+              const oldTitleEl = this.$refs.title?.[this.activeIndex]?.$el || this.$refs.title?.[this.activeIndex];
+              if (oldTitleEl) {
+                this._setInactiveItemTimeline.to(oldTitleEl, 0.3, { alpha: 0.3, ease: 'sine.inOut' }, 0);
               }
-          
-              const oldChars = this.titles[this.activeIndex].chars;
-              if (oldChars && this.$i18n.locale !== 'ar') {
-                this._setInactiveItemTimeline.to(oldChars, 0.6, { webkitTextStrokeColor: 'rgba(245, 175, 87, 1)' }, 0);
-                this._setInactiveItemTimeline.to(oldChars, 0.3, {
-                  color: 'rgba(245, 175, 87, 0)',
-                  ease: 'sine.inOut',
-                }, 0);
+              if (this.$i18n.locale !== 'ar' && this.titles?.[this.activeIndex]?.chars) {
+                const oldChars = this.titles[this.activeIndex].chars;
+                this._setInactiveItemTimeline.to(oldChars, 0.6, { webkitTextStrokeColor: 'rgba(245,175,87,1)' }, 0);
+                this._setInactiveItemTimeline.to(oldChars, 0.3, { color: 'rgba(245,175,87,0)', ease: 'sine.inOut' }, 0);
               }
             }
           
             this.activeIndex = index;
             this.checkIfSlideAllowed();
           
-            // Activate new item
-            const newTitle = this.$refs.title[this.activeIndex];
-            const newChars = this.titles[this.activeIndex].chars;
+            // --- ensure first load is filled immediately (no flicker) ---
+            const newTitleEl = this.$refs.title?.[this.activeIndex]?.$el || this.$refs.title?.[this.activeIndex];
           
             if (this._setActiveItemTimeline) this._setActiveItemTimeline.kill();
             this._setActiveItemTimeline = gsap.timeline();
           
-            if (newTitle) {
-              this._setActiveItemTimeline.to(newTitle, 0.3, { alpha: 1, ease: 'sine.inOut' }, 0);
+            if (newTitleEl) {
+              // If it's the very first activation, set instantly
+              if (this.activeIndex === 0 && !this._activatedOnce) {
+                gsap.set(newTitleEl, { alpha: 1 });
+                if (this.$i18n.locale !== 'ar' && this.titles?.[0]?.chars) {
+                  gsap.set(this.titles[0].chars, {
+                    webkitTextStrokeColor: 'rgba(245,175,87,0)',
+                    color: 'rgba(245,175,87,1)',
+                  });
+                }
+                this._activatedOnce = true;
+              } else {
+                // normal animated activation
+                this._setActiveItemTimeline.to(newTitleEl, 0.3, { alpha: 1, ease: 'sine.inOut' }, 0);
+                if (this.$i18n.locale !== 'ar' && this.titles?.[this.activeIndex]?.chars){
+                  const newChars = this.titles[this.activeIndex].chars;
+                  this._setActiveItemTimeline.to(newChars, 0.6, { webkitTextStrokeColor: 'rgba(245,175,87,0)' }, 0.4);
+                  this._setActiveItemTimeline.to(newChars, 0.3, {
+                    color: () => {
+                      const a = Math.random() > 0.5 ? 0.6 + 0.4 * Math.random() : 1;
+                      return `rgba(245, 175, 87, ${a})`;
+                    },
+                    ease: 'sine.inOut',
+                    stagger: { each: 0.01, from: 'random' },
+                  }, 0);
+                }
+              }
             }
           
-            if (newChars && this.$i18n.locale !== 'ar') {
-              this._setActiveItemTimeline.to(newChars, 0.6, { webkitTextStrokeColor: 'rgba(245, 175, 87, 0)' }, 0.4);
-              this._setActiveItemTimeline.to(newChars, 0.3, {
-                color: () => {
-                  const alpha = Math.random() > 0.5 ? 0.6 + 0.4 * Math.random() : 1;
-                  return `rgba(245, 175, 87, ${alpha})`;
-                },
-                ease: 'sine.inOut',
-                stagger: { each: 0.01, from: 'random' },
-              }, 0);
-            }
-          
-            // Sync with WebGL
+            // keep WebGL in sync
             this.scene.setActive(this.activeIndex);
           }
           ,
+          
+          
 
         goToIndex(index) {
             if (this.tween) this.tween.kill();
@@ -534,6 +555,7 @@ export default {
             this.lastMousemovePositionX = x;
 
             this.scene.dragHandler(this.deltaX);
+            // this.scene.dragHandler(this.deltaX * this.direction);
 
             this.updateTargetPosition();
         },
@@ -546,6 +568,7 @@ export default {
             this.isDraging = false;
             // this.$el.style.cursor = 'grab';
 
+            // this.scene.dragEndHandler(0);
             this.scene.dragEndHandler(0);
             this.enableHover();
 

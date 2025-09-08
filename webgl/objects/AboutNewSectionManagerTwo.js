@@ -19,7 +19,7 @@ export default {
     const sections = this._nuxtRoot?.sectionsInfo;
     if (!sections) return;
   
-    const triggerY = window.innerHeight * 0.5;
+    const triggerY = window.innerHeight * 0.85;
   
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
@@ -73,7 +73,7 @@ export default {
   
     const tl = gsap.timeline();
     tl.to(this.position, 
-      { x: this._locale === 'en' ? 1.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
+      { x: this._locale === 'en' ? 1.38 : -3.1, duration: 1.5, ease: 'power2.inOut' });
 
   },
 
@@ -84,7 +84,7 @@ export default {
     const spinner = this._components?.spinner;
     if (spinner) {
       gsap.to(spinner.position, {
-        x: this._locale === 'en' ? -1.38 : -4.1, // or whatever "perfect" position you saw in Info
+        x: this._locale === 'en' ? -1.38 : -3.1, // or whatever "perfect" position you saw in Info
         y: 0,
         z: 0,
         duration: 1.5,
@@ -117,7 +117,7 @@ export default {
   
     const tl = gsap.timeline();
     tl.to(this.position, 
-      { x: this._locale === 'en' ? -3.38 : 4.5, duration: 1.5, ease: 'power2.inOut' });
+      { x: this._locale === 'en' ? -3.38 : 2.38, duration: 1.5, ease: 'power2.inOut' });
   
     tl.to(this._camera.position, {
       z: 9.34, y: 1.24,
@@ -153,7 +153,7 @@ _showSectionIndustries() {
     const tl = gsap.timeline();
 
   tl.to(this.position, 
-    { x: this._locale === 'en' ? -3.38 : 5.6, duration: 1.5, ease: 'power2.inOut' });
+    { x: this._locale === 'en' ? -3.38 : 2.38, duration: 1.5, ease: 'power2.inOut' });
   
     return tl;
   }

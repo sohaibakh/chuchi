@@ -5,12 +5,12 @@
             "arabic": "عربى"
         },
         "navigation": {
-            "home": "Home",
             "about": "About",
-            "work": "Experiences",
+            "projects": "Projects",
+            "services": "Services",
             "news": "News",
             "contact": "Contact"
-        },
+          },
         "cursor": {
             "click-hold": "Click & Hold"
         },

@@ -1,24 +1,25 @@
 <!-- Section -->
 <section class="section">
-
-    <!-- Section content -->
     <div class="section__content">
-
-        <!-- Row title -->
-        <div class="row row-title">
-
-            <!-- Column -->
-            <div class="column">
-
-                <!-- Heading -->
-                <!-- <Heading tag="h1" class="heading" :data="data.title" :preserveLineBreak="true" isCustomTriggered="true" ref="heading" /> -->
-                <Heading tag="h1" class="heading" data="What Do We Do" :preserveLineBreak="true" isCustomTriggered="true" ref="heading" />
-                <Body data="We design and build experiences that people enjoy, remember, and share." large="true" v-bind:trigger-on-scroll="false" ref="body" />
- 
-            </div>
-
+      <div class="row row-title">
+        <div class="column">
+          <!-- Heading -->
+          <Heading
+            tag="h1"
+            class="heading"
+            :data="headingText"      
+            :preserveLineBreak="true"
+            isCustomTriggered="true"
+            ref="heading"
+          />
+          <Body
+            ref="body"
+            :data="bodyText"          
+            large="true"
+            :trigger-on-scroll="false"
+          />
         </div>
-
+      </div>
     </div>
-
-</section>
+  </section>
+  

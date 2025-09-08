@@ -1,26 +1,36 @@
 <!-- Section -->
 <section class="section">
-
     <!-- Section content -->
     <div class="section__content">
-
-        <!-- Content -->
-        <div class="content" ref="content">
-
-            <!-- Heading -->
-            <Heading tag="h1" ref="heading" isCustomTriggered="false" class="heading-a heading" :data="data.title" />
-
-            <!-- Subtitle -->
-            <h2 class="subtitle" ref="subtitle">{{ data.subtitle }}</h2>
-
-        </div>
-
-        <!-- Scroll indicator -->
-        <ScrollIndicator class="scroll-indicator" ref="scrollIndicator" v-bind:label="data.scroll_down_label" />
-
-        <!-- Button CTA -->
-        <!-- <ButtonBlock class="button-cta" ref="buttonBlock" v-bind:data="data.call_to_action" v-if="data.call_to_action.active" /> -->
-
+  
+      <!-- Content -->
+      <div class="content content--video" ref="content">
+  
+        <!-- Heading (commented out as requested) -->
+    
+        <Heading tag="h1" ref="heading" isCustomTriggered="false" class="heading-a heading" :data="data.title" />
+        <h2 class="subtitle" ref="subtitle">{{ data.subtitle }}</h2>
+    
+  
+        <!-- Fullscreen Video -->
+        <video
+            ref="video"
+            class="bg-video"
+            autoplay
+            playsinline
+            loop
+            preload="metadata"
+            >
+            <!-- ✅ Prefer multiple sources; browser picks best -->
+            <!-- <source :src="videoSrcWebm" type="video/webm" /> -->
+            <source :src="videoSrcMp4"  type="video/mp4" />
+            </video>
+  
+      </div>
+  
+      <!-- Scroll indicator -->
+      <ScrollIndicator class="scroll-indicator" ref="scrollIndicator" v-bind:label="data.scroll_down_label" />
+      <!-- <ButtonBlock class="button-cta" ref="buttonBlock" v-bind:data="data.call_to_action" v-if="data.call_to_action.active" /> -->
     </div>
-
-</section>
+  </section>
+  

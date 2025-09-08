@@ -8,28 +8,28 @@
                 <Heading
                   ref="heading"
                   tag="h2"
-                  :data="'Our Services'"
+                  :data="headingText"  
                   class="heading-b heading center-heading"
                   :isCustomTriggered="true"
                   :preserve-line-break="true"
                 />
+
       
             </div>
         </div>
 
         <div class="row-cards">
           <nuxt-link
-            v-for="(slide, index) in slides"
+            v-for="(slide, index) in localizedSlides"
             :key="index"
             :to="localePath({ name: 'services-slug', params: { slug: slide.slug } })"
             class="card"
           >
             <div class="card-inner" ref="sercards" refInFor>
               <img :src="slide.image" :alt="slide.title" />
-              <p class="card-title">{{ slide.title }}</p>
+              <p class="card-title">{{ slide.title }}</p> 
             </div>
           </nuxt-link>
-
-          </div>
+        </div>
     </div>
 </section>

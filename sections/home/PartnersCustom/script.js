@@ -21,21 +21,13 @@ let gsap = null;
 export default {
   name: 'SectionPartnersCustom',
 
-  components: {
-    Heading,
-  },
+  components: { Heading },
 
   props: {
     data: {
       type: Object,
       required: true,
     },
-  },
-
-  mounted() {
-    if (process.client) {
-      this._setupIntersectionObserver();
-    }
   },
 
   data() {
@@ -56,11 +48,29 @@ export default {
         { logo: thirteen, link: 'https://another.com' },
         { logo: fourteen, link: 'https://another.com' },
         { logo: fifteen, link: 'https://another.com' },
-        // { logo: seven, link: 'https://another.com' },
-
-        // Add more logos as needed
       ],
     };
+  },
+
+  computed: {
+    // Detect Arabic/RTL
+    isArabic() {
+      return (
+        (this.$i18n && this.$i18n.locale === 'ar') ||
+        (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
+        (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
+      );
+    },
+    // Heading text only (Our Clients → عملاؤنا)
+    headingText() {
+      return this.isArabic ? 'عملاؤنا' : 'Our Clients';
+    },
+  },
+
+  mounted() {
+    if (process.client) {
+      this._setupIntersectionObserver();
+    }
   },
 
   methods: {

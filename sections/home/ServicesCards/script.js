@@ -1,24 +1,44 @@
 import gsap from 'gsap';
-
 import sample from '@/assets/images/services/interactive.PNG';
 import sample2 from '@/assets/images/services/concept-design.png';
-
 import Heading from '@/components/Heading';
 
 export default {
   name: 'SectionServicesCards',
 
-  components: {
-    Heading,
-  },
+  components: { Heading },
 
   data() {
     return {
       slides: [
-        { title: 'Interactive', image: sample, slug: 'human-interaction' },
-        { title: 'Concept Design', image: sample2, slug: 'concept-design-experiential-content' },
+        { title: 'Interactive', titleAr: 'التفاعل البشري', image: sample, slug: 'human-interaction' },
+        { title: 'Concept Design', titleAr: 'تصميم المفهوم', image: sample2, slug: 'concept-design-experiential-content' },
       ]
     };
+  },
+
+  computed: {
+    // Detect Arabic
+    isArabic() {
+      return (
+        (this.$i18n && this.$i18n.locale === 'ar') ||
+        (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
+        (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
+      );
+    },
+
+    // Heading text
+    headingText() {
+      return this.isArabic ? 'خدماتنا' : 'Our Services';
+    },
+
+    // Localized slides
+    localizedSlides() {
+      return this.slides.map(s => ({
+        ...s,
+        title: this.isArabic ? s.titleAr : s.title,
+      }));
+    },
   },
 
   mounted() {
@@ -29,7 +49,7 @@ export default {
     _setupIntersectionObserver() {
       this._io = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          this._io.disconnect(); // Run once
+          this._io.disconnect();
           this.backgroundShow(() => {}, 1);
         }
       }, { threshold: 0.25 });
@@ -40,24 +60,16 @@ export default {
     backgroundShow(done, direction) {
       const tl = gsap.timeline({ onComplete: done });
 
-      // Animate heading
       if (this.$refs.heading?.show) {
         tl.add(this.$refs.heading.show(), 0);
       }
 
-      // Animate cards
       if (Array.isArray(this.$refs.sercards)) {
-        const cards = this.$refs.sercards.map(el => el?.$el || el); // ensure real DOM
+        const cards = this.$refs.sercards.map(el => el?.$el || el);
         tl.fromTo(
           cards,
           { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            stagger: 0.15,
-          },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15 },
           0.3
         );
       }
@@ -68,12 +80,8 @@ export default {
     backgroundHide(done) {
       const tl = gsap.timeline({ onComplete: done });
 
-      // Hide heading
-      if (this.$refs.heading?.hide) {
-        tl.add(this.$refs.heading.hide(), 0);
-      }
+      if (this.$refs.heading?.hide) tl.add(this.$refs.heading.hide(), 0);
 
-      // Hide cards
       if (Array.isArray(this.$refs.sercards)) {
         const cards = this.$refs.sercards.map(el => el?.$el || el);
         gsap.set(cards, { opacity: 0, y: 50 });

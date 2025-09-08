@@ -1,4 +1,4 @@
-<section class="section">
+<section class="section" :class="{ ar: direction === -1 }">
   <div class="section__content">
     <div class="content">
       <div class="row">
@@ -30,13 +30,16 @@
           </li>
         </ul>
 
-        <button ref="buttonLeft" class="button-arrow button-arrow--left" @click="clickPreviousHandler">
+        <!-- Arrows (CSS swaps sides in RTL via .section.ar) -->
+        <button ref="buttonLeft"  class="button-arrow button-arrow--left"  type="button" aria-label="Previous" @click="clickPreviousHandler">
           <Arrow class="arrow" />
         </button>
+        
+        <button ref="buttonRight" class="button-arrow button-arrow--right" type="button" aria-label="Next"     @click="clickNextHandler">
+          <Arrow class="arrow" />
+        </button>
+        
 
-        <button ref="buttonRight" class="button-arrow button-arrow--right" @click="clickNextHandler">
-          <Arrow class="arrow" />
-        </button>
       </div>
     </div>
   </div>

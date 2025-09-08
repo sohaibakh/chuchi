@@ -59,6 +59,11 @@ export default {
       this.isStickyPinned = state;
     },
 
+    isArabicSlide(i) {
+      const t = this.slides?.[i]?.title || '';
+      return /[\u0600-\u06FF]/.test(t); // true if Arabic chars present
+    },
+
     transitionIn() {
       this._timelineTransitionIn = new gsap.timeline();
       this._timelineTransitionIn.set(this.$el, { alpha: 1 }, 0);

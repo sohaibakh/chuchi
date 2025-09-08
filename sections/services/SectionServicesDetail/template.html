@@ -1,4 +1,4 @@
-<section class="section section--services-detail">
+<section class="section section--services-detail" :class="{ ar: isArabic }">
   <div class="section__content">
     <div class="services-detail">
       
@@ -9,18 +9,20 @@
           v-for="(item, index) in slides"
           :key="index"
         >
-          <div class="row row-title">
-            <div class="column">
-              <Heading
-                tag="h2"
-                :ref="`heading_${index}`"
-                isCustomTriggered="false"
-                class="heading-b heading"
-                :preserve-line-break="true"
-                :data="item.title"
-              />
-            </div>
+        <div class="row row-title">
+          <div class="column" :class="{ rtl: isArabicSlide(index) }">
+            <Heading
+              tag="h2"
+              :ref="`heading_${index}`"
+              isCustomTriggered="false"
+              class="heading-b heading"
+              :preserve-line-break="true"
+              :data="item.title"
+              :dir="isArabicSlide(index) ? 'rtl' : 'ltr'"
+            />
           </div>
+        </div>
+        
 
           <div class="row row-body">
             <div class="column">

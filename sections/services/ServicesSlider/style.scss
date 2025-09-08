@@ -77,9 +77,9 @@
             left: 5%;
         }
 
-        .arrow {
-            transform: scale(-1);
-        }
+        // .arrow {
+        //     transform: scale(-1);
+        // }
     }
 
     &--right {
@@ -215,3 +215,14 @@ img {
 ::v-deep .item-chars {
     display: inline !important;
 }
+/* LTR defaults: left = previous, right = next */
+/* keep buttons fixed on their sides for all locales */
+.button-arrow--left  { left: rem(10px);  @include respond-to('large'){ left: 5%; } }
+.button-arrow--right { right: rem(10px); @include respond-to('large'){ right: 5%; } }
+
+/* icons: left button points left, right button points right */
+.button-arrow--left  .arrow { transform: scaleX(-1); } /* ← */
+.button-arrow--right .arrow { transform: scaleX(1);  } /* → */
+
+
+/* RTL: Next goes on the left, Previous on the right */

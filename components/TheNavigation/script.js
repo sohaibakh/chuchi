@@ -127,7 +127,7 @@ export default {
          */
         setupEventListeners() {
             this.$refs.buttonHamburger.$el.addEventListener('click', this.burgerClickHandler);
-            this.$refs.langSwitcher.$on('switch-language', this.switchLangerChangeHandler);
+            // this.$refs.langSwitcher.$on('switch-language', this.switchLangerChangeHandler);
             EventBus.$on('scroll', this.scrollHandler);
             // EventBus.$on('stepscroll', this.stepScrollHandler);
         },
@@ -214,24 +214,42 @@ export default {
             }
         },
 
-        switchLangerChangeHandler() {
-            gsap.to(
-                this.$el,
-                0.2,
-                {
-                    alpha: 0,
-                    ease: 'sine.inOut',
-                    onComplete: () => {
-                        if (this.$i18n.locale === 'en') {
-                            this.$i18n.setLocale('ar');
-                        } else {
-                            this.$i18n.setLocale('en');
-                        }
-                    },
-                },
-                0
-            );
-        },
+        // switchLangerChangeHandler() {
+        //     gsap.to(
+        //         this.$el,
+        //         0.2,
+        //         {
+        //             alpha: 0,
+        //             ease: 'sine.inOut',
+        //             onComplete: () => {
+        //                 if (this.$i18n.locale === 'en') {
+        //                     this.$i18n.setLocale('ar');
+        //                 } else {
+        //                     this.$i18n.setLocale('en');
+        //                 }
+        //             },
+        //         },
+        //         0
+        //     );
+        // },
+        async switchLanguageChangeHandler() {
+            // fade optional
+            gsap.to(this.$el, { opacity: 0, duration: 0.2, ease: 'sine.inOut' })
+        
+            const newLocale = this.$i18n.locale === 'en' ? 'ar' : 'en'
+        
+            // navigate to the same route in the new locale
+            const path = this.switchLocalePath(newLocale) // nuxt-i18n helper
+            await this.$router.push(path)
+        
+            // if your nuxt-i18n version needs it, keep in sync:
+            if (this.$i18n.locale !== newLocale) {
+              await this.$i18n.setLocale(newLocale)
+            }
+        
+            gsap.to(this.$el, { opacity: 1, duration: 0.2, ease: 'sine.inOut' })
+          },
+        
 
         logoClickHandler() {
             if (this.$root.menuMobile) {
