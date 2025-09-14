@@ -18,6 +18,7 @@ import SectionServicesCards from '@/sections/home/ServicesCards';
 import SectionNews from '@/sections/shared/News';
 import SectionFooter from '@/sections/shared/Footer';
 import SectionFormCta from '@/sections/home/FormCta';
+import SectionHeroVideo from '@/sections/home/Video'
 // import SectionPortfolio from '@/sections/home/Portfolio'
 
 import logo1 from '@/assets/images/logos/1.png';
@@ -26,7 +27,7 @@ import logo3 from '@/assets/images/logos/3.png';
 import logo4 from '@/assets/images/logos/4.png';
 import logo5 from '@/assets/images/logos/5.png';
 import SectionPartnersCustom from '@/sections/home/PartnersCustom';
-
+import vdo from '@/assets/images/video3.mp4'
 export default {
   extends: Page,
 
@@ -43,6 +44,7 @@ export default {
     SectionPartnersCustom,
     SectionNews,
     SectionFooter,
+    SectionHeroVideo
   },
 
   async asyncData({ app }) {
@@ -72,6 +74,9 @@ export default {
 
   data() {
     return {
+      hero: {
+        videoUrl: vdo
+      },
       dataSectionPartnersCustom: {
         title: 'We Partner with Talented People From All over the world',
         logos: [
