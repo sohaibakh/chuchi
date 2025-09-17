@@ -85,6 +85,10 @@
             ::v-deep .heading {
                 font-size: rem-l(50px);
             }
+
+            ::v-deep .gsap-lines {
+                text-align:center !important;
+            }
         }
 
         .section-dimension {

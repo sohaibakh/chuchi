@@ -39,21 +39,32 @@
     }
 
     .column {
-        width: 60%;
+        width: 95%;
 
-        margin-left: 15%;
+        margin-left: auto;
+        margin-right: auto;
 
         @include respond-to('large') {
-            width: 30%;
+            width: 70%;
 
-            margin-left: 12%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .heading > * {
+            text-align:center!important;
+        }
+
+        .gsap-lines{
+            text-align: center!important;
         }
 
         .ar & {
-            margin-right: 15%;
-
+            margin-right: auto;
+            margin-left: auto;
             @include respond-to('large') {
-                margin-right: 60%;
+                margin-right: auto;
+                margin-left: auto;
             }
         }
     }
@@ -61,28 +72,39 @@
 
 .heading {
     line-height: 1.12!important;
+    div {
+        text-align:center!important;
+    }
     > span {
         display: block;
     }
 }
 
 .row-body {
-    .column {
-        width: 70%;
 
-        margin-left: 15%;
+    .column {
+        width: 95%;
+
+        margin-left: auto;
+        margin-right: auto;
 
         @include respond-to('large') {
-            width: 23%;
+            width: 70%;
 
-            margin-left: 12%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .body {
+            text-align:center!important;
         }
 
         .ar & {
-            margin-right: 15%;
-
+            margin-right: auto;
+            margin-left: auto;
             @include respond-to('large') {
-                margin-right: 60%;
+                margin-right: auto;
+                margin-left: auto;
             }
         }
     }
