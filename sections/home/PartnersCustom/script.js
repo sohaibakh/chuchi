@@ -1,21 +1,5 @@
 import Heading from '@/components/Heading';
 
-import one from '@/assets/images/clients/aramco-logo.png'
-import two from '@/assets/images/clients/masar.png'
-import three from '@/assets/images/clients/machinestalk.png'
-import four from '@/assets/images/clients/MDLbeast-1.png'
-import five from '@/assets/images/clients/misk_logo.png'
-import six from '@/assets/images/clients/Noor_Riyadh_Logo.png'
-import seven from '@/assets/images/clients/king-abdullah-economic-city-large.png'
-import eight from '@/assets/images/clients/Ministry_of_Hajj_and_Umrah_Logo.png'
-import nine from '@/assets/images/clients/Ministry-of-Media.png'
-import ten from '@/assets/images/clients/RCMC logo.png'
-import eleven from '@/assets/images/clients/saudi_cable_logo.png'
-import twelve from '@/assets/images/clients/Saudi_Ministry_of_Culture_Logo.png'
-import thirteen from '@/assets/images/clients/snb logo.png'
-import fourteen from '@/assets/images/clients/stc logo.png'
-import fifteen from '@/assets/images/clients/um alqura logo.png'
-
 let gsap = null;
 
 export default {
@@ -26,30 +10,8 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true,
+      required: true, // expects { title: "...", logos: [ {logo, link}, … ] }
     },
-  },
-
-  data() {
-    return {
-      logos: [
-        { logo: one, link: 'https://example.com' },
-        { logo: two, link: '' },
-        { logo: three, link: 'https://another.com' },
-        // { logo: four, link: 'https://another.com' },
-        { logo: five, link: 'https://another.com' },
-        { logo: six, link: 'https://another.com' },
-        { logo: seven, link: 'https://another.com' },
-        { logo: eight, link: 'https://another.com' },
-        { logo: nine, link: 'https://another.com' },
-        { logo: ten, link: 'https://another.com' },
-        { logo: eleven, link: 'https://another.com' },
-        { logo: twelve, link: 'https://another.com' },
-        { logo: thirteen, link: 'https://another.com' },
-        { logo: fourteen, link: 'https://another.com' },
-        { logo: fifteen, link: 'https://another.com' },
-      ],
-    };
   },
 
   computed: {
@@ -61,9 +23,10 @@ export default {
         (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
       );
     },
-    // Heading text only (Our Clients → عملاؤنا)
+
+    // Heading text with fallback
     headingText() {
-      return this.isArabic ? 'عملاؤنا' : 'Our Clients';
+      return this.data?.title || (this.isArabic ? 'عملاؤنا' : 'Our Clients');
     },
   },
 
@@ -71,16 +34,21 @@ export default {
     if (process.client) {
       this._setupIntersectionObserver();
     }
+
+    console.log('SectionPartnersCustom data prop:', this.data);
   },
 
   methods: {
     _setupIntersectionObserver() {
-      this._io = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          this._io.disconnect();
-          this.backgroundShow(() => {}, 1);
-        }
-      }, { threshold: 0.3 });
+      this._io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            this._io.disconnect();
+            this.backgroundShow(() => {}, 1);
+          }
+        },
+        { threshold: 0.3 }
+      );
 
       this._io.observe(this.$el);
     },
@@ -90,13 +58,16 @@ export default {
 
       const tl = gsap.timeline({ onComplete: done });
 
+      // Animate heading
       if (this.$refs.heading?.show) {
         tl.add(this.$refs.heading.show(), 0);
       }
 
+      // Animate logos
       const items = this.$el.querySelectorAll('.logos > li');
       if (items.length) {
-        tl.fromTo(items,
+        tl.fromTo(
+          items,
           { opacity: 0, y: 20 },
           {
             opacity: 1,
@@ -122,6 +93,6 @@ export default {
       }
 
       return tl;
-    }
-  }
+    },
+  },
 };

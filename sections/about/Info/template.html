@@ -7,17 +7,18 @@
           <Heading
             tag="h1"
             class="heading"
-            :data="headingText"      
+            :data="data?.title || headingText"
             :preserveLineBreak="true"
             isCustomTriggered="true"
             ref="heading"
           />
-          <Body
-            ref="body"
-            :data="bodyText"          
-            large="true"
-            :trigger-on-scroll="false"
-          />
+        
+        <Body
+          ref="body"
+          :data="data?.description || bodyText"
+          large="true"
+          :trigger-on-scroll="false"
+        />
         </div>
       </div>
     </div>

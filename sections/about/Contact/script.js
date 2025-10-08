@@ -15,21 +15,28 @@ export default {
     Heading,
   },
 
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+
   computed: {
     // Detect Arabic/RTL
-    isArabic() {
-      return (
-        (this.$i18n && this.$i18n.locale === 'ar') ||
-        (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
-        (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
-      );
-    },
-    // Localized heading: "A powerful idea deserves a space of its own"
-    headingText() {
-      return this.isArabic
-        ? 'الفكرة القوية تستحق مساحةً خاصة بها'
-        : 'A powerful idea deserves a space of its own';
-    },
+    // isArabic() {
+    //   return (
+    //     (this.$i18n && this.$i18n.locale === 'ar') ||
+    //     (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
+    //     (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
+    //   );
+    // },
+    // // Localized heading: "A powerful idea deserves a space of its own"
+    // headingText() {
+    //   return this.isArabic
+    //     ? 'الفكرة القوية تستحق مساحةً خاصة بها'
+    //     : 'A powerful idea deserves a space of its own';
+    // },
   },
 
   mounted() {

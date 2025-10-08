@@ -6,52 +6,28 @@ export default {
   name: 'TimelineSection', // required for dynamic method matching
   extends: SectionAbout,
 
-  data() {
-    return {
-      sample,
-      activeIndex: -1,
-      stepsData: [
-        {
-          title: 'DISCOVER',
-          description:
-            'We start by listening and diving deep into your goals, audience, and vision to understand what experience you truly want to create.'
-        },
-        {
-          title: 'DESIGN',
-          description:
-            'We translate insights into concepts, journeys, and visuals — crafting the right narrative, space flow, and interaction blueprint.'
-        },
-        {
-          title: 'DEVELOP',
-          description:
-            'We prototype, iterate, and engineer the content, media, and technology that power the experience.'
-        },
-        {
-          title: 'DEPLOY',
-          description:
-            'We integrate, test, and launch on-site or on-platform with a focus on quality, stability, and impact.'
-        },
-        {
-          title: 'EVALUATE',
-          description:
-            'We measure outcomes, learn from audience behavior, and refine to maximize long‑term value.'
-        }
-      ],
+  props: {
+    data: {
+      type: [String, Object], // ✅ accept string or object
+      required: true
+    }
+  },
 
-      _observer: null,
-      _activeIO: null,
-
-      // connector utilities
-      _gridRO: null,
-      _connectorRaf: null,
-      _queueDrawConnector: null,
-      _bpLarge: 850 // must match your SCSS 'large' min-width
-    };
+  computed: {
+    sample() {
+      // if it's string URL (backend sends string), use directly
+      if (typeof this.data === 'string') return this.data;
+      // fallback if backend sends { url: ... }
+      return this.data?.url || '';
+    }
   },
 
   mounted() {
     const cards = this.$refs.cards || [];
     if (!cards.length) return;
+
+    console.log('timeline data: ', this.data)
+
 
     // Draw connector once DOM is painted
     this.$nextTick(() => {

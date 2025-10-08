@@ -69,13 +69,17 @@ export default {
         ScrollControl,
     },
 
-    asyncData({ app }) {
+    async asyncData({ app }) {
         const locale = app.i18n.locale;
-        return axios.get(`page/about?lang=${locale}`).then((res) => {
-            // console.log('data', res.data.sections)
-            return { metadata: res.data.seo, ...res.data.sections };
-            
-        });
+        const res = await axios.get(`page/about?lang=${locale}`);
+        console.log("about: ", res.data.sections)
+        
+      
+        return {
+          metadata: res.data.seo,
+          ...res.data.sections
+        };
+
     },
 
     created() {
@@ -92,8 +96,6 @@ export default {
             if (this.$root.webglApp) timeline.add(this.$root.webglApp.showScene('about'), 0);
             timeline.add(this.$refs.header.transitionIn(), 0.5);
             timeline.add(this.$root.theNavigation.show(), 1);
-
-         
         },
 
         transitionOut(done) {

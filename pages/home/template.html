@@ -9,9 +9,9 @@
 
    
 
-      <SectionPartnersCustom class="section-partners" :data="dataSectionPartnersCustom" ref="sectionPartners" scroll-type="free" />
+      <SectionPartnersCustom class="section-partners" :data="section_clients" ref="sectionPartners" scroll-type="free" />
 
-      <SectionServicesCards class="section-services" scroll-type="free" />
+      <SectionServicesCards :slides="servicesItems" class="section-services" scroll-type="free" />
       <!-- 🔥 New Section for Service Planes -->
       <!-- <SectionPartners v-bind:data="partners" class="section-partners" ref="partners" scroll-type="free"></SectionPartners> -->
 

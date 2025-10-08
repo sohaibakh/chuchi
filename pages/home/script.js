@@ -21,13 +21,13 @@ import SectionFormCta from '@/sections/home/FormCta';
 import SectionHeroVideo from '@/sections/home/Video'
 // import SectionPortfolio from '@/sections/home/Portfolio'
 
-import logo1 from '@/assets/images/logos/1.png';
-import logo2 from '@/assets/images/logos/2.png';
-import logo3 from '@/assets/images/logos/3.png';
-import logo4 from '@/assets/images/logos/4.png';
-import logo5 from '@/assets/images/logos/5.png';
+// import logo1 from '@/assets/images/logos/1.png';
+// import logo2 from '@/assets/images/logos/2.png';
+// import logo3 from '@/assets/images/logos/3.png';
+// import logo4 from '@/assets/images/logos/4.png';
+// import logo5 from '@/assets/images/logos/5.png';
 import SectionPartnersCustom from '@/sections/home/PartnersCustom';
-import vdo from '@/assets/images/video3.mp4'
+// import vdo from '@/assets/images/video3.mp4'
 export default {
   extends: Page,
 
@@ -50,45 +50,49 @@ export default {
   async asyncData({ app }) {
     const locale = app.i18n.locale;
     const res = await axios.get(`page/home?lang=${locale}`);
-
-    console.log('res data: ', res.data.sections.news)
-
     const resPortfolio = await axios.get(`page/portfolio?lang=${locale}`);
+    const resServices = await axios.get(`page/services?lang=${locale}`);
+
+    console.log('services: ', resServices.data.items)
+    const servicesItems = resServices.data.items;
+    
     const portfolioItems = resPortfolio.data.items;
-  
     const slides = portfolioItems.map(project => ({
       title: project.title,
-      image: project.image?.sizes?.['1920x0']?.url || '', // fallback can be added if needed
+      image: project.image?.sizes?.['1920x0']?.url || '',
       slug: project.slug
     }));
-
-
+  
+    const sectionClientsRaw = res.data.sections.section_clients;
+  
+    // normalize brand_logo → logos
+    const section_clients = {
+      title: sectionClientsRaw.title,
+      logos: (sectionClientsRaw.brand_logo || []).map(item => ({
+        logo: item.logo?.url || item.logo,
+        link: item.link || ''
+      }))
+    };
+  
     return {
       metadata: res.data.seo,
       ...res.data.sections,
-      slides
-    };
-
-    
-  },
-
-  data() {
-    return {
+      slides,
       hero: {
-        videoUrl: vdo
+        videoUrl: res.data.sections.section_video,
       },
-      dataSectionPartnersCustom: {
-        title: 'We Partner with Talented People From All over the world',
-        logos: [
-          { logo: logo1, link: 'https://partner1.com' },
-          { logo: logo2, link: 'https://partner2.com' },
-          { logo: logo3, link: 'https://partner3.com' },
-          { logo: logo4, link: 'https://partner4.com' },
-          { logo: logo5, link: 'https://partner5.com' },
-        ],
-      },
+      section_clients, 
+      servicesItems
     };
   },
+  
+  // data() {
+  //   return {
+  //     hero: {
+  //       videoUrl: vdo
+  //     }
+  //   };
+  // },
 
   created() {
     this.scrollTriggers = true;
@@ -96,6 +100,7 @@ export default {
 
   mounted() {
     this.$root.scrollControl = this.$refs.scrollControl;
+    
   },
 
   methods: {

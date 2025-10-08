@@ -3,36 +3,5 @@
     <div class="section__content-img">
       <img :src="sample" alt="">
     </div>
-    <!-- <div class="approach-grid" ref="grid">
- 
-      <svg class="approach-connector" ref="connectorSvg" aria-hidden="true">
-        <defs>
-
-          <linearGradient id="approachStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"  stop-color="#f69f33" />
-            <stop offset="100%" stop-color="#de7d00" />
-          </linearGradient>
-        </defs>
-        <path class="connector-path" ref="connectorPath" />
-      </svg>
-
-
-      <article
-        v-for="(step, i) in stepsData"
-        :key="i"
-        class="approach-card"
-        :class="['pos-' + i, { 'is-active': activeIndex === i }]"
-        ref="cards"
-      >
-        <div class="orb-wrap">
-          <span class="orb"></span>
-          <span class="orb-ring"></span>
-        </div>
-        <h3 class="step-title">{{ step.title }}</h3>
-        <div class="step-body">
-          <p v-html="step.description"></p>
-        </div>
-      </article>
-    </div> -->
   </div>
 </section>

@@ -1,31 +1,29 @@
 <!-- Section -->
 <section class="section">
-    <div class="section__content">
-      <div class="row row-title">
-  
-        <div class="column">
-          <!-- Heading -->
-          <Heading
-            tag="h1"
-            ref="heading"
-            isCustomTriggered="false"
-            class="heading"
-            :data="headingText"   
-          />
-        </div>
-  
-        <div class="column">
-          <Body
-            ref="body"
-            :data="bodyText"      
-            large="true"
-            :trigger-on-scroll="false"
-          />
-        </div>
-  
-        <ScrollArrow class="scroll-arrow" ref="scrollArrow" />
+  <div class="section__content">
+    <div class="row row-title">
+
+      <div class="column">
+        <!-- Heading -->
+        <Heading
+          tag="h1"
+          ref="heading"
+          isCustomTriggered="false"
+          class="heading"
+          :data="data?.title || headingText"
+        />
       </div>
+
+      <div class="column">
+        <Body
+          ref="body"
+          :data="data?.description || bodyText"
+          large="true"
+          :trigger-on-scroll="false"
+        />
+      </div>
+
+      <ScrollArrow class="scroll-arrow" ref="scrollArrow" />
     </div>
-    <!-- Scroll arrow -->
-  </section>
-  
+  </div>
+</section>

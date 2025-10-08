@@ -9,19 +9,12 @@ export default {
 
   components: { Heading },
 
-  data() {
-    return {
-      hoveredIndex: null,
-      industries: [
-        { name: 'Finance',       nameAr: 'المالية',         image: require('@/assets/images/industries/crown.JPG') },
-        { name: 'Healthcare',    nameAr: 'الرعاية الصحية',  image: require('@/assets/images/industries/image.png') },
-        { name: 'Real Estate',   nameAr: 'العقارات',        image: require('@/assets/images/industries/image2.png') },
-        { name: 'Education',     nameAr: 'التعليم',         image: require('@/assets/images/industries/image3.png') },
-        { name: 'Hospitality',   nameAr: 'الضيافة',         image: require('@/assets/images/industries/image4.png') },
-        { name: 'Manufacturing', nameAr: 'التصنيع',         image: require('@/assets/images/industries/ithra.jpg') },
-        // …add more as needed
-      ]
-    };
+  props: {
+    data: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    }
   },
 
   computed: {
@@ -34,16 +27,17 @@ export default {
       );
     },
 
-    // Localized heading
-    headingText() {
-      return this.isArabic ? 'القطاعات التي نخدمها' : 'Industries We Serve';
-    },
+    // // Localized heading
+    // headingText() {
+    //   return this.isArabic ? 'القطاعات التي نخدمها' : 'Industries We Serve';
+    // },
 
     // Localized industries list
     localizedIndustries() {
-      return this.industries.map(it => ({
-        ...it,
-        name: this.isArabic ? (it.nameAr || it.name) : it.name
+      if (!this.data?.industry_item) return [];
+      return this.data.industry_item.map((it) => ({
+        title: this.isArabic ? it.title_ar || it.title : it.title || it.name,
+        image: it.image
       }));
     }
   },

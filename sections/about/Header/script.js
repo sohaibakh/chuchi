@@ -19,6 +19,14 @@ export default {
     Body
   },
 
+  props: {
+    data: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
+
   computed: {
     // Detect Arabic/RTL (same logic as other sections)
     isArabic() {
@@ -30,16 +38,16 @@ export default {
     },
 
     // Localized heading
-    headingText() {
-      return this.isArabic ? 'من نحن' : 'Who we are';
-    },
+    // headingText() {
+    //   return this.isArabic ? 'من نحن' : 'Who we are';
+    // },
 
-    // Localized body copy
-    bodyText() {
-      return this.isArabic
-        ? 'نحن شركة تصميم تجارب وُلدت في السعودية.\nنحوّل الأفكار إلى واقع مُعاش—نمزج بين سرد القصص والتصميم والتقنية لصناعة مساحات يمكن للناس أن يشعروا بها حقًا.\nمن المعارض التفاعلية إلى التفعيلات الرقمية، نصنع بيئات تدفع الناس للتفكير والاستكشاف والتواصل.'
-        : 'We’re a Saudi-born experience design company.\nWe turn ideas into immersive realities—blending storytelling, design, and technology to create spaces people can truly feel.\nFrom interactive exhibits to digital activations, we craft environments that move people to think, explore, and connect.';
-    },
+    // // Localized body copy
+    // bodyText() {
+    //   return this.isArabic
+    //     ? 'نحن شركة تصميم تجارب وُلدت في السعودية.\nنحوّل الأفكار إلى واقع مُعاش—نمزج بين سرد القصص والتصميم والتقنية لصناعة مساحات يمكن للناس أن يشعروا بها حقًا.\nمن المعارض التفاعلية إلى التفعيلات الرقمية، نصنع بيئات تدفع الناس للتفكير والاستكشاف والتواصل.'
+    //     : 'We’re a Saudi-born experience design company.\nWe turn ideas into immersive realities—blending storytelling, design, and technology to create spaces people can truly feel.\nFrom interactive exhibits to digital activations, we craft environments that move people to think, explore, and connect.';
+    // },
   },
 
   methods: {
@@ -68,6 +76,9 @@ export default {
       if (this.$refs.heading?.show) {
         this._timelineBackgroundShow.add(this.$refs.heading.show(), 0.7);
       }
+
+      this._timelineBackgroundShow.add(this.$refs.body.showAll(direction), 0.7);
+
 
       // Animate body
       if (this.$refs.body?.$el) {

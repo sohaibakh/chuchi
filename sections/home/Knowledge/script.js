@@ -9,7 +9,9 @@ import Body from '@/components/Body';
 
 export default {
   extends: SectionHome,
-
+  props: {
+    data: { type: Object, required: false },
+  },
   components: {
     Heading,
     Body,
@@ -27,24 +29,24 @@ export default {
     },
 
     // Hard-coded content for both languages
-    t() {
-      if (this.isArabic) {
-        return {
-          title: 'من سرد القصص إلى عيش القصص',
-          description:
-            'نؤمن بتحويل سرد القصص إلى عيشها فعليًا عبر مزج تصميم المفهوم والمحتوى التجريبي مع الخدمات التفاعلية بسلاسة.',
-          // ctaLabel: 'اعرف أكثر',
-          // ctaLink: '/ar/learn-more'
-        };
-      }
-      return {
-        title: 'Storytelling to Story-Living',
-        description:
-          'We believe in transforming storytelling into story-living by seamlessly blending concept design and experiential content with interactive services.',
-        // ctaLabel: 'Learn more',
-        // ctaLink: '/learn-more'
-      };
-    },
+    // t() {
+    //   if (this.isArabic) {
+    //     return {
+    //       title: 'من سرد القصص إلى عيش القصص',
+    //       description:
+    //         'نؤمن بتحويل سرد القصص إلى عيشها فعليًا عبر مزج تصميم المفهوم والمحتوى التجريبي مع الخدمات التفاعلية بسلاسة.',
+    //       // ctaLabel: 'اعرف أكثر',
+    //       // ctaLink: '/ar/learn-more'
+    //     };
+    //   }
+    //   return {
+    //     title: 'Storytelling to Story-Living',
+    //     description:
+    //       'We believe in transforming storytelling into story-living by seamlessly blending concept design and experiential content with interactive services.',
+    //     // ctaLabel: 'Learn more',
+    //     // ctaLink: '/learn-more'
+    //   };
+    // },
   },
 
   mounted() {
@@ -86,6 +88,9 @@ export default {
       if (this.$refs.heading?.show) {
         this.timelineShow.add(this.$refs.heading.show(), 0); // Start at 0
       }
+
+      this.timelineShow.add(this.$refs.body.showBlock(0), 0.6);
+
 
       // Animate body in parallel
       if (this.$refs.body?.$el) {

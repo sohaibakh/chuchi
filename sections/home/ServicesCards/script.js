@@ -8,14 +8,16 @@ export default {
 
   components: { Heading },
 
-  data() {
-    return {
-      slides: [
-        { title: 'Interactive', titleAr: 'التفاعل البشري', image: sample, slug: 'human-interaction' },
-        { title: 'Concept Design', titleAr: 'تصميم المفهوم', image: sample2, slug: 'concept-design-experiential-content' },
-      ]
-    };
+  props: {
+    slides: {
+      type: Array,
+      required: true, // expect from asyncData → servicesItems
+    },
   },
+  // data() {
+  //   return {
+  //   };
+  // },
 
   computed: {
     // Detect Arabic
@@ -34,15 +36,17 @@ export default {
 
     // Localized slides
     localizedSlides() {
+      if (!Array.isArray(this.slides)) return [];
       return this.slides.map(s => ({
         ...s,
-        title: this.isArabic ? s.titleAr : s.title,
+        title: this.isArabic && s.titleAr ? s.titleAr : s.title,
       }));
     },
   },
 
   mounted() {
     this._setupIntersectionObserver();
+    console.log('slides prop in SectionServicesCards:', this.slides);
   },
 
   methods: {

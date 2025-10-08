@@ -15,7 +15,7 @@
           isCustomTriggered="false"
           class="heading-a heading"
           :preserve-line-break="true"
-          :data="t.title"
+          :data="data?.title"
         />
       </div>
     </div>
@@ -26,7 +26,7 @@
         <Body
           ref="body"
           class="body"
-          :data="t.description"
+          :data="data?.description"
           :trigger-on-scroll="false"
         />
         <!-- CTA (keep commented if not needed) -->

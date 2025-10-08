@@ -15,6 +15,15 @@ export default {
     Body,
   },
 
+
+  props: {
+    data: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    }
+  },
+
   computed: {
     // Detect Arabic/RTL
     isArabic() {
@@ -26,16 +35,16 @@ export default {
     },
 
     // Localized heading
-    headingText() {
-      return this.isArabic ? 'ماذا نفعل' : 'What Do We Do';
-    },
+    // headingText() {
+    //   return this.isArabic ? 'ماذا نفعل' : 'What Do We Do';
+    // },
 
-    // Localized body
-    bodyText() {
-      return this.isArabic
-        ? 'نصمم ونبني تجارب يستمتع بها الناس ويتذكرونها ويشاركونها.'
-        : 'We design and build experiences that people enjoy, remember, and share.';
-    },
+    // // Localized body
+    // bodyText() {
+    //   return this.isArabic
+    //     ? 'نصمم ونبني تجارب يستمتع بها الناس ويتذكرونها ويشاركونها.'
+    //     : 'We design and build experiences that people enjoy, remember, and share.';
+    // },
   },
 
   methods: {
@@ -44,15 +53,19 @@ export default {
       if (this.$refs.heading?.show) {
         this._timelineBackgroundShow.add(this.$refs.heading.show(), 0.7);
       }
+      
+      this._timelineBackgroundShow.add(this.$refs.body.showAll(direction), 0.7);
+
+
       // If you want to animate body too, uncomment below:
-      // if (this.$refs.body?.$el) {
-      //   this._timelineBackgroundShow.fromTo(
-      //     this.$refs.body.$el,
-      //     { opacity: 0, y: 40 },
-      //     { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-      //     0.85
-      //   );
-      // }
+      if (this.$refs.body?.$el) {
+        this._timelineBackgroundShow.fromTo(
+          this.$refs.body.$el,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
+          0.85
+        );
+      }
       return this._timelineBackgroundShow;
     },
   },

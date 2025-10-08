@@ -154,7 +154,21 @@ export default {
                 exclude: /node_modules/,
                 use: ['raw-loader', 'glslify-loader'],
             });
+
+            const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
+            svgRule.exclude = [/(assets\/images\/icons)/];
+
+            // config.module.rules.push({
+            //     test: /\.svg$/,
+            //     include: /(assets\/images\/icons)/,
+            //     use: [
+            //       { loader: 'babel-loader' },
+            //       { loader: 'vue-svg-loader' }
+            //     ]
+            // });
         },
+
+
 
         babel: {
             compact: false,  // Prevents large file warnings

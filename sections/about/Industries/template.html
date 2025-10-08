@@ -1,18 +1,17 @@
-<!-- Section -->
-<section class="section">
+
+  <section class="section">
     <div class="section__content">
       <div class="row row-title">
         <div class="column">
-  
           <!-- Heading -->
           <Heading
             tag="h1"
             ref="heading"
             isCustomTriggered="true"
             class="heading"
-            :data="headingText" 
+            :data="data?.title || headingText"
           />
-  
+
           <!-- Industries grid -->
           <div class="industries-container">
             <div class="industries-grid">
@@ -23,14 +22,12 @@
                 @mouseenter="hoveredIndex = i"
                 @mouseleave="hoveredIndex = null"
               >
-                <img :src="industry.image" alt="" class="industry-bg" />
-                <span class="industry-name">{{ industry.name }}</span> <!-- now localized -->
-              </div>
+              <img :src="industry.image?.url || industry.image" alt="" class="industry-bg" />
+              <span class="industry-name">{{ industry.title || industry.name }}</span>
+            </div>
             </div>
           </div>
-  
         </div>
       </div>
     </div>
   </section>
-  

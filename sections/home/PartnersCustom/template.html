@@ -1,57 +1,35 @@
-<!-- Section -->
 <section class="section">
-
-    <!-- Section content -->
     <div class="section__content">
-
-        <!-- Row title -->
-        <div class="row row-title">
-
-            <!-- Column -->
-            <div class="column">
-
-                <!-- Heading -->
-                <Heading
-                    tag="h2"
-                    class="partners-heading"
-                    :data="headingText"   
-                    isCustomTriggered="true"
-                    ref="heading"
-                    />
-
-
-            </div>
-
+      <!-- Row title -->
+      <div class="row row-title">
+        <div class="column">
+          <Heading
+            tag="h2"
+            class="partners-heading"
+            :data="headingText"
+            ref="heading"
+          />
         </div>
-
-        <!-- Row logos -->
-        <div class="row row-logos">
-
-            <!-- Column -->
-            <div class="column column-logos">
-
-                <!-- Logos -->
-                <!-- <ul class="logos">
-                    <li v-for="(item, index) in data.logos" :key="index" ref="item">
-                        <a :href="item.link" target="_blank" class="button-logo" v-if="item.link">
-                            <img :src="item.logo" class="logo">
-                        </a>
-                        <img :src="item.logo" class="logo" v-if="!item.link">
-                    </li>
-                </ul> -->
-                <ul class="logos">
-                    <li v-for="(item, index) in logos" :key="index" ref="item">
-                        <a :href="item.link" target="_blank" class="button-logo" v-if="item.link">
-                            <img :src="item.logo" class="logo">
-                        </a>
-                        <img :src="item.logo" class="logo" v-if="!item.link">
-                    </li>
-                </ul>
-
-            </div>
-
+      </div>
+  
+      <!-- Row logos -->
+      <div class="row row-logos">
+        <div class="column column-logos">
+          <ul class="logos">
+            <li v-for="(item, index) in data.logos" :key="index" ref="item">
+              <a
+                v-if="item.link"
+                :href="item.link"
+                target="_blank"
+                class="button-logo"
+              >
+                <img :src="item.logo?.url || item.logo" class="logo" />
+              </a>
+              <img v-else :src="item.logo?.url || item.logo" class="logo" />
+            </li>
+          </ul>
         </div>
-
+      </div>
     </div>
-
-</section>
+  </section>
+  
