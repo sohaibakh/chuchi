@@ -10,7 +10,7 @@ import SectionHome from '@/components/SectionHome'
 import ScrollIndicator from '@/components/ScrollIndicator'
 
 // Fallback asset (Vite/Webpack returns a hashed URL string)
-import fallbackMp4 from '@/assets/images/video3.mp4'
+// import fallbackMp4 from '@/assets/images/video3.mp4'
 // Optional:
 // import fallbackWebm from '@/assets/videos/hero.webm'
 // import fallbackPoster from '@/assets/images/hero-poster.jpg'
@@ -27,14 +27,14 @@ export default {
   },
 
   computed: {
-    videoSrcMp4() {
-      // prefer CMS value, otherwise fallback
-      return this.data?.videoUrl || fallbackMp4
-    },
-    videoSrcWebm() {
-      return this.data?.videoUrlWebm || null
-      // or: return this.data?.videoUrlWebm || fallbackWebm
-    },
+    // videoSrcMp4() {
+    //   // prefer CMS value, otherwise fallback
+    //   return this.data?.videoUrl || fallbackMp4
+    // },
+    // videoSrcWebm() {
+    //   return this.data?.videoUrlWebm || null
+    //   // or: return this.data?.videoUrlWebm || fallbackWebm
+    // },
 
   },
 
