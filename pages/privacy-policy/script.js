@@ -2,7 +2,7 @@
 import gsap from 'gsap';
 
 // Utils
-import AudioManager from '@/utils/AudioManager';
+
 
 // Components
 import Page from '@/components/Page';
@@ -41,10 +41,6 @@ export default {
             const timeline = new gsap.timeline({ onComplete: done, delay });
             timeline.to(this.$el, 0.8, { alpha: 1, ease: 'sine.inOut' }, 0);
             timeline.add(this.$root.theNavigation.show(), 1);
-
-            AudioManager.play('background-loop-1', {
-                loop: true,
-            });
         },
 
         transitionOut(done) {

@@ -2,7 +2,7 @@
 import gsap from 'gsap';
 
 // Utils
-import AudioManager from '@/utils/AudioManager';
+
 
 // Plugins
 import axios from '@/plugins/axios';
