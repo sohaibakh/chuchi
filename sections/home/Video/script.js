@@ -27,10 +27,11 @@ export default {
   },
 
   computed: {
-    // videoSrcMp4() {
-    //   // prefer CMS value, otherwise fallback
-    //   return this.data?.videoUrl || fallbackMp4
-    // },
+    videoSrcMp4() {
+      // prefer CMS value, otherwise fallback
+      console.log('check vdo:', this.data)
+      return this.data?.videoUrl || fallbackMp4
+    },
     // videoSrcWebm() {
     //   return this.data?.videoUrlWebm || null
     //   // or: return this.data?.videoUrlWebm || fallbackWebm

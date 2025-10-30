@@ -40,6 +40,29 @@
     }
 }
 
+#knowledge {
+    ::v-deep .row-title {
+        margin-bottom: rem-l(20px);
+    }
+
+    // ::v-deep .heading {
+    //     font-size: rem-l(60px);
+    // }
+    ::v-deep .heading {
+        font-size: rem-l(50px);
+    }
+
+    ::v-deep .gsap-lines {
+        text-align:center !important;
+    }
+    .gsap-lines {
+        text-align:center !important;
+    }
+    .gsap-lines .lines{
+        text-align:center !important;
+    }
+}
+
 @include respond-to('large') {
     @media (max-height: 740px) {
         .section-header {
@@ -87,6 +110,12 @@
             }
 
             ::v-deep .gsap-lines {
+                text-align:center !important;
+            }
+            .gsap-lines {
+                text-align:center !important;
+            }
+            .gsap-lines .lines{
                 text-align:center !important;
             }
         }
