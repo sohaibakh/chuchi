@@ -16,11 +16,7 @@
       <div class="row row-logos">
         <div class="column column-logos">
           <ul class="logos">
-            <li
-              v-for="(item, index) in data.logos"
-              :key="index"
-              :ref="el => logos[index] = el"
-            >
+            <li v-for="(item, index) in data.logos" :key="index" ref="item">
               <a
                 v-if="item.link"
                 :href="item.link"
@@ -29,12 +25,7 @@
               >
                 <img :src="item.logo?.url || item.logo" class="logo" />
               </a>
-              <img
-                :src="item.logo?.url || item.logo"
-                class="logo"
-                width="200"
-                height="100"
-              />
+              <img v-else :src="item.logo?.url || item.logo" class="logo" />
             </li>
           </ul>
         </div>

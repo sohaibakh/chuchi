@@ -108,7 +108,7 @@ export default {
       // this.$refs.scrollControl.enable();
 
       const sc = this.$refs.scrollControl;
-      
+      const header = this.$refs.header;
       if (!sc) {
         console.warn("ScrollControl not ready yet, retrying…");
         this.$nextTick(() => this.$refs.scrollControl?.enable?.());
@@ -130,7 +130,14 @@ export default {
       
       // timeline.to(this.$el, 1.3, { alpha: 1, ease: 'sine.inOut' }, 0.5);
 
-      timeline.add(this.$refs.header.transitionIn(), 0.5);
+      if (this.$refs.header?.transitionIn) {
+        timeline.add(this.$refs.header.transitionIn(), 0.5);
+      } else {
+        console.warn("Header not ready, retrying…");
+        this.$nextTick(() => {
+          this.$refs.header?.transitionIn?.();
+        });
+      }
       timeline.add(this.$root.theNavigation.show(), 1);
       // timeline.add(this.$root.buttonMute.show(), 2.1);
       if (this.$root.customCursor) {
