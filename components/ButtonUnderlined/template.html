@@ -1,6 +1,11 @@
 <div>
     <nuxt-link v-bind:to="to" :class="`button ${state}`" ref="button" v-if="!isMailto" @mouseenter.native="mouseenterHandler" @mouseleave.native="mouseleaveHandler">
-        <span v-for="item in 3" class="line" ref="line"></span>
+        <span
+            v-for="(item, i) in 3"
+            :key="i"
+            class="line"
+            :ref="el => lines[i] = el"
+            ></span>
         <span class="underline" ref="underline"></span>
         <slot />
     </nuxt-link>

@@ -9,6 +9,7 @@ import Body from '@/components/Body';
 
 export default {
   extends: SectionHome,
+  name: 'SectionKnowledge',
   props: {
     data: { type: Object, required: false },
   },

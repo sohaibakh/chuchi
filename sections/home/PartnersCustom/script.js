@@ -10,6 +10,7 @@ export default {
   props: {
     data: {
       type: Object,
+      logos: [],
       required: true, // expects { title: "...", logos: [ {logo, link}, … ] }
     },
   },
@@ -64,7 +65,7 @@ export default {
       }
 
       // Animate logos
-      const items = this.$el.querySelectorAll('.logos > li');
+      const items = this.logos;
       if (items.length) {
         tl.fromTo(
           items,

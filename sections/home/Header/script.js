@@ -12,6 +12,7 @@ import Heading from '@/components/Heading';
 
 export default {
     extends: SectionHome,
+    name: 'Sectionheader',
 
     components: {
         ScrollIndicator,

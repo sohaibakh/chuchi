@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       state: '',
+      lines: []
     };
   },
 
@@ -60,10 +61,10 @@ export default {
       const stagger = 0.08;
 
       this.hoverInTimeline.set(this.$refs.underline, { transformOrigin: 'right top' });
-      this.hoverInTimeline.set(this.$refs.line, { transformOrigin: 'left top' });
+      this.hoverInTimeline.set(this.lines, { transformOrigin: 'left top' });
 
       this.hoverInTimeline.to(this.$refs.underline, duration, { scaleX: 0, ease: 'power1.inOut' });
-      this.hoverInTimeline.to(this.$refs.line, duration, { scaleX: 1, stagger, ease: 'power1.out' }, stagger + duration * 0.3);
+      this.hoverInTimeline.to(this.lines, duration, { scaleX: 1, stagger, ease: 'power1.out' }, stagger + duration * 0.3);
 
       this.hoverInTimeline.call(this.setActiveState, null, 0);
       this.hoverInTimeline.call(this.hoverInCompleteHandler, null);
@@ -78,9 +79,9 @@ export default {
       const stagger = 0.06;
 
       this.hoverOutTimeline.set(this.$refs.underline, { transformOrigin: 'left top' });
-      this.hoverOutTimeline.set(this.$refs.line, { transformOrigin: 'right top' });
+      this.hoverOutTimeline.set(this.lines, { transformOrigin: 'right top' });
 
-      this.hoverOutTimeline.to(this.$refs.line, duration, { scaleX: 0, stagger: -stagger, ease: 'power1.inOut' }, 0);
+      this.hoverOutTimeline.to(this.lines, duration, { scaleX: 0, stagger: -stagger, ease: 'power1.inOut' }, 0);
       this.hoverOutTimeline.to(this.$refs.underline, duration, { scaleX: 1, ease: 'power1.inOut' }, stagger * 3 + duration * 0.55);
 
       this.hoverOutTimeline.call(this.resetActiveState, null, 0);

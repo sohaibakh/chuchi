@@ -12,6 +12,12 @@ const LINE_MARGIN = 50;
 export default {
     props: ['label'],
 
+    data() {
+        return {
+          sublines: []
+        };
+      },
+
     methods: {
         /**
          * Public
@@ -38,16 +44,22 @@ export default {
 
         animate() {
             if (this.infinite) this.infinite.kill();
-            this.infinite = new gsap.timeline({ repeat: -1, repeatDelay: 1 });
-
+          
+            this.infinite = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+          
             const duration = 1.6;
             const stagger = duration / 10;
-
-            // this.infinite.set(this.$refs.subline, { transformOrigin: 'left top' });
-            // this.infinite.fromTo(this.$refs.subline, duration, { scaleY: 0 }, { scaleY: 1, stagger, ease: 'power1.in' });
-            this.infinite.set(this.$refs.subline, { transformOrigin: 'left bottom' });
-            this.infinite.fromTo(this.$refs.subline, duration, { scaleY: 1 }, { scaleY: 0, stagger: -stagger, ease: 'power2.inOut' });
-        },
+          
+            this.infinite.set(this.sublines, { transformOrigin: 'left bottom' });
+          
+            this.infinite.fromTo(
+              this.sublines,
+              duration,
+              { scaleY: 1 },
+              { scaleY: 0, stagger: -stagger, ease: 'power2.inOut' }
+            );
+          },
+          
 
         resize(contentElement) {
             const contentElementBoundingBox = contentElement.getBoundingClientRect();

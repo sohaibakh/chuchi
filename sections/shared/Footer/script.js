@@ -11,7 +11,9 @@ import Youtube from '@/assets/images/icons/youtube.svg?inline';
 import Instagram from '@/assets/images/icons/instagram.svg?inline';
 
 export default {
+
     props: ['scrollType'],
+    name: 'SectionFooter',
 
     components: {
         Logo,
