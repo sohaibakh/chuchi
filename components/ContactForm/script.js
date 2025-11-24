@@ -1,7 +1,9 @@
 import ButtonUnderlined from '@/components/ButtonUnderlined'
 export default {
     name: "ContactForm",
-    components: ButtonUnderlined,
+    components: {
+      ButtonUnderlined
+    },
     data() {
       return {
         formData: {

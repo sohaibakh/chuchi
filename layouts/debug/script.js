@@ -52,9 +52,27 @@ export default {
         /**
          * Handlers
          */
-        preloaderChangeHandler() {
-            this.setupWebglBackground();
-        },
+        // preloaderChangeHandler() {
+        //     this.setupWebglBackground();
+        // },
+
+        preloaderChangeHandler(state) {
+            if (state === PRELOADER_ASSETS_LOADED) {
+                // WebGL can initialize early, but not interactive yet
+                this.setupWebglBackground();
+            }
+        
+            if (state === PRELOADER_COMPLETED) {
+                // Fully unlock scroll
+                if (this.$root.scrollManager) {
+                    this.$root.scrollManager.unlockScroll?.();
+                    this.$root.scrollManager.enable?.();
+                }
+        
+                // Setup WebGL if not done already
+                this.setupWebglBackground();
+            }
+        },        
     },
 };
 

@@ -105,7 +105,17 @@ export default {
 
   methods: {
     transitionIn(done, routInfo) {
-      this.$refs.scrollControl.enable();
+      // this.$refs.scrollControl.enable();
+
+      const sc = this.$refs.scrollControl;
+      
+      if (!sc) {
+        console.warn("ScrollControl not ready yet, retrying…");
+        this.$nextTick(() => this.$refs.scrollControl?.enable?.());
+      } else {
+        sc.enable();
+      }
+    
       this.disablePageBounce();
 
       const delay = routInfo.previous === null ? 0 : 0;

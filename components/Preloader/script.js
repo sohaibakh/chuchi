@@ -51,6 +51,10 @@ export default {
     this.loadResources();
     this.setupEventListeners();
     this.show();
+    if (!this.$refs.video) {
+      // No video available → auto-complete timeline show step
+      this.isTimelineShowComplete = true;
+    }
   },
 
   beforeDestroy() {
@@ -84,7 +88,17 @@ export default {
 
     show() {
       const timeline = gsap.timeline({ delay: 0.5 });
-      timeline.fromTo(this.$refs.video, { opacity: 0 }, { opacity: 1, duration: 1, ease: 'power2.out' }, 0);
+    
+      // Only animate video if it exists
+      if (this.$refs.video) {
+        timeline.fromTo(
+          this.$refs.video,
+          { opacity: 0 },
+          { opacity: 1, duration: 1, ease: 'power2.out' },
+          0
+        );
+      }
+    
       timeline.call(this.timelineShowCompleteHandler, null, 2.0);
     },
 
@@ -111,10 +125,22 @@ export default {
     loadResourcesCompleteHandler() {
       this.isQueueComplete = true;
       if (this.isTimelineShowComplete) {
+        this.$store.commit('preloader', PRELOADER_ASSETS_LOADED);
         this.showIntro();
         this.hide();
       }
     },
+
+    // timelineShowCompleteHandler() {
+    //   this.isTimelineShowComplete = true;
+    //   if (this.isQueueComplete) {
+    //     this.$store.commit('preloader', PRELOADER_ASSETS_LOADED);
+    //     this.showIntro();
+    //     this.hide();
+    //   } else {
+        
+    //   }
+    // },
 
     timelineShowCompleteHandler() {
       this.isTimelineShowComplete = true;
@@ -123,9 +149,10 @@ export default {
         this.showIntro();
         this.hide();
       } else {
-        this.show(); // retry
+            
       }
     },
+    
 
     hideCompleteHandler() {
       if (this.$refs.video) this.$refs.video.pause();

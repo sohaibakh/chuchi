@@ -1,20 +1,20 @@
 <section class="section section-hero-video" ref="root">
     <div class="section__content">
       <div class="content content--video" ref="content">
-        <video
-          ref="video"
-          class="bg-video"
-          autoplay
-          muted
-          playsinline
-          loop
-          preload="metadata"
-
-        >
-          <!-- <source v-if="videoSrcWebm" :src="videoSrcWebm" type="video/webm" /> -->
-          <source :src="videoSrcMp4"  type="video/mp4" />
-        </video>
-
+        <div class="video-wrapper">
+          <video
+            ref="video"
+            class="bg-video"
+            autoplay
+            muted
+            playsinline
+            loop
+            preload="metadata"
+          >
+            <source :src="videoSrcMp4" type="video/mp4" />
+          </video>
+        </div>
+      
         <div v-if="overlay" class="video-overlay"></div>
       </div>
 
