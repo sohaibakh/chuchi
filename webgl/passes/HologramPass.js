@@ -9,10 +9,18 @@ import fragmentShader from '@/webgl/shaders/hologram/fragment.glsl';
 export default class HologramPass extends component(ShaderMaterial) {
     init() {
         // Shaders
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
+        // this.vertexShader = vertexShader;
+        // this.fragmentShader = fragmentShader;
 
-        // Uniforms
+        if (!vertexShader || !fragmentShader) {
+            console.error("❌ SHADER FAILED TO LOAD (HologramPass)", {
+              vertexShader,
+              fragmentShader
+            });
+          }
+          
+          this.vertexShader = vertexShader || '';
+          this.fragmentShader = fragmentShader || '';        // Uniforms
         this.uniforms = this._createUniforms();
     }
 

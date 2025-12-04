@@ -9,8 +9,18 @@ import fragmentShader from '@/webgl/shaders/background/fragment.glsl';
 export default class BackgroundPass extends component(ShaderMaterial) {
     init() {
         // Shaders
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
+        // this.vertexShader = vertexShader;
+        // this.fragmentShader = fragmentShader;
+
+        if (!vertexShader || !fragmentShader) {
+            console.error("❌ SHADER FAILED TO LOAD (BackgroundPass)", {
+              vertexShader,
+              fragmentShader
+            });
+          }
+          
+          this.vertexShader = vertexShader || '';
+          this.fragmentShader = fragmentShader || '';
 
         // Uniforms
         this.uniforms = this._createUniforms();

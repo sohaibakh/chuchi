@@ -15,8 +15,18 @@ export default class HidePass extends component(ShaderMaterial) {
         this._color = color;
 
         // Shaders
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
+        // this.vertexShader = vertexShader;
+        // this.fragmentShader = fragmentShader;
+
+        if (!vertexShader || !fragmentShader) {
+            console.error("❌ SHADER FAILED TO LOAD (HidePass)", {
+              vertexShader,
+              fragmentShader
+            });
+          }
+          
+          this.vertexShader = vertexShader || '';
+          this.fragmentShader = fragmentShader || '';
 
         // Uniforms
         this.uniforms = this._createUniforms();

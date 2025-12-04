@@ -172,10 +172,10 @@ export default {
 
         babel: {
             compact: false,  // Prevents large file warnings
-            // plugins: [
-            //     "@babel/plugin-proposal-optional-chaining",
-            //     "@babel/plugin-proposal-nullish-coalescing-operator"
-            //   ]
+            plugins: [
+                "@babel/plugin-proposal-optional-chaining",
+                "@babel/plugin-proposal-nullish-coalescing-operator"
+              ]
         },
 
         transpile: ['three', 'gsap']

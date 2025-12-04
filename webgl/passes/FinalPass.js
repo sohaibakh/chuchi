@@ -16,9 +16,19 @@ export default class FinalPass extends component(ShaderMaterial) {
         this._bottomGradient = bottomGradient;
 
         // Shaders
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
+        // this.vertexShader = vertexShader;
+        // this.fragmentShader = fragmentShader;
 
+        if (!vertexShader || !fragmentShader) {
+            console.error("❌ SHADER FAILED TO LOAD (FinalPass)", {
+              vertexShader,
+              fragmentShader
+            });
+          }
+          
+          this.vertexShader = vertexShader || '';
+          this.fragmentShader = fragmentShader || '';
+          
         // Uniforms
         this.uniforms = this._createUniforms();
     }

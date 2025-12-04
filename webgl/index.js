@@ -202,26 +202,14 @@ export default class Main extends component() {
         return postProcessing;
     }
 
-    // _prepareScenes() {
-    //     let item;
-    //     for (const key in this._sceneManager.scenes) {
-    //         item = this._sceneManager.scenes[key];
-    //         this._postProcessing.render(item, item.camera);
-    //     }
-    // }
-
     _prepareScenes() {
         let item;
         for (const key in this._sceneManager.scenes) {
             item = this._sceneManager.scenes[key];
-
-            // 🔍 Log any broken shaders in this scene
-            this._debugCheckShaders(item);
-
-            this._renderer.compile(item, item.camera);
-            // this._postProcessing.render(item, item.camera);
+            this._postProcessing.render(item, item.camera);
         }
     }
+
 
     /**
      * Update cycle
@@ -243,18 +231,18 @@ export default class Main extends component() {
         this._render();
     }
 
-    // _render() {
-    //     const scene = this._sceneManager.active;
-    //     // if (scene) this._renderer.render(scene, scene.camera);
-    //     if (scene) this._postProcessing.render(scene, scene.camera);
-    // }
-
     _render() {
         const scene = this._sceneManager.active;
-        // TEMP: bypass post-processing
-        if (scene) this._renderer.render(scene, scene.camera);
-        // if (scene) this._postProcessing.render(scene, scene.camera);
+        // if (scene) this._renderer.render(scene, scene.camera);
+        if (scene) this._postProcessing.render(scene, scene.camera);
     }
+
+    // _render() {
+    //     const scene = this._sceneManager.active;
+    //     // TEMP: bypass post-processing
+    //     if (scene) this._renderer.render(scene, scene.camera);
+    //     // if (scene) this._postProcessing.render(scene, scene.camera);
+    // }
 
     /**
      * Resize
