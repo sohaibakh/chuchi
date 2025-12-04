@@ -146,28 +146,18 @@ export default {
         indicator: false,
         
         extend(config, ctx) {
-            /**
-             * GLSL loader
-             */
             config.module.rules.push({
-                test: /\.(glsl|vs|fs|vert|frag)$/,
-                exclude: /node_modules/,
-                use: ['raw-loader', 'glslify-loader'],
+              test: /\.(glsl|vs|fs|vert|frag)$/,
+              exclude: /node_modules/,
+              use: [
+                { loader: 'shader-loader' },
+                { loader: 'glslify-loader' }
+              ]
             });
-
+          
             const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
             svgRule.exclude = [/(assets\/images\/icons)/];
-
-            // config.module.rules.push({
-            //     test: /\.svg$/,
-            //     include: /(assets\/images\/icons)/,
-            //     use: [
-            //       { loader: 'babel-loader' },
-            //       { loader: 'vue-svg-loader' }
-            //     ]
-            // });
-        },
-
+          },
 
 
         babel: {
