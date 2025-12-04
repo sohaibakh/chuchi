@@ -2,7 +2,7 @@
 import gsap from 'gsap';
 
 // Assets
-import Logo from '@/assets/logo-2.svg?inline';
+import Logo from '@/assets/logo-png.png';
 
 import Twitter from '@/assets/images/icons/twitter.svg?inline';
 import Medium from '@/assets/images/icons/medium.svg?inline';
@@ -16,12 +16,17 @@ export default {
     name: 'SectionFooter',
 
     components: {
-        Logo,
         Twitter,
         Medium,
         LinkedIn,
         Youtube,
         Instagram,
+    },
+
+    data() {
+        return {
+            logoSrc: Logo
+        }
     },
 
     methods: {
