@@ -17,14 +17,88 @@ export default {
         };
     },
 
+    start() {
+        // Prevent double calls
+        if (this.isSplitting) return;
+        this.isSplitting = true;
+    
+        requestAnimationFrame(() => {
+            this.safeSplit();
+            this.setupIntersectionObserver();
+            this.$el.style.opacity = 1;
+            this.isSplitting = false;
+        });
+    },
+    
+    safeSplit() {
+        const el = this.$el;
+    
+        // 1️⃣ Revert any previous splits
+        try {
+            this.splitedLines?.revert?.();
+            this.letterSplits?.forEach(s => s?.revert?.());
+        } catch(e) {
+            console.warn("SplitText revert failed:", e);
+        }
+    
+        // 2️⃣ Ensure element is visible before splitting
+        el.style.visibility = "visible";
+        el.style.opacity = 1;
+        el.style.transform = "none";
+    
+        // 3️⃣ Split lines
+        try {
+            if (this.preserveLineBreak) this.splitString();
+            this.splitedLines = new SplitText(el, {
+                type: "lines",
+                linesClass: "gsap-lines",
+            });
+            this.lines = this.splitedLines.lines;
+        } catch (e) {
+            console.error("SplitText line split failed:", e);
+            return;
+        }
+    
+        // 4️⃣ Split letters for each line
+        this.letters = [];
+        this.letterSplits = [];
+    
+        if (this.lang !== "ar") {
+            for (let line of this.lines) {
+                try {
+                    const split = new SplitText(line, {
+                        type: "chars",
+                        charsClass: "chars"
+                    });
+                    this.letterSplits.push(split);
+                    this.letters.push(split.chars);
+                } catch (e) {
+                    console.error("SplitText char split failed:", e);
+                }
+            }
+        }
+    
+        // 5️⃣ Restore transform after split
+        requestAnimationFrame(() => {
+            el.style.transform = "";
+        });
+    },    
+
+
     mounted() {
         // Flags
         this.isInView = false;
         this.isShowCompleted = false;
         this.isHideCompleted = false;
 
-        if (this.$store.state.preloader === PRELOADER_COMPLETED || this.$store.state.preloader === PRELOADER_ASSETS_LOADED) {
-            this.start();
+        // if (this.$store.state.preloader === PRELOADER_COMPLETED || this.$store.state.preloader === PRELOADER_ASSETS_LOADED) {
+        //     this.start();
+        // }
+
+        if (this.$store.state.preloader === PRELOADER_COMPLETED ||
+            this.$store.state.preloader === PRELOADER_ASSETS_LOADED) {
+            
+            requestAnimationFrame(() => this.start());
         }
 
         this.setupEventListeners();
@@ -216,6 +290,13 @@ export default {
                 this.show();
                 observer.disconnect();
             }
+
+            if (!this.lines || !this.letters) {
+                // Wait for splitting to finish
+                setTimeout(() => this.observerHandler(entry, observer), 50);
+                return;
+            }
+            
         },
 
         showCompleteHandler() {
