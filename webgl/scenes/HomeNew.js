@@ -55,7 +55,10 @@ export default class HomeNew extends component(Scene) {
       const h = this._renderer.domElement.clientHeight;
       const dpr = window.devicePixelRatio || 1;
       this._camera.aspect = w / h;
-      this._postProcessing?.onResize?.({ width: w, height: h, dpr });
+      if (this._postProcessing && this._postProcessing.onResize) {
+          this._postProcessing.onResize({ width: w, height: h, dpr });
+      }
+    
     });
 
     this._updatePostProcessing();
@@ -77,7 +80,7 @@ export default class HomeNew extends component(Scene) {
         this._renderer.setClearColor(0x000000, 0);
         this._renderer.clear(true, true, true);
         this._renderer.autoClearColor = true;
-        onCompleteCallback?.();
+        if (typeof onCompleteCallback === 'function') onCompleteCallback();
       }
     });
   
@@ -215,7 +218,13 @@ export default class HomeNew extends component(Scene) {
 
   _setupManagerBindings() {
     this._cameraTarget = new Vector3(0, 0, 0);
-    this._locale = this._nuxtRoot?.$i18n?.locale || 'en';
+    this._locale =
+    this._nuxtRoot &&
+    this._nuxtRoot.$i18n &&
+    this._nuxtRoot.$i18n.locale
+        ? this._nuxtRoot.$i18n.locale
+        : 'en';
+
     this._camera.lookAt(0, 0, 0);
 
     Object.assign(this, {
@@ -238,8 +247,17 @@ export default class HomeNew extends component(Scene) {
   _updatePostProcessing() {
     this._renderer.toneMappingExposure = 1.6;
   
-    const passes = this._postProcessing?.passes;
-    if (!passes || !passes.finalPass?.material?.uniforms) return;
+    const passes = this._postProcessing && this._postProcessing.passes
+        ? this._postProcessing.passes
+        : null;
+
+    if (
+        !passes ||
+        !passes.finalPass ||
+        !passes.finalPass.material ||
+        !passes.finalPass.material.uniforms
+    ) return;
+
   
     const uniforms = passes.finalPass.material.uniforms;
   

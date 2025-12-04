@@ -30,7 +30,7 @@ export default {
     videoSrcMp4() {
       // prefer CMS value, otherwise fallback
       console.log('check vdo:', this.data)
-      return this.data?.videoUrl || fallbackMp4
+      return this.data.videoUrl || fallbackMp4
     },
     // videoSrcWebm() {
     //   return this.data?.videoUrlWebm || null
@@ -58,12 +58,29 @@ export default {
 
   methods: {
     transitionIn() {
-      const tl = gsap.timeline({ onComplete: this.transitionInCompleteHandler })
-      tl.set(this.$el, { autoAlpha: 1 }, 0)
-      if (this.$refs.video) tl.fromTo(this.$refs.video, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, ease: 'sine.inOut' }, 0)
-      if (this.$refs.scrollIndicator?.show) tl.add(this.$refs.scrollIndicator.show(), 0.6)
-      return tl
-    },
+      const tl = gsap.timeline({ onComplete: this.transitionInCompleteHandler });
+      tl.set(this.$el, { autoAlpha: 1 }, 0);
+    
+      if (this.$refs && this.$refs.video) {
+        tl.fromTo(
+          this.$refs.video,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 1.2, ease: 'sine.inOut' },
+          0
+        );
+      }
+    
+      if (
+        this.$refs &&
+        this.$refs.scrollIndicator &&
+        typeof this.$refs.scrollIndicator.show === 'function'
+      ) {
+        tl.add(this.$refs.scrollIndicator.show(), 0.6);
+      }
+    
+      return tl;
+    }
+    ,
 
     backgroundShow(done, direction) {
       if (this.timelineHide) this.timelineHide.kill()
@@ -75,14 +92,27 @@ export default {
     },
 
     backgroundHide(done, direction) {
-      if (this.timelineShow) this.timelineShow.kill()
-      const tl = (this.timelineHide = gsap.timeline({ onComplete: done }))
-      if (this.$refs.scrollIndicator?.$el) tl.to(this.$refs.scrollIndicator.$el, { autoAlpha: 0, duration: 0.3 }, 0)
-      if (this.$refs.video) tl.to(this.$refs.video, { autoAlpha: 0, duration: 0.5, ease: 'sine.inOut' }, 0.2)
-      tl.to(this.$el, { autoAlpha: 0, duration: 0.4 }, 0.4)
-      tl.timeScale(1.2)
-      return tl
-    },
+      if (this.timelineShow) this.timelineShow.kill();
+    
+      const tl = (this.timelineHide = gsap.timeline({ onComplete: done }));
+    
+      if (
+        this.$refs &&
+        this.$refs.scrollIndicator &&
+        this.$refs.scrollIndicator.$el
+      ) {
+        tl.to(this.$refs.scrollIndicator.$el, { autoAlpha: 0, duration: 0.3 }, 0);
+      }
+    
+      if (this.$refs && this.$refs.video) {
+        tl.to(this.$refs.video, { autoAlpha: 0, duration: 0.5, ease: 'sine.inOut' }, 0.2);
+      }
+    
+      tl.to(this.$el, { autoAlpha: 0, duration: 0.4 }, 0.4);
+      tl.timeScale(1.2);
+    
+      return tl;
+    },    
 
     focus() {
       if (!this.isTransitionInComplete) return
@@ -109,8 +139,15 @@ export default {
       WindowResizeObserver.removeEventListener('resize', this.resizeHandler)
     },
     resize() {
-      this.$refs.scrollIndicator?.resize?.(this.$refs.content)
-    },
+      if (
+        this.$refs &&
+        this.$refs.scrollIndicator &&
+        typeof this.$refs.scrollIndicator.resize === 'function'
+      ) {
+        this.$refs.scrollIndicator.resize(this.$refs.content);
+      }
+    }
+    ,
     resizeHandler() {
       this.resize()
     },

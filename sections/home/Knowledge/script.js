@@ -86,7 +86,7 @@ export default {
       this.timelineShow.set(this.$el, { alpha: 1 }, 0);
 
       // Animate heading
-      if (this.$refs.heading?.show) {
+      if (this.$refs.heading.show) {
         this.timelineShow.add(this.$refs.heading.show(), 0); // Start at 0
       }
 
@@ -94,7 +94,7 @@ export default {
 
 
       // Animate body in parallel
-      if (this.$refs.body?.$el) {
+      if (this.$refs.body.$el) {
         this.timelineShow.fromTo(
           this.$refs.body.$el,
           { opacity: 0, y: 40 },
@@ -116,12 +116,12 @@ export default {
       this.timelineHide.to(this.$el, { alpha: 0, duration: 0.5 }, 0.4);
 
       // Hide heading via its method
-      if (this.$refs.heading?.hide) {
+      if (this.$refs.heading.hide) {
         this.$refs.heading.hide();
       }
 
       // Instantly hide body to prevent re-flash
-      if (this.$refs.body?.$el) {
+      if (this.$refs.body.$el) {
         gsap.set(this.$refs.body.$el, {
           opacity: 0,
           y: 40,

@@ -28,9 +28,10 @@ export default {
         }
       },
 
-    data() {
+      data() {
         return {
           allowHover: true,
+          direction: 1,   // 🔥 FIX: must exist before template uses it
         };
       },
 

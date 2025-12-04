@@ -26,7 +26,12 @@
             class="card"
           >
             <div class="card-inner" ref="sercards" refInFor>
-              <img :src="slide.image?.sizes?.['1920x0']?.url || slide.image?.url" :alt="slide.title" />
+              <img 
+              :src="slide.image.sizes && slide.image.sizes['1920x0'] 
+                    ? slide.image.sizes['1920x0'].url 
+                    : slide.image.url" 
+              :alt="slide.title" 
+            />
 
               <p class="card-title">{{ slide.title }}</p> 
             </div>

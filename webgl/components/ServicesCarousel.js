@@ -59,7 +59,7 @@ export default class ServicesCarousel extends component(Object3D) {
           texture.needsUpdate = true;
           this._textures.push(texture);
         }
-        console.log('✅ Available textures:', this._textures.map(t => t.image?.src));
+        
 
         this._createSlides();
         this._transitionInSlides();

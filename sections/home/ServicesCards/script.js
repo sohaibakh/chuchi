@@ -1,6 +1,5 @@
 import gsap from 'gsap';
-import sample from '@/assets/images/services/interactive.PNG';
-import sample2 from '@/assets/images/services/concept-design.png';
+
 import Heading from '@/components/Heading';
 
 export default {
@@ -64,12 +63,12 @@ export default {
     backgroundShow(done, direction) {
       const tl = gsap.timeline({ onComplete: done });
 
-      if (this.$refs.heading?.show) {
+      if (this.$refs.heading.show) {
         tl.add(this.$refs.heading.show(), 0);
       }
 
       if (Array.isArray(this.$refs.sercards)) {
-        const cards = this.$refs.sercards.map(el => el?.$el || el);
+        const cards = this.$refs.sercards.map(el => el.$el || el);
         tl.fromTo(
           cards,
           { opacity: 0, y: 50 },
@@ -84,10 +83,10 @@ export default {
     backgroundHide(done) {
       const tl = gsap.timeline({ onComplete: done });
 
-      if (this.$refs.heading?.hide) tl.add(this.$refs.heading.hide(), 0);
+      if (this.$refs.heading.hide) tl.add(this.$refs.heading.hide(), 0);
 
       if (Array.isArray(this.$refs.sercards)) {
-        const cards = this.$refs.sercards.map(el => el?.$el || el);
+        const cards = this.$refs.sercards.map(el => el.$el || el);
         gsap.set(cards, { opacity: 0, y: 50 });
       }
 

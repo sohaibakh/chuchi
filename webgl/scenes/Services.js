@@ -171,7 +171,9 @@ export default class Services extends component(Scene) {
             this._renderer.setClearColor(0x000000, 0);
             this._renderer.clear(true, true, true);
             this._renderer.autoClearColor = true;
-            onCompleteCallback?.();
+            if (typeof onCompleteCallback === 'function') {
+                onCompleteCallback();
+            }
           }
         });
       

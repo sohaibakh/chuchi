@@ -72,7 +72,7 @@ export default class PostProcessing extends component() {
         //     this._layers.landscapes.render();
         // }
 
-        // if (scene.name === 'services' && this._passes.hidePass?.material.uniforms?.progress) {
+        // if (scene.name === 'services' && this._passes.hidePass.material.uniforms.progress) {
         //     this._passes.hidePass.material.uniforms.progress.value = 0;
         //   }
 
@@ -244,7 +244,7 @@ export default class PostProcessing extends component() {
 
     resetDefaults() {
         const p = this._passes;
-        if (!p?.finalPass?.material?.uniforms) return;
+        if (!p.finalPass.material.uniforms) return;
       
         const u = p.finalPass.material.uniforms;
       

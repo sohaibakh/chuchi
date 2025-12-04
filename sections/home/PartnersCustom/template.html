@@ -23,9 +23,9 @@
                 target="_blank"
                 class="button-logo"
               >
-                <img :src="item.logo?.url || item.logo" class="logo" />
+                <img :src="item.logo.url || item.logo" class="logo" />
               </a>
-              <img v-else :src="item.logo?.url || item.logo" class="logo" />
+              <img v-else :src="item.logo.url || item.logo" class="logo" />
             </li>
           </ul>
         </div>

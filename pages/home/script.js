@@ -18,21 +18,13 @@ import SectionServicesCards from '@/sections/home/ServicesCards';
 import SectionNews from '@/sections/shared/News';
 import SectionFooter from '@/sections/shared/Footer';
 import SectionFormCta from '@/sections/home/FormCta';
-import SectionHeroVideo from '@/sections/home/Video'
-// import SectionPortfolio from '@/sections/home/Portfolio'
-
-// import logo1 from '@/assets/images/logos/1.png';
-// import logo2 from '@/assets/images/logos/2.png';
-// import logo3 from '@/assets/images/logos/3.png';
-// import logo4 from '@/assets/images/logos/4.png';
-// import logo5 from '@/assets/images/logos/5.png';
+import SectionHeroVideo from '@/sections/home/Video';
 import SectionPartnersCustom from '@/sections/home/PartnersCustom';
-// import vdo from '@/assets/images/video3.mp4'
+
 export default {
   extends: Page,
 
   components: {
-    // SectionPortfolio,
     ScrollControl,
     SectionHeader,
     SectionSlider,
@@ -53,27 +45,26 @@ export default {
     const resPortfolio = await axios.get(`page/portfolio?lang=${locale}`);
     const resServices = await axios.get(`page/services?lang=${locale}`);
 
-    console.log('services: ', resServices.data.items)
+    console.log('services: ', resServices.data.items);
     const servicesItems = resServices.data.items;
-    
+
     const portfolioItems = resPortfolio.data.items;
     const slides = portfolioItems.map(project => ({
       title: project.title,
-      image: project.image?.sizes?.['1920x0']?.url || '',
+      image: (project.image && project.image.sizes && project.image.sizes['1920x0'] && project.image.sizes['1920x0'].url) || '',
       slug: project.slug
     }));
-  
+
     const sectionClientsRaw = res.data.sections.section_clients;
-  
-    // normalize brand_logo → logos
+
     const section_clients = {
       title: sectionClientsRaw.title,
       logos: (sectionClientsRaw.brand_logo || []).map(item => ({
-        logo: item.logo?.url || item.logo,
+        logo: (item.logo && item.logo.url) || item.logo,
         link: item.link || ''
       }))
     };
-  
+
     return {
       metadata: res.data.seo,
       ...res.data.sections,
@@ -81,18 +72,10 @@ export default {
       hero: {
         videoUrl: res.data.sections.section_video,
       },
-      section_clients, 
+      section_clients,
       servicesItems
     };
   },
-  
-  // data() {
-  //   return {
-  //     hero: {
-  //       videoUrl: vdo
-  //     }
-  //   };
-  // },
 
   created() {
     this.scrollTriggers = true;
@@ -100,73 +83,87 @@ export default {
 
   mounted() {
     this.$root.scrollControl = this.$refs.scrollControl;
-    
   },
 
   methods: {
     transitionIn(done, routInfo) {
-      // this.$refs.scrollControl.enable();
-
       const sc = this.$refs.scrollControl;
       const header = this.$refs.header;
+
       if (!sc) {
         console.warn("ScrollControl not ready yet, retrying…");
-        this.$nextTick(() => this.$refs.scrollControl?.enable?.());
+        this.$nextTick(() => {
+          if (this.$refs.scrollControl && typeof this.$refs.scrollControl.enable === "function") {
+            this.$refs.scrollControl.enable();
+          }
+        });
       } else {
-        sc.enable();
+        if (typeof sc.enable === "function") sc.enable();
       }
-    
+
       this.disablePageBounce();
 
       const delay = routInfo.previous === null ? 0 : 0;
-
       const timeline = new gsap.timeline({ onComplete: done, delay });
-      // console.log('ele:', this.$el)
+
       if (this.$root.webglApp) {
         timeline.add(this.$root.webglApp.showScene('home'), 0);
-      // timeline.add(this.$root.webglApp.hideScene('portfolio'), 0);
-      // timeline.add(this.$root.webglApp.hideScene('services'),  0);
       }
-      
-      // timeline.to(this.$el, 1.3, { alpha: 1, ease: 'sine.inOut' }, 0.5);
 
-      if (this.$refs.header?.transitionIn) {
+      if (this.$refs.header && typeof this.$refs.header.transitionIn === "function") {
         timeline.add(this.$refs.header.transitionIn(), 0.5);
       } else {
         console.warn("Header not ready, retrying…");
         this.$nextTick(() => {
-          this.$refs.header?.transitionIn?.();
+          if (this.$refs.header && typeof this.$refs.header.transitionIn === "function") {
+            this.$refs.header.transitionIn();
+          }
         });
       }
+
       timeline.add(this.$root.theNavigation.show(), 1);
-      // timeline.add(this.$root.buttonMute.show(), 2.1);
+
       if (this.$root.customCursor) {
         timeline.add(this.$root.customCursor.show(), 2);
-        timeline.call(this.$root.customCursor.enableClickAndHold, null, 2);
-        timeline.call(this.$root.customCursor.showIconA, null, 2);
-    }
-    
-  },
+        timeline.call(() => {
+          if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+        }, null, 2);
+        timeline.call(() => {
+          if (this.$root.customCursor.showIconA) this.$root.customCursor.showIconA();
+        }, null, 2);
+      }
+    },
 
-  transitionOut(done) {
+    transitionOut(done) {
       this.enablePageBounce();
-      const timeline = new gsap.timeline({ onComplete: done });
-      if (this.$root.webglApp) timeline.add(this.$root.webglApp.hideScene(), 0);
-      timeline.to(this.$el, 0.8, { alpha: 0, ease: 'sine.inOut' }, 0);
-      timeline.set(this.$root.webglBackground.$el, { opacity: 1 }, 0.8);
 
-      timeline.call(
-        () => {
-            this.$root.webglApp.getScene('home')._container.position.y = 0;
-        },
-        null,
-        0.8
-    );
+      const timeline = new gsap.timeline({ onComplete: done });
+
+      if (this.$root.webglApp) {
+        timeline.add(this.$root.webglApp.hideScene(), 0);
+      }
+
+      timeline.to(this.$el, 0.8, { alpha: 0, ease: 'sine.inOut' }, 0);
+
+      if (this.$root.webglBackground && this.$root.webglBackground.$el) {
+        timeline.set(this.$root.webglBackground.$el, { opacity: 1 }, 0.8);
+      }
+
+      timeline.call(() => {
+        const homeScene = this.$root.webglApp && this.$root.webglApp.getScene('home');
+        if (homeScene && homeScene._container && homeScene._container.position) {
+          homeScene._container.position.y = 0;
+        }
+      }, null, 0.8);
+
       if (this.$root.customCursor) {
-        this.$root.customCursor.disableClickAndHold();
-        this.$root.customCursor.hide();
-    }
-  },
+        if (this.$root.customCursor.disableClickAndHold)
+          this.$root.customCursor.disableClickAndHold();
+
+        if (this.$root.customCursor.hide)
+          this.$root.customCursor.hide();
+      }
+    },
 
     enablePageBounce() {
       document.documentElement.classList.remove('prevent-bounce');

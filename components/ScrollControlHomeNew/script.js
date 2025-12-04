@@ -124,28 +124,58 @@ export default {
     },
 
     checkSectionTrigger() {
-      const scene = this.$root?.webglApp?.getScene?.('home');
-      const sections = this.$root?.sectionsInfo;
-      if (!scene || !sections || typeof scene._goto !== 'function') return;
+      const scene =
+        this.$root &&
+        this.$root.webglApp &&
+        typeof this.$root.webglApp.getScene === "function"
+          ? this.$root.webglApp.getScene("home")
+          : null;
+    
+      const sections =
+        this.$root && this.$root.sectionsInfo
+          ? this.$root.sectionsInfo
+          : null;
+    
+      if (!scene || !sections || typeof scene._goto !== "function") return;
     
       const triggerPoint = window.innerHeight * 0.7;
     
       for (let i = 0; i < sections.length; i++) {
         const section = sections[i];
-        const el = section.component?.$el;
+    
+        const el =
+          section.component && section.component.$el
+            ? section.component.$el
+            : null;
+    
         if (!el) continue;
     
         const rect = el.getBoundingClientRect();
     
         if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
-          const scrollType = section.component?.$attrs?.['scroll-type'] || 'free';
+          const scrollType =
+            section.component &&
+            section.component.$attrs &&
+            section.component.$attrs["scroll-type"]
+              ? section.component.$attrs["scroll-type"]
+              : "free";
     
-          // ✅ Enforce snap scroll for step sections
-          if (scrollType === 'step' && section.position?.y !== undefined) {
+          if (
+            scrollType === "step" &&
+            section.position &&
+            section.position.y !== undefined
+          ) {
             this._scrollYTarget = section.position.y;
           }
     
-          console.log(`🔥 Triggering section: ${section.component?.$options?.name} [${scrollType}]`);
+          const sectionName =
+            section.component &&
+            section.component.$options &&
+            section.component.$options.name
+              ? section.component.$options.name
+              : "";
+    
+          console.log(`🔥 Triggering section: ${sectionName} [${scrollType}]`);
     
           if (this.currentSectionIndex !== i) {
             const prev = this.currentSectionIndex;
@@ -154,9 +184,11 @@ export default {
             this.currentSectionIndex = next;
     
             if (prev !== -1 && Math.abs(next - prev) > 1) {
-              const range = direction > 0
-                ? [...Array(next - prev).keys()].map(n => prev + n + 1)
-                : [...Array(prev - next).keys()].map(n => prev - n - 1);
+              const range =
+                direction > 0
+                  ? [...Array(next - prev).keys()].map(n => prev + n + 1)
+                  : [...Array(prev - next).keys()].map(n => prev - n - 1);
+    
               range.forEach(idx => scene._goto(idx, direction));
             } else {
               scene._goto(i, direction);
@@ -167,6 +199,7 @@ export default {
         }
       }
     }
+    
     ,
 
     resize() {

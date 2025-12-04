@@ -152,13 +152,18 @@ export default class Portfolio extends component(Scene) {
         this._timelineHide = gsap.timeline({
           onComplete: () => {
             this._isActive = false;
-            this._postProcessing.resetDefaults?.();
+            if (this._postProcessing && typeof this._postProcessing.resetDefaults === 'function') {
+                this._postProcessing.resetDefaults();
+            }
+            
       
             this._renderer.setClearColor(0x000000, 0); // transparent black
             this._renderer.clear(true, true, true);
             this._renderer.autoClearColor = true;
       
-            onCompleteCallback?.();
+            if (typeof onCompleteCallback === 'function') {
+                onCompleteCallback();
+            }
           }
         });
       

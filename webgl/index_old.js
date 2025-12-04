@@ -47,7 +47,10 @@ export default class Main extends component() {
         this._updateDebugGui();
 
         if (this._debug) this._sceneManager.show('home');
-        // this._sceneManager.show('home');
+        const routeName = this._nuxtRoot?.$route?.name || '';
+            if (routeName.includes('home')) {
+                this._sceneManager.show('home');
+            }
 
         // setTimeout(() => {
         //     this.goto(6, 1, null);
@@ -82,6 +85,7 @@ export default class Main extends component() {
         const timeline = new gsap.timeline();
         timeline.call(
             () => {
+                this._postProcessing.resetDefaults();
                 this._sceneManager.show(scene);
             },
             null,
@@ -90,18 +94,30 @@ export default class Main extends component() {
         return timeline;
     }
 
-    hideScene(scene) {
-        const timeline = new gsap.timeline();
-        timeline.add(this._sceneManager.hide(scene), 0);
+    hideScene(sceneName) {
+        const scene = sceneName ? this._sceneManager.get(sceneName) : this._sceneManager.active;
+        const timeline = gsap.timeline();
+      
+        if (scene && scene.hide) {
+          timeline.add(scene.hide(() => {
+            // 🧼 Clean postprocessing right after fade
+            this._postProcessing.resetDefaults();
+            this._renderer.setClearColor(0x000000, 0);
+            this._renderer.clear(true, true, true);
+            this._renderer.autoClearColor = true;
+          }), 0);
+        }
+      
         return timeline;
-    }
+      }
+      
 
     focus(sectionIndex) {
-        this._sceneManager.focus(sectionIndex);
+        // this._sceneManager.focus(sectionIndex);
     }
 
     unfocus() {
-        this._sceneManager.unfocus();
+        // this._sceneManager.unfocus();
     }
 
     goto(index, direction, done) {
@@ -111,7 +127,13 @@ export default class Main extends component() {
 
         if (this._sceneManager.active.name === 'about') {
             this._sceneManager.active.goto(index, direction, done);
+            console.log('about')
         }
+
+        // if (this._sceneManager.active.name === 'services') {
+        //     this._sceneManager.active.goto(index, direction, done);
+        //     console.log('services')
+        // }
     }
 
     /**
@@ -154,6 +176,7 @@ export default class Main extends component() {
             renderer: this._renderer,
             postProcessing: this._postProcessing,
             debug: this._debug,
+            // scenes
         });
         return sceneManager;
     }
@@ -193,11 +216,27 @@ export default class Main extends component() {
         this._render();
     }
 
+    // _render() {
+    //     const scene = this._sceneManager.active;
+    //     // if (scene) this._renderer.render(scene, scene.camera);
+    //     if (scene) this._postProcessing.render(scene, scene.camera);
+    // }
+
     _render() {
         const scene = this._sceneManager.active;
-        // if (scene) this._renderer.render(scene, scene.camera);
-        if (scene) this._postProcessing.render(scene, scene.camera);
-    }
+      
+        if (scene && scene.camera) {
+          // ✅ For 'services', skip postprocessing and render directly
+          if (scene.name === 'service') {
+            // this._renderer.render(scene, scene.camera);
+            this._postProcessing.render(scene, scene.camera);
+
+          } else {
+            this._postProcessing.render(scene, scene.camera);
+          }
+        }
+      }
+  
 
     /**
      * Resize

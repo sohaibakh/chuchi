@@ -26,7 +26,7 @@ export default {
 
     // Heading text with fallback
     headingText() {
-      return this.data?.title || (this.isArabic ? 'عملاؤنا' : 'Our Clients');
+      return this.data.title || (this.isArabic ? 'عملاؤنا' : 'Our Clients');
     },
   },
 
@@ -59,7 +59,7 @@ export default {
       const tl = gsap.timeline({ onComplete: done });
 
       // Animate heading
-      if (this.$refs.heading?.show) {
+      if (this.$refs.heading.show) {
         tl.add(this.$refs.heading.show(), 0);
       }
 
@@ -88,7 +88,7 @@ export default {
 
       const tl = gsap.timeline({ onComplete: done });
 
-      if (this.$refs.heading?.hide) {
+      if (this.$refs.heading.hide) {
         tl.add(this.$refs.heading.hide(), 0);
       }
 

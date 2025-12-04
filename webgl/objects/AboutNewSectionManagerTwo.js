@@ -16,14 +16,23 @@ const sectionPositions = {
 export default {
   
   _scrollHandler({ y }) {
-    const sections = this._nuxtRoot?.sectionsInfo;
+    const sections =
+    this._nuxtRoot && this._nuxtRoot.sectionsInfo
+      ? this._nuxtRoot.sectionsInfo
+      : null;
+
     if (!sections) return;
   
     const triggerY = window.innerHeight * 0.85;
   
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
-      const el = section?.component?.$el;
+      const el =
+      section &&
+      section.component &&
+      section.component.$el
+        ? section.component.$el
+        : null;
       if (!el) continue;
   
       const rect = el.getBoundingClientRect();
@@ -33,33 +42,52 @@ export default {
           const direction = i > (this._lastDOMSectionIndex || 0) ? 1 : -1;
           this._lastDOMSectionIndex = i;
   
-          const name = section.component?.$options?.name || `Unknown_${i}`;
+          const name =
+          section &&
+          section.component &&
+          section.component.$options &&
+          section.component.$options.name
+            ? section.component.$options.name
+            : `Unknown_${i}`;
+
           console.log(`[📍 DOM] Active Section: ${name}`);
   
           const fn = `_show${name}`;
           if (typeof this[fn] === 'function') {
             const tl = this[fn](direction);
-  
-            // ✅ Only call backgroundShow after spinner section animation starts
+        
+            // Determine if backgroundShow exists
+            var hasBg =
+                section &&
+                section.component &&
+                typeof section.component.backgroundShow === 'function';
+        
+            // If GSAP timeline
             if (tl && typeof tl.then === 'undefined' && typeof tl.eventCallback === 'function') {
-              // Use GSAP's `onStart` or `call()` to run it at timeline start
-              tl.call(() => {
-                if (typeof section.component?.backgroundShow === 'function') {
-                  section.component.backgroundShow(() => {}, direction);
+                tl.call(function () {
+                    if (hasBg) {
+                        section.component.backgroundShow(function(){}, direction);
+                    }
+                }, null, 0.01);
+            } 
+            else {
+                // Fallback (non-timeline)
+                if (hasBg) {
+                    section.component.backgroundShow(function(){}, direction);
                 }
-              }, null, 0.01); // delay slightly after timeline begins
-            } else {
-              // fallback if not a timeline
-              if (typeof section.component?.backgroundShow === 'function') {
-                section.component.backgroundShow(() => {}, direction);
-              }
             }
-          } else {
+        }
+        else {
             // No section animation; still call backgroundShow
-            if (typeof section.component?.backgroundShow === 'function') {
-              section.component.backgroundShow(() => {}, direction);
+            if (
+                section &&
+                section.component &&
+                typeof section.component.backgroundShow === 'function'
+            ) {
+                section.component.backgroundShow(function(){}, direction);
             }
-          }
+        }
+        
         }
         break;
       }
@@ -81,7 +109,8 @@ export default {
     if (this._lastSection === 'section0') return;
     this._lastSection = 'section0';
 
-    const spinner = this._components?.spinner;
+    const spinner = this._components ? this._components.spinner : null;
+
     if (spinner) {
       gsap.to(spinner.position, {
         x: this._locale === 'en' ? -1.38 : -3.1, // or whatever "perfect" position you saw in Info

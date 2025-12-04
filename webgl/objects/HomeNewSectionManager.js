@@ -54,7 +54,7 @@ export default {
       onUpdate: () => this._camera.lookAt(0, 0, 0),
     });
 
-    if (dir < 0 && this._components?.spinner) {
+    if (dir < 0 && this._components.spinner) {
       tl.to(this._components.spinner.position, {
         x: 0,
         y: -0.95,
@@ -70,8 +70,8 @@ export default {
   _showSection2(dir = 1) {
     const tl = gsap.timeline();
     const cam = this._camera;
-    const spinner = this._components?.spinner;
-    const services = this._components?.servicesPlanes;
+    const spinner = this._components.spinner;
+    const services = this._components.servicesPlanes;
 
     if (dir > 0 && spinner) {
       tl.to(spinner.position, {
@@ -131,7 +131,7 @@ export default {
     const tl = gsap.timeline();
     const cam = this._camera;
     const target = this._cameraB;
-    const services = this._components?.servicesPlanes;
+    const services = this._components.servicesPlanes;
 
     if (!cam || !target) return tl;
 
@@ -181,7 +181,7 @@ export default {
     const tl = gsap.timeline();
     const cam = this._camera;
     const target = this._cameraC;
-    const services = this._components?.servicesPlanes;
+    const services = this._components.servicesPlanes;
 
     if (services) {
       services.visible = true;
@@ -251,7 +251,7 @@ export default {
 
   _showSection7() {
     const tl = gsap.timeline();
-    const spinner = this._components?.spinner;
+    const spinner = this._components.spinner;
 
     if (!spinner) return tl;
 

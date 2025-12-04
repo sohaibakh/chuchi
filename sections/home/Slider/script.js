@@ -64,10 +64,19 @@ export default {
   },
 
   beforeDestroy() {
-    if (this.state?.animationFrame) cancelAnimationFrame(this.state.animationFrame);
-    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
-    if (this._io) this._io.disconnect();
-  },
+    if (this.state && this.state.animationFrame) {
+      cancelAnimationFrame(this.state.animationFrame);
+    }
+  
+    if (this._resizeHandler) {
+      window.removeEventListener('resize', this._resizeHandler);
+    }
+  
+    if (this._io) {
+      this._io.disconnect();
+    }
+  }
+,  
 
   methods: {
     _setupIntersectionObserver() {
@@ -85,19 +94,38 @@ export default {
 
     backgroundShow(done) {
       const tl = gsap.timeline({ onComplete: done });
-      if (this.$refs.heading?.show) tl.add(this.$refs.heading.show(), 0);
-      if (this.$refs.slides) {
-        tl.to(this.$refs.slides, { y: 0, opacity: 1, duration: 1.0, ease: 'power2.out' }, 0.4);
+    
+      if (this.$refs && this.$refs.heading && typeof this.$refs.heading.show === "function") {
+        tl.add(this.$refs.heading.show(), 0);
       }
+    
+      if (this.$refs && this.$refs.slides) {
+        tl.to(this.$refs.slides, {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'power2.out'
+        }, 0.4);
+      }
+    
       return tl;
-    },
+    }
+    ,
 
     backgroundHide(done) {
       const tl = gsap.timeline({ onComplete: done });
-      if (this.$refs.heading?.hide) tl.add(this.$refs.heading.hide(), 0);
-      if (this.$refs.slides) gsap.set(this.$refs.slides, { opacity: 0, y: 50 });
+    
+      if (this.$refs && this.$refs.heading && typeof this.$refs.heading.hide === "function") {
+        tl.add(this.$refs.heading.hide(), 0);
+      }
+    
+      if (this.$refs && this.$refs.slides) {
+        gsap.set(this.$refs.slides, { opacity: 0, y: 50 });
+      }
+    
       return tl;
-    },
+    }
+    ,
 
     _initCenteredSlider() {
       const wrapper = this.$el.querySelector('.swiper-wrapper');
@@ -192,9 +220,16 @@ export default {
     },
 
     _setActive(index) {
-      const slides = this.state.wrapper?.querySelectorAll('.swiper-slide') || [];
-      slides.forEach((el, i) => el.classList.toggle('active', i === index));
-    },
+      const slides =
+        this.state && this.state.wrapper
+          ? this.state.wrapper.querySelectorAll('.swiper-slide')
+          : [];
+    
+      slides.forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+      });
+    }
+    ,
 
     _centerSlide(index) {
       const slides = this.$el.querySelectorAll('.swiper-slide');

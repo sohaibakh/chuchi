@@ -62,16 +62,17 @@ export default {
                 this.setupWebglBackground();
             }
         
-            if (state === PRELOADER_COMPLETED) {
-                // Fully unlock scroll
-                if (this.$root.scrollManager) {
-                    this.$root.scrollManager.unlockScroll?.();
-                    this.$root.scrollManager.enable?.();
+            if (this.$root.scrollManager) {
+
+                if (typeof this.$root.scrollManager.unlockScroll === "function") {
+                    this.$root.scrollManager.unlockScroll();
                 }
-        
-                // Setup WebGL if not done already
-                this.setupWebglBackground();
+            
+                if (typeof this.$root.scrollManager.enable === "function") {
+                    this.$root.scrollManager.enable();
+                }
             }
+            
         },        
     },
 };
