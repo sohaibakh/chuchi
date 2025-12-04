@@ -37,7 +37,8 @@
 
     <!-- Logo -->
     <nuxt-link :to="localePath('/')" class="button-logo" ref="logo" @click.native="logoClickHandler">
-        <Logo />
+        <!-- <Logo /> -->
+        <img :src="logoSrc" alt="Midwam" class="nav-logo" />
     </nuxt-link>
 
     <!-- Language switcher -->

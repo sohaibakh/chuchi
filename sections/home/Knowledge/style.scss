@@ -51,8 +51,27 @@
             margin-right: auto;
         }
 
-        .heading > * {
-            text-align:center!important;
+        
+        .heading {
+            font-size: rem(35px);
+            line-height: 1.205em;
+            letter-spacing: 0.05em;
+            text-align: center!important;
+
+            >*{
+                text-align:center;
+            }
+            div {
+                text-align:center!important;
+            }
+            > span {
+                display: block;
+            }
+
+            @include respond-to('large') {
+                font-size: rem-l(50px);
+                letter-spacing: 0.07em;
+            }
         }
 
         .gsap-lines{
@@ -70,15 +89,9 @@
     }
 }
 
-.heading {
-    line-height: 1.12!important;
-    div {
-        text-align:center!important;
-    }
-    > span {
-        display: block;
-    }
-}
+
+
+
 
 .row-body {
 

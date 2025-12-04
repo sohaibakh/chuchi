@@ -48,9 +48,12 @@
     // ::v-deep .heading {
     //     font-size: rem-l(60px);
     // }
-    ::v-deep .heading {
-        font-size: rem-l(50px);
-    }
+     @media (max-height: 740px) {
+        ::v-deep .heading {
+            font-size: rem-l(80px);
+        }
+     }
+  
 
     ::v-deep .gsap-lines {
         text-align:center !important;
@@ -106,7 +109,7 @@
             //     font-size: rem-l(60px);
             // }
             ::v-deep .heading {
-                font-size: rem-l(50px);
+                font-size: rem-l(80px);
             }
 
             ::v-deep .gsap-lines {

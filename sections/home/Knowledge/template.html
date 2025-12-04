@@ -9,14 +9,29 @@
     <!-- Row title -->
     <div class="row row-title">
       <div class="column">
-        <Heading
+        <!-- <Heading
           tag="h1"
           ref="heading"
           isCustomTriggered="false"
           class="heading-a heading"
           :preserve-line-break="true"
           :data="data?.title"
-        />
+        /> -->
+        <!-- <Heading
+            ref="heading"
+            tag="h2"
+            :data="data?.title" 
+            class="heading-b heading center-heading"
+            :isCustomTriggered="true"
+            :preserve-line-break="true"
+          /> -->
+
+          <Heading
+            tag="h2"
+            class="knowledge-heading"
+            :data="data?.title"
+            ref="heading"
+          />
       </div>
     </div>
 

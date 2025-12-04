@@ -10,7 +10,7 @@ import ButtonHamburger from '@/components/ButtonHamburger';
 import MenuMobile from '@/components/MenuMobile';
 
 // Assets
-import Logo from '@/assets/logo-2.svg?inline';
+import Logo from '@/assets/logo-png.png';
 
 // Constants
 const TOP_OFFSET = 120;
@@ -21,8 +21,13 @@ export default {
     components: {
         LanguageSwitcher,
         ButtonHamburger,
-        Logo,
+        // Logo,
         MenuMobile,
+    },
+    data() {
+      return {
+        logoSrc: Logo, // ✅ make it available to template
+      };
     },
 
     mounted() {
@@ -44,6 +49,7 @@ export default {
         /**
          * Public
          */
+        
         show() {
             this.timelineShow = new gsap.timeline();
             this.timelineShow.to(this.$el, 1.5, { alpha: 1, ease: 'sine.inOut' }, 0);
