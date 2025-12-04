@@ -117,6 +117,43 @@ export default class Main extends component() {
     /**
      * Private
      */
+     _debugCheckShaders(scene) {
+        if (!scene || typeof scene.traverse !== 'function') return;
+
+        scene.traverse((obj) => {
+            if (!obj || !obj.material) return;
+
+            const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+
+            for (let i = 0; i < materials.length; i++) {
+                const m = materials[i];
+
+                // Only care about shader-based materials
+                const hasVS = Object.prototype.hasOwnProperty.call(m, 'vertexShader');
+                const hasFS = Object.prototype.hasOwnProperty.call(m, 'fragmentShader');
+
+                if (hasVS || hasFS) {
+                    const vs = m.vertexShader;
+                    const fs = m.fragmentShader;
+
+                    if (!vs || !fs) {
+                        console.error(
+                            '❌ Material with null/empty shader detected',
+                            {
+                                objectName: obj.name || '(no name)',
+                                materialName: m.name || '(no material name)',
+                                hasVertexShader: hasVS,
+                                hasFragmentShader: hasFS,
+                                vertexShader: vs,
+                                fragmentShader: fs
+                            }
+                        );
+                    }
+                }
+            }
+        });
+    }
+
     _bindHandlers() {
         this._resizeHandler = this._resizeHandler.bind(this);
         this._tickHandler = this._tickHandler.bind(this);
@@ -165,11 +202,24 @@ export default class Main extends component() {
         return postProcessing;
     }
 
+    // _prepareScenes() {
+    //     let item;
+    //     for (const key in this._sceneManager.scenes) {
+    //         item = this._sceneManager.scenes[key];
+    //         this._postProcessing.render(item, item.camera);
+    //     }
+    // }
+
     _prepareScenes() {
         let item;
         for (const key in this._sceneManager.scenes) {
             item = this._sceneManager.scenes[key];
-            this._postProcessing.render(item, item.camera);
+
+            // 🔍 Log any broken shaders in this scene
+            this._debugCheckShaders(item);
+
+            this._renderer.compile(item, item.camera);
+            // this._postProcessing.render(item, item.camera);
         }
     }
 
@@ -193,10 +243,17 @@ export default class Main extends component() {
         this._render();
     }
 
+    // _render() {
+    //     const scene = this._sceneManager.active;
+    //     // if (scene) this._renderer.render(scene, scene.camera);
+    //     if (scene) this._postProcessing.render(scene, scene.camera);
+    // }
+
     _render() {
         const scene = this._sceneManager.active;
-        // if (scene) this._renderer.render(scene, scene.camera);
-        if (scene) this._postProcessing.render(scene, scene.camera);
+        // TEMP: bypass post-processing
+        if (scene) this._renderer.render(scene, scene.camera);
+        // if (scene) this._postProcessing.render(scene, scene.camera);
     }
 
     /**
