@@ -67,12 +67,22 @@ export default {
         },
 
         parallax(position, sectionInfo) {
+            const comp = this.$refs.image;
+            if (!comp || !comp.$refs || !comp.$refs.image) return;
+        
+            const img = comp.$refs.image;
+        
             const offsetTop = sectionInfo.position.y;
             const offsetImage = (offsetTop - position.y) * -0.2;
-            if (position.y + WindowResizeObserver.height - offsetImage > offsetTop && position.y < offsetTop + sectionInfo.dimensions.height + offsetImage) {
-                this.$refs.image.$el.style.transform = `translate3d(0, ${offsetImage}px, 0)`;
+        
+            if (
+                position.y + WindowResizeObserver.height - offsetImage > offsetTop &&
+                position.y < offsetTop + sectionInfo.dimensions.height + offsetImage
+            ) {
+                img.style.transform = `translate3d(0, ${offsetImage}px, 0)`;
             }
-        },
+        }
+        ,
 
         /**
          * Private

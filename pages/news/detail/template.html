@@ -15,7 +15,11 @@
             v-bind:data="section.data"
         ></component>
         <SectionShare class="section-share"></SectionShare>
-        <SectionNews class="section-news" v-bind:data="related"></SectionNews>
+        <SectionNews 
+            v-if="related && related.length"
+            class="section-news" 
+            :data="related" 
+        /></SectionNews>
         <SectionFooter class="section-footer"></SectionFooter>
 
     </SmoothScroll>

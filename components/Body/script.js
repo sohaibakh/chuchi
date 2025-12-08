@@ -9,26 +9,28 @@ import WindowResizeObserver from '@/utils/WindowResizeObserver';
 import { PRELOADER_COMPLETED, LANGUAGE_SWITCH_FINISHED } from '@/store';
 
 export default {
-    // props: ['data', 'large', 'trigger-on-scroll'],
-
     props: {
-        data: {
-            default: {},
-        },
-        large: {
-            default: false,
-        },
-        triggerOnScroll: {
-            type: Boolean,
-            default: false,
-        },
+        data: { default: {} },
+        large: { default: false },
+        triggerOnScroll: { type: Boolean, default: false },
+    },
+
+    data() {
+        return {
+            blocks: null,
+            blocksShowCompleted: [],
+            ready: false,          // 🔥 NEW — signals when Body is fully ready for animations
+            splitting: false,
+        };
     },
 
     mounted() {
-        this.blocksShowCompleted = [];
-
-        if (this.$store.state.preloader === PRELOADER_COMPLETED && this.$store.state.languageSwitch === LANGUAGE_SWITCH_FINISHED) {
-            this.start();
+        // Start automatically when preloader + language switch are ready
+        if (
+            this.$store.state.preloader === PRELOADER_COMPLETED &&
+            this.$store.state.languageSwitch === LANGUAGE_SWITCH_FINISHED
+        ) {
+            this.initialize();
         }
 
         this.setupEventListeners();
@@ -39,157 +41,247 @@ export default {
     },
 
     methods: {
-        /**
-         * Public
-         */
+        /** -------------------------------------------------------
+         * INITIALIZE (SAFE) 
+         * ------------------------------------------------------*/
+        initialize() {
+            if (this.splitting) return;
+            this.splitting = true;
+
+            requestAnimationFrame(() => {
+                this.start();
+                this.ready = true;     // 🔥 Mark fully ready after split
+                this.splitting = false;
+            });
+        },
+
+        /** -------------------------------------------------------
+         * PUBLIC — Show one block (safe)
+         * ------------------------------------------------------*/
         showBlock(index, direction = 1) {
-            const lines = this.blocks[index].lines;
+            if (!this.ready || !this.blocks || !this.blocks[index]) {
+                console.warn('[Body] showBlock() called before ready.');
+                return new gsap.timeline();
+            }
 
-            const timeline = new gsap.timeline({ onComplete: this.showBlockCompleteHandler, onCompleteParams: [index] });
-            timeline.fromTo(this.$el.children[index], 1, { alpha: 0 }, { alpha: 1, ease: 'sine.inOut' }, 0);
+            const block = this.blocks[index];
+            const lines = block.lines;
 
+            if (!lines || !lines.length) {
+                console.warn('[Body] showBlock() found no lines.');
+                return new gsap.timeline();
+            }
+
+            const tl = new gsap.timeline({
+                onComplete: this.showBlockCompleteHandler,
+                onCompleteParams: [index],
+            });
+
+            // Fade-in block
+            tl.fromTo(
+                this.$el.children[index],
+                1,
+                { alpha: 0 },
+                { alpha: 1, ease: 'sine.inOut' },
+                0
+            );
+
+            // Slide lines
+            let y = 0;
             if (direction > 0) {
-                let y = 0;
-                for (let i = 0, len = lines.length; i < len; i++) {
+                for (let i = 0; i < lines.length; i++) {
                     y += 70;
-                    timeline.fromTo(lines[i], 2, { y: `${y}%` }, { y: '0%', ease: 'power3.out' }, 0);
+                    tl.fromTo(
+                        lines[i],
+                        2,
+                        { y: y + '%' },
+                        { y: '0%', ease: 'power3.out' },
+                        0
+                    );
                 }
             } else {
-                let y = 0;
                 for (let i = lines.length - 1; i >= 0; i--) {
                     y -= 70;
-                    timeline.fromTo(lines[i], 2, { y: `${y}%` }, { y: '0%', ease: 'power3.out' }, 0);
+                    tl.fromTo(
+                        lines[i],
+                        2,
+                        { y: y + '%' },
+                        { y: '0%', ease: 'power3.out' },
+                        0
+                    );
                 }
             }
 
-            return timeline;
+            return tl;
         },
 
+        /** -------------------------------------------------------
+         * PUBLIC — Show all blocks (safe)
+         * ------------------------------------------------------*/
         showAll(direction = 1) {
-            let lines = [];
-            for (let i = 0, len = this.blocks.length; i < len; i++) {
-                lines = [...lines, ...this.blocks[i].lines];
+            if (!this.ready || !this.blocks) {
+                console.warn('[Body] showAll() called before blocks were ready.');
+                return new gsap.timeline();
             }
 
-            const timeline = new gsap.timeline({ onComplete: this.showAllCompleteHandler });
-            timeline.fromTo(this.$el.children, 1, { alpha: 0 }, { alpha: 1, ease: 'sine.inOut' }, 0);
+            let allLines = [];
+
+            this.blocks.forEach(block => {
+                if (block?.lines?.length) {
+                    allLines = allLines.concat(block.lines);
+                }
+            });
+
+            if (!allLines.length) {
+                console.warn('[Body] showAll() found no lines to animate.');
+                return new gsap.timeline();
+            }
+
+            const tl = new gsap.timeline({
+                onComplete: this.showAllCompleteHandler,
+            });
+
+            // Fade-in entire body
+            tl.fromTo(
+                this.$el.children,
+                1,
+                { alpha: 0 },
+                { alpha: 1, ease: 'sine.inOut' },
+                0
+            );
+
+            // Slide all lines
+            let y = 0;
 
             if (direction > 0) {
-                let y = 0;
-                for (let i = 0, len = lines.length; i < len; i++) {
+                for (let line of allLines) {
                     y += 70;
-                    timeline.fromTo(lines[i], 2, { y: `${y}%` }, { y: '0%', ease: 'power3.out' }, 0);
+                    tl.fromTo(
+                        line,
+                        2,
+                        { y: y + '%' },
+                        { y: '0%', ease: 'power3.out' },
+                        0
+                    );
                 }
             } else {
-                let y = 0;
-                for (let i = lines.length - 1; i >= 0; i--) {
+                for (let i = allLines.length - 1; i >= 0; i--) {
                     y -= 70;
-                    timeline.fromTo(lines[i], 2, { y: `${y}%` }, { y: '0%', ease: 'power3.out' }, 0);
+                    tl.fromTo(
+                        allLines[i],
+                        2,
+                        { y: y + '%' },
+                        { y: '0%', ease: 'power3.out' },
+                        0
+                    );
                 }
             }
 
-            return timeline;
+            return tl;
         },
 
-        /**
-         * Private
-         */
+        /** -------------------------------------------------------
+         * SPLIT TEXT INTO BLOCKS + LINES
+         * ------------------------------------------------------*/
         start() {
-            this.blocks = this.split();
             this.blocksShowCompleted = [];
+            this.blocks = this.split();
+
             if (this.triggerOnScroll) {
                 this.setupIntersectionObserver();
             }
+
             this.resize();
-        },
-
-        setupEventListeners() {
-            WindowResizeObserver.addEventListener('resize', this.resizeHandler);
-            this.$store.watch((state) => state.preloader, this.preloaderChangeHandler);
-            this.$store.watch((state) => state.languageSwitch, this.languageSwitchChangeHandler);
-        },
-
-        removeEventListeners() {
-            WindowResizeObserver.removeEventListener('resize', this.resizeHandler);
         },
 
         split() {
             const blocks = [];
             const children = this.$el.children;
 
-            let item;
-            let split;
-            for (let i = 0, len = children.length; i < len; i++) {
-                item = children[i];
-                split = new SplitText(item, { type: 'lines', linesClass: 'lines' });
+            for (let i = 0; i < children.length; i++) {
+                const split = new SplitText(children[i], {
+                    type: 'lines',
+                    linesClass: 'lines',
+                });
                 blocks.push(split);
             }
+
             return blocks;
         },
 
+        /** -------------------------------------------------------
+         * INTERSECTION OBSERVER
+         * ------------------------------------------------------*/
         setupIntersectionObserver() {
-            let item;
-            const elements = Array.prototype.slice.call(this.$el.children);
-            for (let i = 0, len = elements.length; i < len; i++) {
-                item = elements[i];
+            const elements = Array.from(this.$el.children);
+
+            elements.forEach((el, index) => {
                 this.intersectionObserver = new IntersectionObserver(
-                    (entries, obvserver) => {
-                        entries.forEach((entry) => {
+                    (entries, observer) => {
+                        entries.forEach(entry => {
                             if (entry.isIntersecting) {
-                                const index = elements.indexOf(entry.target);
                                 this.showBlock(index);
-                                obvserver.disconnect();
+                                observer.disconnect();
                             }
                         });
                     },
-                    {
-                        threshold: 0.2,
-                    }
+                    { threshold: 0.2 }
                 );
-                this.intersectionObserver.observe(item);
-            }
+
+                this.intersectionObserver.observe(el);
+            });
         },
 
-        /**
-         * Resize
-         */
-        resize() {
-            // this.revertSplits();
-        },
-
-        revertSplits() {
-            for (let i = this.blocksShowCompleted.length - 1; i >= 0; i--) {
-                this.blocks[this.blocksShowCompleted[i]].revert();
-            }
-            this.blocksShowCompleted = [];
-        },
-
-        /**
-         * Handlers
-         */
-        showBlockCompleteHandler(index) {
-            this.blocksShowCompleted.push(index);
-        },
-
-        showAllCompleteHandler() {
-            for (let i = 0, len = this.blocks.length; i < len; i++) {
-                this.blocksShowCompleted.push(i);
-            }
-        },
+        /** -------------------------------------------------------
+         * HANDLERS + UTILITIES
+         * ------------------------------------------------------*/
+        resize() {},
 
         resizeHandler() {
             this.resize();
         },
 
-        preloaderChangeHandler(state) {
-            if (this.$store.state.languageSwitch === LANGUAGE_SWITCH_FINISHED && state === PRELOADER_COMPLETED) {
-                this.start();
+        showBlockCompleteHandler(index) {
+            this.blocksShowCompleted.push(index);
+        },
+
+        showAllCompleteHandler() {
+            this.blocksShowCompleted = this.blocks.map((_, i) => i);
+        },
+
+        setupEventListeners() {
+            WindowResizeObserver.addEventListener('resize', this.resizeHandler);
+
+            this.$store.watch(
+                state => state.preloader,
+                this.preloaderChangeHandler
+            );
+
+            this.$store.watch(
+                state => state.languageSwitch,
+                this.languageSwitchChangeHandler
+            );
+        },
+
+        removeEventListeners() {
+            WindowResizeObserver.removeEventListener('resize', this.resizeHandler);
+        },
+
+        preloaderChangeHandler(preloader) {
+            if (
+                preloader === PRELOADER_COMPLETED &&
+                this.$store.state.languageSwitch === LANGUAGE_SWITCH_FINISHED
+            ) {
+                this.initialize();
             }
         },
 
-        languageSwitchChangeHandler(state) {
-            if (this.$store.state.preloader === PRELOADER_COMPLETED && state === LANGUAGE_SWITCH_FINISHED) {
-                this.start();
+        languageSwitchChangeHandler(langState) {
+            if (
+                langState === LANGUAGE_SWITCH_FINISHED &&
+                this.$store.state.preloader === PRELOADER_COMPLETED
+            ) {
+                this.initialize();
             }
         },
     },

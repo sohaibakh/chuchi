@@ -23,31 +23,31 @@ export default {
     data: {
       type: Object,
       required: false,
-      default: () => ({}),
+      default: () => ({})
     },
   },
 
+  data() {
+    return {
+      ready: false // 🔥 Section readiness flag
+    };
+  },
+
+  mounted() {
+    // Wait one frame for DOM & child refs
+    this.$nextTick(() => {
+      this.ready = true;
+    });
+  },
+
   computed: {
-    // Detect Arabic/RTL (same logic as other sections)
     isArabic() {
       return (
         (this.$i18n && this.$i18n.locale === 'ar') ||
         (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
         (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
       );
-    },
-
-    // Localized heading
-    // headingText() {
-    //   return this.isArabic ? 'من نحن' : 'Who we are';
-    // },
-
-    // // Localized body copy
-    // bodyText() {
-    //   return this.isArabic
-    //     ? 'نحن شركة تصميم تجارب وُلدت في السعودية.\nنحوّل الأفكار إلى واقع مُعاش—نمزج بين سرد القصص والتصميم والتقنية لصناعة مساحات يمكن للناس أن يشعروا بها حقًا.\nمن المعارض التفاعلية إلى التفعيلات الرقمية، نصنع بيئات تدفع الناس للتفكير والاستكشاف والتواصل.'
-    //     : 'We’re a Saudi-born experience design company.\nWe turn ideas into immersive realities—blending storytelling, design, and technology to create spaces people can truly feel.\nFrom interactive exhibits to digital activations, we craft environments that move people to think, explore, and connect.';
-    // },
+    }
   },
 
   methods: {
@@ -66,24 +66,52 @@ export default {
         { alpha: 1, ease: 'sine.inOut' },
         1
       );
+
       return this._timelineTransitionIn;
     },
 
+    /**
+     * SAFE BACKGROUND SHOW
+     * Ensures Heading & Body are ready before animating.
+     */
     backgroundShow(done, direction) {
-      this._timelineBackgroundShow = new gsap.timeline({ onComplete: done });
+      const heading = this.$refs.heading;
+      const body = this.$refs.body;
 
-      // Animate heading
-      if (this.$refs.heading?.show) {
-        this._timelineBackgroundShow.add(this.$refs.heading.show(), 0.7);
+      // 🔥 WAIT until everything is truly ready
+      if (
+        !this.ready ||
+        !heading ||
+        !body ||
+        !heading.isReady ||     // Heading sets this flag internally
+        !body.ready             // Body sets this flag internally
+      ) {
+        console.warn('[AboutHeader] backgroundShow() called early → retrying...');
+
+        setTimeout(() => {
+          this.backgroundShow(done, direction);
+        }, 30);
+
+        return; // ⛔ stop here
       }
 
-      this._timelineBackgroundShow.add(this.$refs.body.showAll(direction), 0.7);
+      // 🔥 SAFE TO ANIMATE NOW
+      this._timelineBackgroundShow = new gsap.timeline({ onComplete: done });
 
+      // Heading animation
+      if (typeof heading.show === 'function') {
+        this._timelineBackgroundShow.add(() => heading.show(), 0.7);
+      }
 
-      // Animate body
-      if (this.$refs.body?.$el) {
+      // Body animation
+      if (typeof body.showAll === 'function') {
+        this._timelineBackgroundShow.add(() => body.showAll(direction), 0.7);
+      }
+
+      // Body fade-in
+      if (body.$el) {
         this._timelineBackgroundShow.fromTo(
-          this.$refs.body.$el,
+          body.$el,
           { opacity: 0, y: 40 },
           { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
           0.9

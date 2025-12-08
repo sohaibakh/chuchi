@@ -1,4 +1,4 @@
-import WebglApp from '@/webgl';
+import WebglApp from '@/webgl/index_old';
 
 export default {
     beforeDestroy() {

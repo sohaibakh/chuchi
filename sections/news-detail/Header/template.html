@@ -30,7 +30,14 @@
             <div class="image-container" ref="imageContainer">
 
                 <!-- Image -->
-                <ResponsiveImage class="image" v-bind:sizes="data.header.image.sizes" v-bind:alt="data.header.image.alt" ref="image" />
+                <ResponsiveImage
+                    v-if="data.header && data.header.image && data.header.image.sizes"
+                    class="image"
+                    :sizes="data.header.image.sizes"
+                    :alt="data.header.image.alt"
+                    ref="image"
+                />
+
 
             </div>
 

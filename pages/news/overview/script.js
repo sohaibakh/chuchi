@@ -21,6 +21,8 @@ export default {
         const activeCategory = query.category || store.state.news.activeCategory;
 
         return axios.get(`page/news?per_page=5&page=1&${activeCategory ? `category=${activeCategory}` : ''}&lang=${locale}`).then((res) => {
+            console.log('news data', res.data)
+            
             return {
                 data: res.data,
                 metadata: res.data.seo,

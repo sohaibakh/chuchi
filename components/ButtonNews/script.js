@@ -30,25 +30,52 @@ export default {
             const month = dateComponents[1];
             const dayNumber = dateComponents[2];
             const year = dateComponents[3];
-
+    
             return `${month} ${dayNumber} ${year}`;
         },
-
+    
         src() {
-            return this.data.image.sizes['1920x0'].url;
-        },
-
-        srcset() {
-            let srcset = '';
-            let image;
-            for (const key in this.data.image.sizes) {
-                image = this.data.image.sizes[key];
-                srcset += `${image.url} ${image.width}w,`;
+            const img = this.data?.image;
+            if (!img) return '';
+    
+            const sizes = img.sizes || {};
+    
+            // Preferred size
+            if (sizes['1920x0']?.url) return sizes['1920x0'].url;
+    
+            // Try other large sizes
+            const fallbackKey = Object.keys(sizes).sort((a, b) => {
+                const aw = sizes[a].width || 0;
+                const bw = sizes[b].width || 0;
+                return bw - aw; // largest first
+            })[0];
+    
+            if (fallbackKey && sizes[fallbackKey]?.url) {
+                return sizes[fallbackKey].url;
             }
-            srcset = srcset.slice(0, -1);
-            return srcset;
+    
+            // Final fallback (base image URL)
+            return img.url || '';
         },
-    },
+    
+        srcset() {
+            const img = this.data?.image;
+            if (!img || !img.sizes) return '';
+    
+            const sizes = img.sizes;
+            let srcset = '';
+    
+            for (const key in sizes) {
+                const image = sizes[key];
+                if (image?.url && image?.width) {
+                    srcset += `${image.url} ${image.width}w,`;
+                }
+            }
+    
+            return srcset.slice(0, -1);
+        }
+    }
+    ,
 
     mounted() {
         this.setupIntersectionObserver();

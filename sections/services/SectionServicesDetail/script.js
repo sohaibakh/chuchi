@@ -40,6 +40,15 @@ export default {
         call_to_action_link: item.call_to_action_link || '',
       }));
     },
+
+        /** 🔥 Global Arabic mode, same as AboutHeader */
+    isArabic() {
+      return (
+        (this.$i18n && this.$i18n.locale === 'ar') ||
+        (typeof document !== 'undefined' && document.documentElement.dir === 'rtl') ||
+        (this.$root && this.$root.$data && this.$root.$data.isArabic === true)
+      );
+    }
   },
 
 
