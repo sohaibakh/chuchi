@@ -9,6 +9,10 @@ export default {
     link: {
       type: String,
       default: ''  // If not provided, it'll be an empty string
+    },
+    type: {
+      type: String,
+      default: "button"
     }
   },
 

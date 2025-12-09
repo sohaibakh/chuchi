@@ -34,6 +34,7 @@
         "glsl-noise": "0.0.0",
         "gsap": "^3.5.0",
         "hammerjs": "^2.0.8",
+        "nodemailer": "^7.0.11",
         "normalize-wheel": "^1.0.1",
         "nuxt": "^2.14.3",
         "pizzicato": "^0.6.4",

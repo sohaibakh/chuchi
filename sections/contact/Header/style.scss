@@ -1,4 +1,7 @@
 
+$color-line-orange: #DD5E20;
+$color-line-red: #4C09FF;
+$color-line-blue: #FFC369;
 .section {
     display: flex;
 
@@ -19,6 +22,106 @@
 
     }
 }
+
+.success-message,
+.error-message {
+    margin-top: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 16px;
+
+    @include respond-to('large') { grid-column: 1 / -1; }
+}
+
+
+
+.button-fix {
+    position: relative;
+    padding-bottom: rem(6px);
+    width: 50%;
+    font-family: $font-secondary;
+    font-weight: 600;
+    font-size: rem(12px);
+    letter-spacing: 0.2em;
+    color: $color-white;
+    text-transform: uppercase;
+  
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  
+    transition: color 0.8s ease-in-out;
+  
+    @include respond-to('large') {
+      padding-bottom: rem-l(8px);
+      font-size: rem-l(12px);
+    }
+  
+    /* Underline base */
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+  
+      width: 100%;
+      height: 0;
+      border-bottom: 1px solid rgba($color-white, 0.75);
+  
+      transform: scaleX(1);
+      transform-origin: right top;
+  
+      transition: transform 0.5s ease-in-out;
+    }
+  
+    /* Hover underline animation */
+    &:hover::after {
+      transform: scaleX(0);
+      transform-origin: right top;
+    }
+  
+    /* Three animated hover lines (blue, red, orange) */
+    span {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+  
+      width: 100%;
+      height: 0;
+      transform: scaleX(0);
+      transform-origin: left top;
+  
+      transition: transform 0.5s ease-in-out;
+  
+      &:nth-child(1) {
+        border-bottom: 1px solid $color-line-blue;
+        transition-delay: 0.1s;
+      }
+  
+      &:nth-child(2) {
+        border-bottom: 1px solid $color-line-red;
+        transition-delay: 0.2s;
+      }
+  
+      &:nth-child(3) {
+        border-bottom: 1px solid $color-line-orange;
+        transition-delay: 0.3s;
+      }
+    }
+  
+    &:hover span {
+      transform: scaleX(1);
+    }
+  
+    /* Hover text color */
+    &:hover {
+      color: $color-line-orange;
+    }
+  }
+
+.success-message { color: #2cff8a; }
+.error-message   { color: #ff6961; }
 
 a {
     transition: opacity 0.3s $power2-out;

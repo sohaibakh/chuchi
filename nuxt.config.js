@@ -171,6 +171,10 @@ export default {
         transpile: ['three', 'gsap']
     },
 
+    serverMiddleware: [
+        { path: "/api/contact", handler: "@server-middleware/contact.js" }
+    ],
+
     server: {
         port: 8000,
         host: '0.0.0.0',

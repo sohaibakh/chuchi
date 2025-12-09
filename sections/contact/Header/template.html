@@ -12,30 +12,46 @@
 
             <!-- Column -->
             <div class="column">
-
-                <!-- Heading -->
-                <Heading tag="h2" ref="heading" isCustomTriggered="false" class="heading-b heading" :data="data.title" />
-                <!-- <Heading tag="h2" ref="heading" isCustomTriggered="false" class="heading-b heading" data="Let's Get <br/> in Touch" /> -->
-
+                <Heading
+                    tag="h2"
+                    ref="heading"
+                    isCustomTriggered="false"
+                    class="heading-b heading"
+                    :data="data.title"
+                />
             </div>
 
+            <!-- CONTACT FORM -->
             <div class="contact-form" ref="cForm">
-                
-                <form action="">
+
+                <form @submit.prevent="handleSubmit">
+
                     <div class="input-group">
-                        <input type="text" placeholder="First Name" required>
-                        <input type="text" placeholder="Last Name" required>
+                        <input v-model="formData.firstName" type="text" placeholder="First Name" required>
+                        <input v-model="formData.lastName" type="text" placeholder="Last Name" required>
                     </div>
+
                     <div class="input-group">
-                        <input type="email" placeholder="Email Address" required>
-                        <input type="tel" placeholder="Contact Number">
-                        <!-- <input type="text" placeholder="Your Message"> -->
+                        <input v-model="formData.email" type="email" placeholder="Email Address" required>
+                        <input v-model="formData.phone" type="tel" placeholder="Contact Number">
                     </div>
+
                     <div class="input-group">
-                        <textarea name="message" id="" cols="30" rows="4" placeholder="Your Message"></textarea>
+                        <textarea v-model="formData.message" cols="30" rows="4" placeholder="Your Message"></textarea>
                     </div>
+
                     <div class="cf-btn-broup">
-                        <ButtonUnderlined ref="button" class="button-cta">Send a message</ButtonUnderlined>  
+                        <button type="submit" class="button-fix">
+                            Send a message
+                        </button>
+                    </div>
+
+                    <div v-if="submissionSuccess" class="success-message">
+                        Thank you, we will contact you shortly.
+                    </div>
+
+                    <div v-if="errorMessage" class="error-message">
+                        {{ errorMessage }}
                     </div>
 
                 </form>
@@ -44,77 +60,34 @@
 
         </div>
 
-        <!-- Row line -->
-        <div class="row row-line">
-
-            <!-- Column -->
-            <div class="column">
-
-                <!-- Line -->
-                <!-- <div class="line" ref="line">
-            
-                </div> -->
-
-            </div>
-
-        </div>
-
         <!-- Row address -->
         <div class="row row-address">
-
-            <!-- Column left -->
             <div class="column left">
-
-                <!-- Address title -->
                 <span class="address-title" ref="addressTitle1">{{ data.address_title_1 }}</span>
-
-                <!-- Address -->
-                <Body v-bind:data="data.address_1" class="body" ref="body1" />
-
+                <Body :data="data.address_1" class="body" ref="body1" />
             </div>
 
-            <!-- Column center -->
             <div class="column center">
-
-
                 <div class="body address-secondary">
                     <p>
-                        <a @click="emailClickHandler" v-bind:href="`mailto:${data.email}?subject=${data.email_subject}`" ref="email" class="email">{{ data.email }}</a><br />
-                        <a @click="phoneClickHandler" v-bind:href="`tel:${data.phone}`" ref="phone" class="phone">{{ data.phone }}</a>
+                        <a @click="emailClickHandler"
+                           :href="`mailto:${data.email}?subject=${data.email_subject}`"
+                           ref="email"
+                           class="email">
+                           {{ data.email }}
+                        </a>
+                        <br />
+                        <a @click="phoneClickHandler"
+                           :href="`tel:${data.phone}`"
+                           ref="phone"
+                           class="phone">
+                           {{ data.phone }}
+                        </a>
                     </p>
                 </div>
-          
-                <!-- <span class="address-title" ref="addressTitle2">{{ data.address_title_2 }}</span>
-
-        
-                <Body v-bind:data="data.address_2" class="body" ref="body2" /> -->
-
             </div>
-
-            <!-- Column right -->
-            <!-- <div class="column right">
-
-                
-                <div class="body address-secondary">
-                    <p>
-                        <a @click="emailClickHandler" v-bind:href="`mailto:${data.email}?subject=${data.email_subject}`" ref="email" class="email">{{ data.email }}</a><br />
-                        <a @click="phoneClickHandler" v-bind:href="`tel:${data.phone}`" ref="phone" class="phone">{{ data.phone }}</a>
-                    </p>
-                </div>
-
-            </div> -->
-
-
         </div>
 
-
-
     </div>
-
-    <!-- Button visit -->
-    <!-- <button class="button button-visit" ref="buttonVisit" @click="buttonVisitClickHandler">
-        <div class="button-visit__line" ref="buttonVisitLine"></div>
-        <span class="button-visit__label" ref="buttonVisitLabel">{{ data.next_section_call_to_action }}</span>
-    </button> -->
 
 </section>
