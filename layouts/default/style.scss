@@ -43,6 +43,17 @@ html.prevent-bounce {
     overflow: hidden;
 }
 
+.layout {
+    position: relative;
+    z-index: 1;
+}
+
+.nuxt-child {
+    position: relative;
+    z-index: 1;
+}
+
+
 img {
     -webkit-user-drag: none;
     -khtml-user-drag: none;

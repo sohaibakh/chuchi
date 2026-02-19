@@ -20,30 +20,29 @@ export default {
      ** Headers of the page
      ** See https://nuxtjs.org/api/configuration-head
      */
-     head: {
+    head: {
         title: process.env.npm_package_name || '',
         meta: [
-          { charset: 'utf-8' },
-          { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-          {
-            hid: 'description',
-            name: 'description',
-            content: process.env.npm_package_description || '',
-          },
+            { charset: 'utf-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            {
+                hid: 'description',
+                name: 'description',
+                content: process.env.npm_package_description || '',
+            },
         ],
         link: [
-          // ✅ Swiper CSS
-          { rel: 'stylesheet', type: 'text/css', href: 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' },
-      
-          // ✅ Favicon
-          { rel: 'icon', type: 'image/png', href: '/favicon.png' }
+            // ✅ Swiper CSS
+            { rel: 'stylesheet', type: 'text/css', href: 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css' },
+
+            // ✅ Favicon
+            { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         ],
         script: [
-          // ✅ Swiper JS
-          { src: 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', body: true }
-        ]
-      }
-      ,
+            // ✅ Swiper JS
+            { src: 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', body: true },
+        ],
+    },
     /*
      ** Global CSS
      */
@@ -66,7 +65,7 @@ export default {
      ** Plugins to load before mounting the App
      ** https://nuxtjs.org/guide/plugins
      */
-     plugins: ['@/plugins/copyright.server.js', { src:'@/plugins/three.client.js', mode: 'client'}],
+    plugins: ['@/plugins/copyright.server.js', { src: '@/plugins/three.client.js', mode: 'client' }],
     /*
      ** Auto import components
      ** See https://nuxtjs.org/api/configuration-components
@@ -136,7 +135,7 @@ export default {
      */
     axios: {},
     transition: {
-        mode: 'in-out'
+        mode: 'in-out',
     },
     /*
      ** Build configuration
@@ -144,39 +143,38 @@ export default {
      */
     build: {
         indicator: false,
-        
+
         extend(config, ctx) {
             config.module.rules.push({
-              test: /\.(glsl|vs|fs|vert|frag)$/,
-              exclude: /node_modules/,
-              use: [
-                { loader: 'shader-loader' },
-                { loader: 'glslify-loader' }
-              ]
+                test: /\.(glsl|vs|fs|vert|frag)$/,
+                exclude: /node_modules/,
+                use: [{ loader: 'shader-loader' }, { loader: 'glslify-loader' }],
             });
-          
-            const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
+
+            const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'));
             svgRule.exclude = [/(assets\/images\/icons)/];
-          },
-
-
-        babel: {
-            compact: false,  // Prevents large file warnings
-            plugins: [
-                "@babel/plugin-proposal-optional-chaining",
-                "@babel/plugin-proposal-nullish-coalescing-operator"
-              ]
         },
 
-        transpile: ['three', 'gsap']
+        babel: {
+            compact: false, // Prevents large file warnings
+            plugins: ['@babel/plugin-proposal-optional-chaining', '@babel/plugin-proposal-nullish-coalescing-operator'],
+        },
+
+        transpile: ['three', 'gsap'],
     },
 
-    serverMiddleware: [
-        { path: "/api/contact", handler: "@server-middleware/contact.js" }
-    ],
+    serverMiddleware: [{ path: '/api/contact', handler: '@server-middleware/contact.js' }],
 
     server: {
-        port: 8000,
-        host: '0.0.0.0',
+        port: process.env.PORT || 3000,
+        host: process.env.HOST || '0.0.0.0',
+    },
+
+    hooks: {
+        listen(server, { port, host }) {
+            if (process.env.HTTPS_DEV === 'true' && process.env.NODE_ENV === 'development') {
+                console.log(`✅ HTTPS server running at https://localhost:${port}`);
+            }
+        },
     },
 };

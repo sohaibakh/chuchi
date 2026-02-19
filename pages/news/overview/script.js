@@ -21,15 +21,36 @@ export default {
         const activeCategory = query.category || store.state.news.activeCategory;
 
         return axios.get(`page/news?per_page=5&page=1&${activeCategory ? `category=${activeCategory}` : ''}&lang=${locale}`).then((res) => {
-            console.log('news data', res.data)
+            console.log('📰 News API Response:', {
+                statusCode: res.status,
+                hasItems: !!res.data.items,
+                itemsCount: res.data.items?.length || 0,
+                items: res.data.items,
+                categories: res.data.categories,
+                pagination: res.data.pagination
+            });
             
+            if (!res.data.items || res.data.items.length === 0) {
+                console.warn('⚠️ No news items returned from API');
+            }
+
             return {
                 data: res.data,
                 metadata: res.data.seo,
                 categories: res.data.categories,
-                items: res.data.items,
+                items: res.data.items || [],
                 category: activeCategory || store.state.news.activeCategory,
                 pagination: res.data.pagination,
+            };
+        }).catch((error) => {
+            console.error('❌ News API Error:', error);
+            return {
+                data: {},
+                metadata: {},
+                categories: [],
+                items: [],
+                category: activeCategory || store.state.news.activeCategory,
+                pagination: {},
             };
         });
     },

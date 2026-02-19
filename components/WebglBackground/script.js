@@ -8,7 +8,14 @@ export default {
         }
     },
 
-    mounted() {},
+    mounted() {
+        // Ensure canvas has proper dimensions
+        if (this.$refs.canvas) {
+            this.$refs.canvas.style.width = '100%';
+            this.$refs.canvas.style.height = '100%';
+            this.$refs.canvas.style.display = 'block';
+        }
+    },
 
     methods: {
         /**
@@ -16,12 +23,23 @@ export default {
          */
         setup(debug = false) {
             if (this.$root.webglApp) return;
-            this.$root.webglApp = new WebglApp({
-                canvas: this.$refs.canvas,
-                scrollContainer: this.$refs.scrollContainer,
-                nuxtRoot: this.$root,
-                debug,
-            });
+            
+            if (!this.$refs.canvas) {
+                console.error('Canvas element not found');
+                return;
+            }
+
+            try {
+                this.$root.webglApp = new WebglApp({
+                    canvas: this.$refs.canvas,
+                    scrollContainer: this.$refs.scrollContainer,
+                    nuxtRoot: this.$root,
+                    debug,
+                });
+                console.log('✅ WebGL initialized successfully');
+            } catch (error) {
+                console.error('❌ WebGL initialization failed:', error);
+            }
         },
     },
 };

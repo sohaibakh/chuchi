@@ -78,6 +78,13 @@ export default {
     ,
 
     mounted() {
+        console.log('📰 ButtonNews item:', {
+            slug: this.data?.slug,
+            title: this.data?.title,
+            hasImage: !!this.data?.image,
+            hasCategories: !!this.data?.categories && this.data.categories.length > 0,
+            data: this.data
+        });
         this.setupIntersectionObserver();
     },
 

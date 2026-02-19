@@ -43,7 +43,13 @@ export default {
         // Setup
         this.virtualScroll = this.setupVirtualScroll();
         this.setupEventListeners();
-        this.$nextTick(this.resize);
+        this.$nextTick(() => {
+            this.resize();
+            // Add a delayed resize to ensure all sections are fully rendered
+            setTimeout(() => {
+                this.resize();
+            }, 100);
+        });
     },
 
     beforeDestroy() {
@@ -101,6 +107,15 @@ export default {
 
         enable() {
             this.isEnabled = true;
+            // Reset scroll position to start
+            this.currentStepIndex = 0;
+            this.position.y = 0;
+            this.freeScrollPosition.current.y = 0;
+            this.freeScrollPosition.target.y = 0;
+            // Recalculate scroll limits
+            this.resize();
+            // Update position to ensure we start at the top
+            this.updatePosition(0);
         },
 
         disable() {
@@ -243,7 +258,9 @@ export default {
         },
 
         getFreeScrollLimit() {
-            return this.$root.sectionsInfo[this.maxSteps - 1].position.y + this.$root.sectionsInfo[this.maxSteps - 1].dimensions.height - this.sectionHeight;
+            // Add extra padding (100px) to ensure users can scroll to the very bottom
+            const extraPadding = 100;
+            return this.$root.sectionsInfo[this.maxSteps - 1].position.y + this.$root.sectionsInfo[this.maxSteps - 1].dimensions.height - this.sectionHeight + extraPadding;
         },
 
         resizeContainer() {

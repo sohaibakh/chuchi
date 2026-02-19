@@ -69,11 +69,13 @@ export default class Main extends component() {
      */
     show() {
         this._isActive = true;
+        console.log('🎬 WebGL: Showing');
         return gsap.to(this._canvas, 0.5, { alpha: 1, ease: 'sine.inOut' });
     }
 
     hide() {
         this._isActive = false;
+        console.log('🎬 WebGL: Hiding');
         return gsap.to(this._canvas, 0.8, { alpha: 0, ease: 'sine.inOut' });
     }
 
@@ -82,6 +84,7 @@ export default class Main extends component() {
     }
 
     showScene(scene) {
+        console.log(`🎬 WebGL: Showing scene "${scene}"`);
         const timeline = new gsap.timeline();
         timeline.call(
             () => {
@@ -200,7 +203,9 @@ export default class Main extends component() {
      * Update cycle
      */
     _update() {
-        if (!this._isActive) return;
+        if (!this._isActive) {
+            return;
+        }
 
         const delta = this._clock.getDelta();
         const time = this._clock.getElapsedTime();

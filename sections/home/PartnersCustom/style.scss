@@ -50,15 +50,15 @@
 }
 
 .heading {
-    font-size: rem(35px);
-    line-height: 1.205em;
-    letter-spacing: 0.05em;
+    font-size: rem(53px);
+    line-height: 1em;
+    letter-spacing: 0.06em;
 
     text-align: center;
 
     @include respond-to('large') {
-        font-size: rem-l(50px);
-        letter-spacing: 0.07em;
+        font-size: rem-l(80px);
+        line-height: 1em;
     }
 
     .ar & {

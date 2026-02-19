@@ -162,41 +162,13 @@ export default {
         //     this.previousScrollPosition = position.y;
         // },
         scrollHandler(position) {
-            if (this._lastScrollY == null) {
-              this._lastScrollY = position.y;
-              this._navOffsetY = 0; // ✅ initialize properly
-              return;
-            }
-          
-            const delta = position.y - this._lastScrollY;
-          
-            // Create nav offset if it doesn't exist
-            if (typeof this._navOffsetY !== 'number') {
-              this._navOffsetY = 0;
-            }
-          
-            // Scroll down → move nav up
-            if (delta > 0) {
-              this._navOffsetY -= delta; // subtract scroll delta
-            }
-          
-            // Scroll up → move nav back down
-            else if (delta < 0) {
-              this._navOffsetY -= delta * 1.5; // scroll up = reduce negative offset (slide in faster)
-            }
-          
-            // Clamp between 0 and -120px
-            this._navOffsetY = Math.min(0, Math.max(this._navOffsetY, -120));
-          
-            // Animate to position
+            // Keep navigation fixed at top - always set y to 0
             gsap.to(this.$el, {
-              y: this._navOffsetY,
+              y: 0,
               duration: 0.2,
               ease: 'power1.out',
               overwrite: true,
             });
-          
-            this._lastScrollY = position.y;
           }
           
           ,

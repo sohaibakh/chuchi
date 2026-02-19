@@ -17,6 +17,12 @@ export default {
     }
   },
 
+  data() {
+    return {
+      hoveredIndex: null,
+    };
+  },
+
   computed: {
     // Detect Arabic/RTL
     isArabic() {
@@ -27,22 +33,42 @@ export default {
       );
     },
 
-    // // Localized heading
-    // headingText() {
-    //   return this.isArabic ? 'القطاعات التي نخدمها' : 'Industries We Serve';
-    // },
-
     // Localized industries list
     localizedIndustries() {
       if (!this.data?.industry_item) return [];
-      return this.data.industry_item.map((it) => ({
-        title: this.isArabic ? it.title_ar || it.title : it.title || it.name,
-        image: it.image
-      }));
+      return this.data.industry_item.map((it) => {
+        // Check if image exists and is not false/null/empty
+        let imageUrl = null;
+        
+        if (it.image && it.image !== false) {
+          imageUrl = it.image.url || it.image;
+        } else if (it.image_url) {
+          imageUrl = it.image_url;
+        } else if (it.photo && it.photo !== false) {
+          imageUrl = it.photo.url || it.photo;
+        } else if (it.thumbnail && it.thumbnail !== false) {
+          imageUrl = it.thumbnail.url || it.thumbnail;
+        }
+
+        if (!imageUrl) {
+          console.warn(`⚠️ Industry "${it.title}" has no image (image: ${it.image}). To add image, update backend API.`);
+        }
+
+        return {
+          title: this.isArabic ? it.title_ar || it.title : it.title || it.name,
+          image: imageUrl,
+          name: it.name,
+          rawData: it
+        };
+      });
     }
   },
 
   methods: {
+    handleImageError(index, industry) {
+      console.error(`❌ Failed to load image for industry:`, industry.title, industry.image);
+    },
+
     transitionIn() {
       const tl = gsap.timeline();
       tl.set(this.$el, { opacity: 1 }, 0);

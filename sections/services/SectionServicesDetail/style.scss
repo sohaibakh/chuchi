@@ -23,27 +23,26 @@
 
     .services-detail {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
       width: 100%;
       position: relative;
       gap: 20px;
 
+      @include respond-to('large') {
+        flex-direction: row;
+      }
+
       // Left content scroll area
       .content {
-        width: 50%;
-        padding-right: 4vw;
+        width: 100%;
+        padding-right: 0;
         position: relative;
-
-        @include respond-to('small') {
-          width: 100%;
-
-        }
 
         @include respond-to('large') {
           width: 50%;
-
+          padding-right: 4vw;
         }
       }
 
@@ -98,18 +97,35 @@
         }
       }
 
-      // Sticky image wrapper and behavior
+      // Mobile inline images
+      .mobile-image {
+        display: block;
+        width: 100%;
+        margin-top: 2vh;
+        margin-bottom: 4vh;
+
+        @include respond-to('large') {
+          display: none; // Hide on desktop
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+          min-height: 300px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+
+      // Sticky image wrapper and behavior (Desktop only)
       .sticky-wrapper {
+        display: none; // Hide on mobile
         width: 50%;
         position: relative;
         height: auto;
 
-        @include respond-to('small') {
-          display: none;
-        }
-
         @include respond-to('large') {
-          display: block;
+          display: block; // Show on desktop
         }
         // min-height: 200vh; // Ensures enough height for pinning
       }
@@ -120,19 +136,15 @@
         left: 0;
         height: 100vh;
         width: 100%;
-        overflow: auto;
+        overflow: hidden;
 
-        
         img {
           position: absolute;
           top: 0;
           left: 0;
           object-fit: cover;
-          // opacity: 0;
           width: 100%;
           height: 100%;
-          // transform: scale(1);
-          // transition: opacity 0.5s ease, transform 0.5s ease;
           pointer-events: none;
       
           &.is-active {

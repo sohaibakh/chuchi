@@ -118,16 +118,23 @@ export default {
       const images = this.$el.querySelectorAll('.sticky-imagediv img');
       if (!images.length) return;
 
+      // Check if we're on mobile (small screen)
+      const isMobile = window.innerWidth < this._bpLarge;
+
       images.forEach((img, index) => {
         gsap.set(img, {
-          opacity: index === 0 ? 1 : 0,
-          scale: index === 0 ? 1 : 1,
+          // On mobile: show all images (opacity: 1)
+          // On desktop: show only first image (opacity: 0 for others)
+          opacity: isMobile ? 1 : (index === 0 ? 1 : 0),
+          scale: 1,
         });
       });
     },
 
     handleScrollEffect({ y }) {
-      if (!this.isStickyPinned) return;
+      // Only run sticky scroll effect on desktop
+      const isMobile = window.innerWidth < this._bpLarge;
+      if (!this.isStickyPinned || isMobile) return;
     
       const blocks = this.$el.querySelectorAll('.service-block');
       const images = this.$el.querySelectorAll('.sticky-imagediv img');

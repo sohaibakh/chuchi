@@ -84,6 +84,10 @@ dist
 # Service worker
 sw.*
 
+# SSL Certificates (local development)
+/certs
+*.pem
+
 # macOS
 .DS_Store
 

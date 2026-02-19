@@ -22,9 +22,15 @@
                 @mouseenter="hoveredIndex = i"
                 @mouseleave="hoveredIndex = null"
               >
-              <img :src="industry.image?.url || industry.image" alt="" class="industry-bg" />
-              <span class="industry-name">{{ industry.title || industry.name }}</span>
-            </div>
+                <img 
+                  v-if="industry.image?.url || industry.image"
+                  :src="industry.image?.url || industry.image" 
+                  :alt="industry.title"
+                  class="industry-bg"
+                  @error="handleImageError(i, industry)"
+                />
+                <span class="industry-name">{{ industry.title || industry.name }}</span>
+              </div>
             </div>
           </div>
         </div>

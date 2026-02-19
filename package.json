@@ -8,7 +8,9 @@
     },
     "scripts": {
         "clean": "rimraf .nuxt",
+        "generate-cert": "node scripts/generate-cert.js",
         "dev": "npm run clean && copy .env.local .env && node --max-old-space-size=16384 node_modules/nuxt/bin/nuxt.js",
+        "dev:https": "npm run generate-cert && npm run clean && copy .env.local .env && node scripts/https-dev.js",
         "build": "cp .env.local .env && nuxt build",
         "buildlocal": "copy .env.local .env && nuxt build",
         "build:staging": "copy .env.staging .env && nuxt build -c nuxt.config.staging.js",

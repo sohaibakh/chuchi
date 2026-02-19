@@ -31,7 +31,7 @@
 
     position: fixed;
 
-    top: rem(25px);
+    top: 0;
     right: rem(0px);
     left: 0;
 
@@ -42,7 +42,7 @@
     }
 
     @include respond-to('large') {
-        top: rem-l(0px);
+        top: 0;
         right: rem-l(0px);
 
         height: rem-l(100px);

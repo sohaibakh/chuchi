@@ -32,10 +32,18 @@
               />
             </div>
           </div>
+
+          <!-- Mobile Image: Show inline with content -->
+          <div class="mobile-image">
+            <img
+              :src="item.image"
+              :alt="item.title"
+            />
+          </div>
         </div>
       </div>
 
-      <!-- Right: Sticky Image -->
+      <!-- Right: Sticky Image (Desktop Only) -->
       <div class="column sticky-wrapper" ref="stickyWrapper">
         <div class="sticky-imagediv" ref="stickyImageDev">
           <img

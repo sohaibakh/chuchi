@@ -1,7 +1,10 @@
 import nodemailer from "nodemailer";
 
 export default async (req, res) => {
+  console.log("📥 [API /api/contact] Request received. Method:", req.method);
+  
   if (req.method !== "POST") {
+    console.warn("⚠️ [API /api/contact] Method not allowed:", req.method);
     res.statusCode = 405;
     res.end("Method Not Allowed");
     return;
@@ -13,8 +16,11 @@ export default async (req, res) => {
   });
 
   req.on("end", async () => {
+    console.log("📨 [API /api/contact] Request body received:", body);
+    
     try {
       const data = JSON.parse(body);
+      console.log("📝 [API /api/contact] Parsed data:", data);
 
       // Build name dynamically (homepage or contact page)
       const fullName =
@@ -24,15 +30,19 @@ export default async (req, res) => {
       // Build phone dynamically
       const phone = data.phone || "Not provided";
 
+      console.log("📧 [API /api/contact] Creating email transporter...");
+      
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
           user: "trivedibhavya1997@gmail.com",
-          pass: "zqickmgtugxhrzxo" // REMOVE THE SPACE AT THE END!
+          pass: "zqickmgtugxhrzxo"
         },
       });
+      
+      console.log("✉️ [API /api/contact] Sending email...");
 
-      await transporter.sendMail({
+      const mailOptions = {
         from: `"Website Contact Form" <trivedibhavya1997@gmail.com>`,
         to: "trivedibhavya1997@gmail.com",
         subject: "New Contact Form Submission",
@@ -51,12 +61,19 @@ export default async (req, res) => {
              This email was generated automatically from your website contact form.
           </p>
         `
-      });
+      };
+      
+      await transporter.sendMail(mailOptions);
+      
+      console.log("✅ [API /api/contact] Email sent successfully!");
 
+      console.log("📤 [API /api/contact] Sending success response");
       res.statusCode = 200;
       res.end(JSON.stringify({ success: true }));
 
     } catch (e) {
+      console.error("🔥 [API /api/contact] Error occurred:", e.message);
+      console.error("📋 [API /api/contact] Full error:", e);
       res.statusCode = 500;
       res.end(JSON.stringify({ success: false, error: e.message }));
     }

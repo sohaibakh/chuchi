@@ -54,6 +54,14 @@
 }
 
 .heading {
+    font-size: rem(53px);
+    line-height: 1em;
+    letter-spacing: 0.06em;
+
+    @include respond-to('large') {
+        font-size: rem-l(80px);
+        line-height: 1em;
+    }
 
     > span {
         display: block;

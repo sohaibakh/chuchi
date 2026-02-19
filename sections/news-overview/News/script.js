@@ -29,6 +29,12 @@ export default {
     },
 
     mounted() {
+        console.log('📰 SectionNews mounted:', {
+            itemsCount: this.activeItems?.length || 0,
+            hasItems: !!this.activeItems && this.activeItems.length > 0,
+            categories: this.categories,
+            pagination: this.activePagination
+        });
         this.setupIntersectionObserver();
         this.checkIfMoreItems();
         this.checkActiveFilter();
@@ -39,6 +45,10 @@ export default {
          * Public
          */
         show() {
+            console.log('📰 SectionNews show() called with items:', {
+                itemsCount: this.activeItems?.length || 0,
+                items: this.activeItems
+            });
             this.isReady = true;
             this.$refs.grid.show();
             const timeline = new gsap.timeline();
