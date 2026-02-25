@@ -34,12 +34,19 @@ body {
     background: #000000;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    // iOS Safari: ensure the page always fills the visible viewport area,
+    // accounting for the dynamic address bar appearing/disappearing.
+    min-height: 100vh;
+    min-height: -webkit-fill-available; // iOS 12-15.3
+    min-height: 100svh;                 // iOS 15.4+ / Safari 15.4+
 }
 
 html.prevent-bounce {
     position: fixed;
     width: 100%;
     height: 100%;
+    height: -webkit-fill-available; // Safari: fills between status bar and tab bar
     overflow: hidden;
 }
 

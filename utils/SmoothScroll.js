@@ -26,11 +26,30 @@ export default class SmoothScroll extends EventDispatcher {
         this._setContentFixed();
         this._resize();
         this._setupDebugGui();
+
+        // Re-measure after images/fonts/dynamic content finish loading.
+        // The initial _resize() fires before resources are ready, so
+        // container height is set too small and the footer is unreachable.
+        this._resizeTimer1 = setTimeout(() => this._resize(), 300);
+        this._resizeTimer2 = setTimeout(() => this._resize(), 800);
+        this._resizeTimer3 = setTimeout(() => this._resize(), 1500);
+
+        this._onLoadResize = () => this._resize();
+        if (document.readyState === 'complete') {
+            this._resize();
+        } else {
+            window.addEventListener('load', this._onLoadResize, { once: true });
+        }
     }
 
     destroy() {
         this._removeEventListeners();
         this._removeDebugGui();
+        // Clean up delayed resize timers and load listener
+        clearTimeout(this._resizeTimer1);
+        clearTimeout(this._resizeTimer2);
+        clearTimeout(this._resizeTimer3);
+        window.removeEventListener('load', this._onLoadResize);
     }
 
     /**

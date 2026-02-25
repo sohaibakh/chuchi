@@ -60,6 +60,7 @@ export default {
         '@/assets/styles/base/_button.scss',
         '@/assets/styles/base/_typography.scss',
         '@/assets/styles/base/_breakpoints.scss',
+        '@/assets/styles/base/_safari.scss',
     ],
     /*
      ** Plugins to load before mounting the App

@@ -60,6 +60,13 @@ export default {
       if (this.$root.webglApp && this.$root.webglApp.showScene) {
         timeline.add(this.$root.webglApp.showScene('empty'), 0);
       }
+
+      if (this.$root.customCursor) {
+        timeline.add(this.$root.customCursor.show(), 1);
+        timeline.call(() => {
+          if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+        }, null, 1);
+      }
     },
 
     transitionOut(done) {

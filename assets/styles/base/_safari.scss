@@ -1,0 +1,47 @@
+// ─── Safari / Apple Browser Optimisations ─────────────────────────────────────
+//
+// These rules are scoped to .safari (added to <body> by layout/default/script.js
+// via Browser.js) and to the "100svh / -webkit-fill-available" cross-platform
+// viewport-height helpers used everywhere.
+//
+// ──────────────────────────────────────────────────────────────────────────────
+
+// 1. Promote every animated section into its own GPU compositing layer.
+//    This stops Safari from performing expensive repaints during GSAP animations
+//    and the custom virtual-scroll translateY updates.
+.safari .section {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+// 2. Disable sub-pixel text antialiasing flicker that shows up during GSAP
+//    opacity/transform transitions on Safari.
+.safari * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 3. iOS viewport-height helper.
+//    -webkit-fill-available is required for pre-15.4 iOS Safari where 100svh
+//    and 100dvh are not supported.
+.h-screen-safari {
+  height: 100vh;                    // non-iOS baseline
+  height: -webkit-fill-available;   // iOS 12-15.3 (fills between status bar & tab bar)
+  height: 100svh;                   // iOS 15.4+ / Safari 15.4+
+}
+
+// 4. Prevent the elastic overscroll "bounce" from exposing white underneath
+//    the fixed WebGL background canvas on iOS.
+html.prevent-bounce body {
+  position: fixed;
+
+  width: 100%;
+
+  // Safari-specific: fill the full available area even with floating bars
+  height: 100%;
+  height: -webkit-fill-available;
+
+  overflow: hidden;
+}

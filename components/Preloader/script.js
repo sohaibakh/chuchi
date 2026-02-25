@@ -99,7 +99,7 @@ export default {
         );
       }
     
-      timeline.call(this.timelineShowCompleteHandler, null, 2.0);
+      timeline.call(this.timelineShowCompleteHandler, null, 0.8);
     },
 
     hide() {

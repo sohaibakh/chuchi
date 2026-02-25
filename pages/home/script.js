@@ -45,7 +45,6 @@ export default {
     const resPortfolio = await axios.get(`page/portfolio?lang=${locale}`);
     const resServices = await axios.get(`page/services?lang=${locale}`);
 
-    console.log('services: ', resServices.data.items);
     const servicesItems = resServices.data.items;
 
     const portfolioItems = resPortfolio.data.items;

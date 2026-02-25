@@ -8,6 +8,7 @@ import CustomEase from '@/vendor/gsap/CustomEase';
 
 // Utils
 import device from '@/utils/device';
+import browser from '@/utils/Browser';
 
 // Components
 import TheNavigation from '@/components/TheNavigation';
@@ -60,6 +61,11 @@ export default {
     },
 
     mounted() {
+        // Apply browser-specific class to body for targeted CSS overrides (e.g. .safari)
+        if (process.client && browser && typeof browser.getClassName === 'function') {
+            const cls = browser.getClassName();
+            if (cls) document.body.classList.add(cls);
+        }
         this.setupEventListeners();
     },
 

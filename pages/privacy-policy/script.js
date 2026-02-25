@@ -41,6 +41,12 @@ export default {
             const timeline = new gsap.timeline({ onComplete: done, delay });
             timeline.to(this.$el, 0.8, { alpha: 1, ease: 'sine.inOut' }, 0);
             timeline.add(this.$root.theNavigation.show(), 1);
+            if (this.$root.customCursor) {
+                timeline.add(this.$root.customCursor.show(), 1);
+                timeline.call(() => {
+                    if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+                }, null, 1);
+            }
         },
 
         transitionOut(done) {

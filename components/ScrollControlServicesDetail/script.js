@@ -26,16 +26,36 @@ export default {
     this.$nextTick(() => {
       this.resize();
       gsap.ticker.add(this.tickHandler);
+
+      // Re-measure after images/fonts/dynamic content load
+      // (single $nextTick fires before resources finish loading)
+      this._resizeTimer1 = setTimeout(() => this.resize(), 300);
+      this._resizeTimer2 = setTimeout(() => this.resize(), 800);
+      this._resizeTimer3 = setTimeout(() => this.resize(), 1500);
+
+      // Also recalculate once the full page has loaded all resources
+      this._onLoadResize = () => this.resize();
+      if (document.readyState === 'complete') {
+        this.resize();
+      } else {
+        window.addEventListener('load', this._onLoadResize, { once: true });
+      }
     });
   },
 
   beforeDestroy() {
     this.removeEventListeners();
     gsap.ticker.remove(this.tickHandler);
+    // Clean up load listener and delayed resize timers
+    window.removeEventListener('load', this._onLoadResize);
+    if (this._resizeTimer1) clearTimeout(this._resizeTimer1);
+    if (this._resizeTimer2) clearTimeout(this._resizeTimer2);
+    if (this._resizeTimer3) clearTimeout(this._resizeTimer3);
   },
 
   methods: {
     setupVirtualScroll() {
+      if (!VirtualScroll) return null;
       return new VirtualScroll({
         el: document,
         mouseMultiplier: 0.8,
@@ -106,7 +126,13 @@ export default {
       }
     
       EventBus.$emit('virtual-scroll', { y });
-      EventBus.$emit('sticky-pin-state', this.isStickyPinned);
+
+      // Only emit sticky-pin-state when it actually changes to avoid flooding listeners
+      const pinned = this.isStickyPinned;
+      if (pinned !== this._lastStickyPinned) {
+        this._lastStickyPinned = pinned;
+        EventBus.$emit('sticky-pin-state', pinned);
+      }
     }
     
     ,

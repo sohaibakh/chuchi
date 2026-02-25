@@ -72,7 +72,7 @@ export default {
     async asyncData({ app }) {
         const locale = app.i18n.locale;
         const res = await axios.get(`page/about?lang=${locale}`);
-        console.log("about: ", res.data.sections)
+        
         
       
         return {
@@ -96,6 +96,12 @@ export default {
             if (this.$root.webglApp) timeline.add(this.$root.webglApp.showScene('about'), 0);
             timeline.add(this.$refs.header.transitionIn(), 0.5);
             timeline.add(this.$root.theNavigation.show(), 1);
+            if (this.$root.customCursor) {
+                timeline.add(this.$root.customCursor.show(), 1);
+                timeline.call(() => {
+                    if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+                }, null, 1);
+            }
         },
 
         transitionOut(done) {

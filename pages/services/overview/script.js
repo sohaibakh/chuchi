@@ -21,7 +21,7 @@ export default {
   async asyncData({ app }) {
     const locale = app.i18n.locale;
     const res = await axios.get(`page/services?lang=${locale}`);
-    console.log('services data:', res.data.items[0].image.sizes['1920x0'].url); // ✅ correct
+  
   
     return {
       metadata: res.data.seo,
@@ -64,7 +64,12 @@ export default {
       if (this.$root.webglApp) timeline.add(this.$root.webglApp.showScene('services'), 0);
       timeline.to(this.$el, 1.3, { alpha: 1, ease: 'sine.inOut' }, 0.5);
       timeline.add(this.$root.theNavigation.show(), 1);
-      // timeline.add(this.$root.buttonMute.show(), 1.1);
+      if (this.$root.customCursor) {
+        timeline.add(this.$root.customCursor.show(), 1);
+        timeline.call(() => {
+          if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+        }, null, 1);
+      }
       this.isReady = true;           
   },
 

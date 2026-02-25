@@ -188,5 +188,7 @@ for (let i = 0, len = landscapesData.length; i < len; i++) {
     });
 }
 
-const resources = [...fonts, ...webgl, ...landscapes, ...sounds];
+// Sounds are intentionally excluded from the preloader queue.
+// They are heavy MP3 files not needed at startup — loaded on demand when first played.
+const resources = [...fonts, ...webgl, ...landscapes];
 export default resources;

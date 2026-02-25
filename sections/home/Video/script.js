@@ -28,15 +28,13 @@ export default {
 
   computed: {
     videoSrcMp4() {
-      // prefer CMS value, otherwise fallback
-      console.log('check vdo:', this.data)
-      return this.data.videoUrl || fallbackMp4
+      // prefer CMS value — fallbackMp4 import is intentionally omitted;
+      // return null so the <video> element simply shows nothing (no crash)
+      return this.data.videoUrl || null
     },
     // videoSrcWebm() {
     //   return this.data?.videoUrlWebm || null
-    //   // or: return this.data?.videoUrlWebm || fallbackWebm
     // },
-
   },
 
   mounted() {
@@ -44,16 +42,70 @@ export default {
     this.setupEventListeners()
     this.resize()
 
+    // Self-trigger: the Video section is always the first visible section on the
+    // homepage. backgroundShow() is normally called by the ScrollControl section
+    // trigger — but it never fires for the first section because scrollY starts at 0.
+    // This IntersectionObserver ensures backgroundShow() is called as soon as the
+    // section enters the viewport (threshold: 0 = fires immediately).
+    this.$nextTick(() => {
+      this._io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            this._io.disconnect()
+            this.backgroundShow(() => {}, 1)
+          }
+        },
+        { threshold: 0 }
+      )
+      this._io.observe(this.$el)
+    })
+
     // iOS/Safari autoplay safety
-    const v = this.$refs.video
-    if (v && v.paused) {
+    // Imperatively set attributes Safari requires for inline muted autoplay
+    this.$nextTick(() => {
+      const v = this.$refs.video
+      if (!v) return
       v.muted = true
+      v.setAttribute('playsinline', '')
+      v.setAttribute('webkit-playsinline', '')
+
+      // Safari sometimes ignores the `loop` attribute after an imperative load()
+      // and blocks play() calls made from the `ended` event (autoplay policy).
+      // Fix: use `timeupdate` to seek back to 0 *before* the video ends, so
+      // playback is never interrupted and Safari never enters the `ended` state.
+      this._videoLoopHandler = () => {
+        if (!v.duration) return
+        if (v.currentTime > 0 && (v.duration - v.currentTime) < 0.3) {
+          v.currentTime = 0
+        }
+      }
+      v.addEventListener('timeupdate', this._videoLoopHandler)
+
+      // Safety net: if Safari silently pauses the video (e.g. low-power mode
+      // or background tab), restart it every second.
+      this._videoWatchdog = setInterval(() => {
+        if (v && v.paused && !v.ended) {
+          v.play().catch(() => {})
+        }
+      }, 1000)
+
+      // Force Safari to reload the source before attempting play
+      v.load()
       v.play().catch(() => {})
-    }
+    })
   },
 
   beforeDestroy() {
     this.removeEventListeners()
+    if (this._io) this._io.disconnect()
+    // Clean up Safari loop workaround
+    const v = this.$refs.video
+    if (v && this._videoLoopHandler) {
+      v.removeEventListener('timeupdate', this._videoLoopHandler)
+    }
+    if (this._videoWatchdog) {
+      clearInterval(this._videoWatchdog)
+    }
   },
 
   methods: {

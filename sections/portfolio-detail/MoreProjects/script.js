@@ -34,6 +34,12 @@ export default {
         this.getBounds();
         this.setupEventListeners();
         this.setupIntersectionObserver();
+
+        // Re-measure section position after content/images fully load
+        // (matches the staggered resize timings in SmoothScroll so bounds stay in sync)
+        setTimeout(() => this.getBounds(), 400);
+        setTimeout(() => this.getBounds(), 900);
+        setTimeout(() => this.getBounds(), 1600);
     },
 
     beforeDestroy() {
@@ -62,11 +68,16 @@ export default {
          */
         getBounds() {
             this.bounds = this.$el.getBoundingClientRect();
-            this.sectionScrollPosition = 0;
 
-            this.$nextTick(() => {
-                this.sectionScrollPosition = this.bounds.top + this.$root.scrollManager.position.y;
-            });
+            // Use offsetTop traversal for a stable document-absolute Y position
+            // (getBoundingClientRect().top is viewport-relative and goes stale as scroll changes)
+            let el = this.$el;
+            let absoluteTop = 0;
+            while (el) {
+                absoluteTop += el.offsetTop || 0;
+                el = el.offsetParent;
+            }
+            this.sectionScrollPosition = absoluteTop;
         },
 
         updatePosition() {

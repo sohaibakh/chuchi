@@ -30,10 +30,13 @@ export default {
 
       timeline.add(this.$refs.header.transitionIn(), 0);
       timeline.add(this.$root.theNavigation.show(), 1);
-      // timeline.add(this.$root.buttonMute.show(), 1.1);
+      if (this.$root.customCursor) {
+        timeline.add(this.$root.customCursor.show(), 1);
+        timeline.call(() => {
+          if (this.$root.customCursor.enableClickAndHold) this.$root.customCursor.enableClickAndHold();
+        }, null, 1);
+      }
       if (this.$root.webglApp) timeline.add(this.$root.webglApp.showScene('empty'), 0);
-      // Optional: add scroll section fade in
-      // timeline.from(this.$refs.section.$el, { opacity: 0, duration: 0.8 }, 0.5);
     },
 
     transitionOut(done) {

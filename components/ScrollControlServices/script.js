@@ -47,6 +47,7 @@ export default {
     },
 
     beforeDestroy() {
+        if (this._animatingTimeout) clearTimeout(this._animatingTimeout);
         this.removeEventListeners();
         this.resetBackgroundPosition();
     },
@@ -116,6 +117,12 @@ export default {
                 this.isWebglAppAnimationDone = false;
                 this.isSectionAnimationDone = false;
 
+                // Safety fallback: force-reset isAnimating after 3s to prevent permanent freeze
+                if (this._animatingTimeout) clearTimeout(this._animatingTimeout);
+                this._animatingTimeout = setTimeout(() => {
+                    this.isAnimating = false;
+                }, 3000);
+
                 EventBus.$emit('stepscroll', { index: newIndex, delta: newIndex - this.currentStepIndex });
 
                 // Hide section
@@ -136,6 +143,10 @@ export default {
                             this.isWebglAppAnimationDone = true;
                             this.checkIfAnimationsAreFinished();
                         });
+                    } else {
+                        // WebGL unavailable — mark done immediately so isAnimating can reset
+                        this.isWebglAppAnimationDone = true;
+                        this.checkIfAnimationsAreFinished();
                     }
                 });
             }
@@ -188,10 +199,13 @@ export default {
         },
 
         checkIfAnimationsAreFinished() {
-            // if (this.isSectionAnimationDone) {
-            // if (this.isWebglAppAnimationDone) {
-            // this.isAnimating = false;
-            // }
+            if (this.isWebglAppAnimationDone && this.isSectionAnimationDone) {
+                this.isAnimating = false;
+                if (this._animatingTimeout) {
+                    clearTimeout(this._animatingTimeout);
+                    this._animatingTimeout = null;
+                }
+            }
         },
 
         resetBackgroundPosition() {

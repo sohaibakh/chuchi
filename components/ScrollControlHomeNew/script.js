@@ -25,6 +25,11 @@ export default {
 
     this.$nextTick(() => {
       this.resize();
+      // Hint to the browser to promote the scroll container to its own GPU layer
+      if (this.$refs.content) {
+        this.$refs.content.style.willChange = 'transform';
+        this.$refs.content.style.webkitTransform = 'translateZ(0)';
+      }
       gsap.ticker.add(this.tickHandler);
     });
   },
@@ -37,9 +42,11 @@ export default {
   methods: {
     setupVirtualScroll() {
       if (!VirtualScroll) return null;
+      // Safari/Mac trackpad deltas are smaller than Chrome; use 0.5 for a balanced feel
+      const isSafari = process.client && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
       return new VirtualScroll({
         el: this.$el,
-        mouseMultiplier: navigator.platform.includes('Win') ? 1 : 0.4,
+        mouseMultiplier: navigator.platform.includes('Win') ? 1 : (isSafari ? 0.5 : 0.4),
         useTouch: true,
         passive: true,
         firefoxMultiplier: 50,
@@ -176,6 +183,7 @@ export default {
               : "";
     
           console.log(`🔥 Triggering section: ${sectionName} [${scrollType}]`);
+          // NOTE: keeping this log at a reduced level — gated on section change only
     
           if (this.currentSectionIndex !== i) {
             const prev = this.currentSectionIndex;

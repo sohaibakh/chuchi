@@ -171,7 +171,6 @@ export default {
       
       if (newIndex !== this.activeIndex) {
         this.activeIndex = newIndex;
-        console.log('targetScale:', targetScale)
         images.forEach((img, i) => {
           gsap.to(img, {
             opacity: i === newIndex ? 1 : 0,
